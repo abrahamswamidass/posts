@@ -3,10 +3,303 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile and Portfolio</title>
+  <title>Abraham Swamidass — Profile and Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #888;
+      --bg: #faf9f7;
+      --accent: #c45d2c;
+      --border: #e5e2dd;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--serif);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 64px 24px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .back {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 32px;
+      transition: color 0.15s;
+    }
+    .back:hover { color: var(--accent); }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .headline {
+      font-family: var(--sans);
+      font-size: 15px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .location {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .contact-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .contact-links a:hover { color: var(--accent); }
+
+    /* Sections */
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* Summary */
+    .summary p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* Experience */
+    .company-block {
+      margin-bottom: 32px;
+    }
+
+    .company-name {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .company-tenure {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .role {
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .role-title {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .role-meta {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .role-desc {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* Education */
+    .edu-entry {
+      border-top: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .edu-degree {
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .edu-meta {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Skills & Certs */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      background: #eeece8;
+      color: var(--text-secondary);
+      padding: 4px 12px;
+      border-radius: 3px;
+    }
+
+    .cert-list {
+      list-style: none;
+    }
+
+    .cert-list li {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
-  <h1>Profile and Portfolio</h1>
-  <p>Content coming soon.</p>
+  <div class="container">
+
+    <div class="header">
+      <a class="back" href="../index.html">← Posts</a>
+      <h1>Abraham Swamidass</h1>
+      <p class="headline">Sr. Engineer at Cardinal Health</p>
+      <p class="location">Columbus, Ohio Metropolitan Area</p>
+      <div class="contact-links">
+        <a href="mailto:winfredbe@gmail.com">winfredbe@gmail.com</a>
+        <a href="https://www.linkedin.com/in/abraham-swamidass-758a023b/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <section class="summary">
+      <h2>About</h2>
+      <p>Software engineering is a dynamic and multifaceted discipline, where the pursuit of excellence is paramount. Having a clear purpose and drive is essential to succeed.</p>
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+
+      <div class="company-block">
+        <div class="company-name">Cardinal Health</div>
+        <div class="company-tenure">6 years 9 months</div>
+
+        <div class="role">
+          <div class="role-title">Sr. Engineer — Tech Lead</div>
+          <div class="role-meta">Dec 2022 – Present · Dublin, Ohio</div>
+          <p class="role-desc">Spearhead development, CI/CD pipelines, and support for three critical applications across PCF, Google Cloud, Cloverleaf, Airflow, Dataflow, and Elasticsearch. Lead a team of developers ensuring seamless integration and deployment of new features while maintaining robust system performance. Oversee end-to-end project management — from initial design through continuous deployment and ongoing optimisation.</p>
+        </div>
+
+        <div class="role">
+          <div class="role-title">Staff Engineer</div>
+          <div class="role-meta">Jul 2021 – Jan 2023 · 1 yr 7 mos · Dublin, Ohio</div>
+        </div>
+
+        <div class="role">
+          <div class="role-title">Software Development Consultant</div>
+          <div class="role-meta">Jul 2019 – Jun 2021 · 2 yrs · Columbus, Ohio</div>
+          <p class="role-desc">Built an intelligent analytical tool on the cloud platform for Cardinal Health Fuse and developed a robust data pipeline to handle large-scale data processing.</p>
+        </div>
+      </div>
+
+      <div class="company-block">
+        <div class="company-name">Anthem, Inc.</div>
+        <div class="company-tenure">14 years</div>
+
+        <div class="role">
+          <div class="role-title">Developer Advisor</div>
+          <div class="role-meta">Nov 2012 – Jul 2019 · 6 yrs 9 mos</div>
+          <p class="role-desc">Hands-on development within a scrum team, collaborating with product owners on Java web services, REST APIs, and Oracle WebCenter Sites. Extensive work in application security frameworks and content management processes.</p>
+        </div>
+
+        <div class="role">
+          <div class="role-title">Developer Sr.</div>
+          <div class="role-meta">Nov 2010 – Nov 2012 · 2 yrs 1 mo</div>
+        </div>
+
+        <div class="role">
+          <div class="role-title">Programming Analyst</div>
+          <div class="role-meta">Aug 2005 – Oct 2010 · 5 yrs 3 mos · Columbus, Ohio</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="edu-entry">
+        <div class="edu-degree">Bachelor of Engineering (B.E.), Computer Science</div>
+        <div class="edu-meta">1998 – 2002</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Top Skills</h2>
+      <div class="tags">
+        <span class="tag">Palantir</span>
+        <span class="tag">Artificial Intelligence (AI)</span>
+        <span class="tag">Team Building</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Certifications</h2>
+      <ul class="cert-list">
+        <li>Certified Palantir Foundry Data Engineer</li>
+        <li>Sun Certified Business Component Developer (SCBCD)</li>
+      </ul>
+    </section>
+
+  </div>
 </body>
 </html>
