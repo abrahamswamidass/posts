@@ -1,20 +1,48 @@
 #!/usr/bin/env bash
 # Regenerate posts.json by scanning all .html files (excluding index.html).
+# Scans root and one level of subdirectories; captures mtime and folder as category.
 # Run this before committing whenever you add or rename a post.
 
 cd "$(dirname "$0")"
 
 python3 - <<'EOF'
 import os, re, json
+from datetime import datetime, timezone
+
+SKIP_DIRS = {'.git', '.github'}
 
 posts = []
+
+def process_file(filepath, category=None):
+    with open(filepath) as fh:
+        content = fh.read()
+    title_match = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE)
+    title = title_match.group(1) if title_match else (
+        os.path.basename(filepath).replace('.html', '').replace('-', ' ').title()
+    )
+    mtime = os.path.getmtime(filepath)
+    date = datetime.fromtimestamp(mtime, tz=timezone.utc).strftime('%Y-%m-%d')
+    entry = {'file': filepath.lstrip('./'), 'title': title, 'date': date}
+    if category:
+        entry['category'] = category
+    posts.append(entry)
+
+# Root-level HTML files
 for f in sorted(os.listdir('.')):
-    if f.endswith('.html') and f != 'index.html':
-        with open(f) as fh:
-            content = fh.read()
-        title = re.search(r'<title>(.*?)</title>', content, re.IGNORECASE)
-        title = title.group(1) if title else f.replace('.html', '').replace('-', ' ').title()
-        posts.append({'file': f, 'title': title})
+    if f.endswith('.html') and f != 'index.html' and os.path.isfile(f):
+        process_file(f)
+
+# One level deep in subdirectories
+for d in sorted(os.listdir('.')):
+    if os.path.isdir(d) and d not in SKIP_DIRS and not d.startswith('.'):
+        category = d.replace('-', ' ').title()
+        for f in sorted(os.listdir(d)):
+            fpath = os.path.join(d, f)
+            if f.endswith('.html') and os.path.isfile(fpath):
+                process_file(fpath, category=category)
+
+# Sort newest first
+posts.sort(key=lambda p: p['date'], reverse=True)
 
 with open('posts.json', 'w') as out:
     json.dump(posts, out, indent=2, ensure_ascii=False)

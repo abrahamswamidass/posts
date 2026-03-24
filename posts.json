@@ -1,6 +1,14 @@
 [
   {
-    "file": "sea-rise.html",
-    "title": "From the Seafloor to the Sky \u2014 How a Pin in the Laccadive Sea Reveals Earth\u2019s Climate Story"
+    "file": "portfolio/profile.html",
+    "title": "Profile and Portfolio",
+    "date": "2026-03-24",
+    "category": "Portfolio"
+  },
+  {
+    "file": "science/sea-rise.html",
+    "title": "From the Seafloor to the Sky — How a Pin in the Laccadive Sea Reveals Earth's Climate Story",
+    "date": "2026-03-24",
+    "category": "Science"
   }
 ]

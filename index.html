@@ -62,10 +62,30 @@
       color: var(--text);
       text-decoration: none;
       transition: color 0.15s;
+      display: block;
+      margin-bottom: 8px;
     }
 
     a:hover {
       color: var(--accent);
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .category {
+      background: #eeece8;
+      color: var(--text-secondary);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
     }
 
     .error {
@@ -90,9 +110,18 @@
           ul.innerHTML = '<li class="error">No posts yet.</li>';
           return;
         }
-        ul.innerHTML = posts.map(p =>
-          `<li><a href="${p.file}">${p.title}</a></li>`
-        ).join('');
+        ul.innerHTML = posts.map(p => {
+          const date = p.date
+            ? new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+            : '';
+          const category = p.category
+            ? `<span class="category">${p.category}</span>`
+            : '';
+          const meta = (date || category)
+            ? `<div class="meta">${date ? `<span>${date}</span>` : ''}${category}</div>`
+            : '';
+          return `<li><a href="${p.file}">${p.title}</a>${meta}</li>`;
+        }).join('');
       })
       .catch(() => {
         document.getElementById('list').innerHTML =
