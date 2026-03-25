@@ -20,8 +20,18 @@ def process_file(filepath, category=None):
     title = title_match.group(1) if title_match else (
         os.path.basename(filepath).replace('.html', '').replace('-', ' ').title()
     )
-    mtime = os.path.getmtime(filepath)
-    date = datetime.fromtimestamp(mtime, tz=timezone.utc).strftime('%Y-%m-%d')
+    # Use date of first git commit for the file (creation date); fall back to mtime
+    import subprocess
+    result = subprocess.run(
+        ['git', 'log', '--follow', '--diff-filter=A', '--format=%aI', '--', filepath],
+        capture_output=True, text=True
+    )
+    first_commit = result.stdout.strip().splitlines()
+    if first_commit:
+        date = first_commit[-1][:10]
+    else:
+        mtime = os.path.getmtime(filepath)
+        date = datetime.fromtimestamp(mtime, tz=timezone.utc).strftime('%Y-%m-%d')
     entry = {'file': filepath.lstrip('./'), 'title': title, 'date': date}
     if category:
         entry['category'] = category
