@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abraham Swamidass — Profile and Portfolio</title>
+  <title>Abraham Swamidass — Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -27,10 +27,7 @@
       padding: 64px 24px;
     }
 
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-    }
+    .container { max-width: 680px; margin: 0 auto; }
 
     /* Header */
     .header {
@@ -81,18 +78,11 @@
       font-family: var(--sans);
       font-size: 13px;
     }
-
-    .contact-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
+    .contact-links a { color: var(--text-secondary); text-decoration: none; transition: color 0.15s; }
     .contact-links a:hover { color: var(--accent); }
 
-    /* Sections */
-    section {
-      margin-bottom: 40px;
-    }
+    /* Section headings */
+    section { margin-bottom: 40px; }
 
     h2 {
       font-family: var(--sans);
@@ -104,7 +94,7 @@
       margin-bottom: 20px;
     }
 
-    /* Summary */
+    /* About */
     .summary p {
       font-size: 1.05rem;
       line-height: 1.75;
@@ -112,10 +102,82 @@
       font-style: italic;
     }
 
-    /* Experience */
-    .company-block {
-      margin-bottom: 32px;
+    /* ── Collapsible primitives ── */
+    details > summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
     }
+    details > summary::-webkit-details-marker { display: none; }
+
+    /* Inline toggle (used inside roles) */
+    .toggle > summary {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+    }
+    .toggle > summary::before { content: '+ Show details'; }
+    .toggle[open] > summary::before { content: '− Hide details'; }
+    .toggle > summary:hover { color: var(--text); }
+
+    .toggle-body {
+      padding: 10px 0 4px 0;
+    }
+    .toggle-body ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .toggle-body li {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      padding-left: 16px;
+      position: relative;
+    }
+    .toggle-body li::before { content: '·'; position: absolute; left: 4px; color: var(--text-muted); }
+    .toggle-body li strong { color: var(--text); font-weight: 600; }
+
+    /* ── Skills ── */
+    .skill-group {
+      border-top: 1px solid var(--border);
+    }
+    .skill-group > summary {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 0;
+    }
+    .skill-group > summary::before {
+      content: '+';
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .skill-group[open] > summary::before { content: '−'; }
+    .skill-group > summary:hover { color: var(--text); }
+
+    .skill-group-content { padding: 4px 0 14px 20px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      background: #eeece8;
+      color: var(--text-secondary);
+      padding: 3px 10px;
+      border-radius: 3px;
+    }
+
+    /* ── Experience ── */
+    .company-block { margin-bottom: 32px; }
 
     .company-name {
       font-family: var(--sans);
@@ -149,20 +211,47 @@
       font-family: var(--sans);
       font-size: 12px;
       color: var(--text-muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .role-desc {
-      font-size: 0.95rem;
-      line-height: 1.7;
+    .role-summary {
+      font-size: 0.9rem;
+      line-height: 1.65;
       color: var(--text-secondary);
     }
 
-    /* Education */
-    .edu-entry {
+    /* Earlier career accordion */
+    .earlier-career {
       border-top: 1px solid var(--border);
-      padding: 16px 0;
     }
+    .earlier-career > summary {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 0;
+    }
+    .earlier-career > summary::before {
+      content: '+';
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .earlier-career[open] > summary::before { content: '−'; }
+    .earlier-career > summary:hover { color: var(--text); }
+
+    .earlier-body { padding: 0 0 8px 20px; }
+    .earlier-body .role { font-size: 0.9rem; }
+    .earlier-body .role-summary { font-size: 0.85rem; }
+
+    /* Education */
+    .edu-entry { border-top: 1px solid var(--border); padding: 16px 0; }
 
     .edu-degree {
       font-family: var(--sans);
@@ -172,33 +261,10 @@
       margin-bottom: 3px;
     }
 
-    .edu-meta {
-      font-family: var(--sans);
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    .edu-meta { font-family: var(--sans); font-size: 12px; color: var(--text-muted); }
 
-    /* Skills & Certs */
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .tag {
-      font-family: var(--sans);
-      font-size: 12px;
-      font-weight: 500;
-      background: #eeece8;
-      color: var(--text-secondary);
-      padding: 4px 12px;
-      border-radius: 3px;
-    }
-
-    .cert-list {
-      list-style: none;
-    }
-
+    /* Certifications */
+    .cert-list { list-style: none; }
     .cert-list li {
       font-family: var(--sans);
       font-size: 13px;
@@ -212,10 +278,11 @@
 <body>
   <div class="container">
 
+    <!-- Header -->
     <div class="header">
       <a class="back" href="../index.html">← Posts</a>
       <h1>Abraham Swamidass</h1>
-      <p class="headline">Sr. Engineer at Cardinal Health</p>
+      <p class="headline">Sr. Engineer / Tech Lead at Cardinal Health</p>
       <p class="location">Columbus, Ohio Metropolitan Area</p>
       <div class="contact-links">
         <a href="mailto:winfredbe@gmail.com">winfredbe@gmail.com</a>
@@ -223,80 +290,266 @@
       </div>
     </div>
 
+    <!-- About -->
     <section class="summary">
       <h2>About</h2>
-      <p>Software engineering is a dynamic and multifaceted discipline, where the pursuit of excellence is paramount. Having a clear purpose and drive is essential to succeed.</p>
+      <p>20+ years building enterprise software across healthcare, financial, and e-learning domains. Expertise in Java, microservices, cloud platforms, and application security — with a consistent focus on scalable architecture, agile delivery, and team leadership.</p>
     </section>
 
+    <!-- Skills -->
+    <section>
+      <h2>Skills</h2>
+
+      <details class="skill-group">
+        <summary>Security</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">OAuth 2.0 / JWT</span>
+            <span class="tag">APIGEE</span>
+            <span class="tag">Siteminder</span>
+            <span class="tag">SAML</span>
+            <span class="tag">LDAP</span>
+            <span class="tag">DSmart</span>
+            <span class="tag">App Scan</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="skill-group">
+        <summary>Frontend &amp; UI</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">Angular</span>
+            <span class="tag">Adobe Target</span>
+            <span class="tag">Adobe Analytics</span>
+            <span class="tag">508 Compliance</span>
+            <span class="tag">SEO</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="skill-group">
+        <summary>Java &amp; Services</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">Java</span>
+            <span class="tag">Spring Boot / MVC</span>
+            <span class="tag">Microservices</span>
+            <span class="tag">REST / SOAP</span>
+            <span class="tag">EJB</span>
+            <span class="tag">JMS</span>
+            <span class="tag">Hibernate</span>
+            <span class="tag">Struts</span>
+            <span class="tag">JAXB / JAXP</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="skill-group">
+        <summary>Cloud &amp; Infrastructure</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">AWS</span>
+            <span class="tag">Google Cloud</span>
+            <span class="tag">PCF</span>
+            <span class="tag">Airflow</span>
+            <span class="tag">Dataflow</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">WebSphere</span>
+            <span class="tag">Tomcat</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="skill-group">
+        <summary>Search &amp; Content</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">Elasticsearch</span>
+            <span class="tag">iFinder Elastic</span>
+            <span class="tag">GSA</span>
+            <span class="tag">Oracle Web Center Sites</span>
+            <span class="tag">Lucene</span>
+            <span class="tag">Palantir Foundry</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="skill-group">
+        <summary>Data &amp; Reporting</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">Oracle 11g</span>
+            <span class="tag">MS SQL Server</span>
+            <span class="tag">DB2 z/OS</span>
+            <span class="tag">Splunk</span>
+            <span class="tag">SonarQube</span>
+            <span class="tag">Wily / TeaLeaf</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="skill-group">
+        <summary>DevOps &amp; Testing</summary>
+        <div class="skill-group-content">
+          <div class="tags">
+            <span class="tag">Git</span>
+            <span class="tag">Maven</span>
+            <span class="tag">Bamboo</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">Selenium / Cucumber</span>
+            <span class="tag">JUnit</span>
+            <span class="tag">SAFe / Scrum</span>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- Experience -->
     <section>
       <h2>Experience</h2>
 
+      <!-- Cardinal Health -->
       <div class="company-block">
         <div class="company-name">Cardinal Health</div>
-        <div class="company-tenure">6 years 9 months</div>
+        <div class="company-tenure">2019 – Present · Dublin, Ohio</div>
 
         <div class="role">
-          <div class="role-title">Sr. Engineer — Tech Lead</div>
-          <div class="role-meta">Dec 2022 – Present · Dublin, Ohio</div>
-          <p class="role-desc">Spearhead development, CI/CD pipelines, and support for three critical applications across PCF, Google Cloud, Cloverleaf, Airflow, Dataflow, and Elasticsearch. Lead a team of developers ensuring seamless integration and deployment of new features while maintaining robust system performance. Oversee end-to-end project management — from initial design through continuous deployment and ongoing optimisation.</p>
+          <div class="role-title">Sr. Staff Engineer — InteLogix</div>
+          <div class="role-meta">Dec 2022 – Present</div>
+          <p class="role-summary">Palantir Foundry platform engineering for InteLogix — Cardinal Health's proactive pharmaceutical supply chain solution for hospitals.</p>
+          <details class="toggle">
+            <summary></summary>
+            <div class="toggle-body">
+              <ul>
+                <li>Certified Palantir Foundry Data Engineer; designed data syncs, pipelines, and ontologies.</li>
+                <li>Designed and implemented group-based access management with Okta integration, resource-level access, and data-level restrictions via views and action type criteria.</li>
+                <li>Tuned performance for large-scale dataset queries through aggregation strategies, enhanced query patterns, and workflow redesign.</li>
+              </ul>
+            </div>
+          </details>
         </div>
 
         <div class="role">
-          <div class="role-title">Staff Engineer</div>
-          <div class="role-meta">Jul 2021 – Jan 2023 · 1 yr 7 mos · Dublin, Ohio</div>
-        </div>
-
-        <div class="role">
-          <div class="role-title">Software Development Consultant</div>
-          <div class="role-meta">Jul 2019 – Jun 2021 · 2 yrs · Columbus, Ohio</div>
-          <p class="role-desc">Built an intelligent analytical tool on the cloud platform for Cardinal Health Fuse and developed a robust data pipeline to handle large-scale data processing.</p>
+          <div class="role-title">Staff Engineer — MOMS &amp; DCOA</div>
+          <div class="role-meta">Jul 2019 – Dec 2022</div>
+          <p class="role-summary">Built data engineering and microservices for two products: Drug Cost Opportunity Analytics (DCOA) and Medication Order Management System (MOMS).</p>
+          <details class="toggle">
+            <summary></summary>
+            <div class="toggle-body">
+              <ul>
+                <li>Built ETL pipelines using Airflow and Dataflow; worked on BigQuery datasets and Tableau report generation.</li>
+                <li>Developed Java microservices with Kafka on PCF; handled SQL and infrastructure performance optimisation.</li>
+                <li>Evaluated technologies including Lambda, clamd, AtScale, and Document AI for platform fit.</li>
+                <li>Managed MySQL migrations, server patches, and CI/CD activities.</li>
+                <li>Mentored developers on technical and domain knowledge; contributed to requirements, solutioning, and release planning.</li>
+              </ul>
+            </div>
+          </details>
         </div>
       </div>
 
+      <!-- Anthem -->
       <div class="company-block">
         <div class="company-name">Anthem, Inc.</div>
-        <div class="company-tenure">14 years</div>
+        <div class="company-tenure">2005 – 2019 · Columbus, Ohio</div>
 
         <div class="role">
           <div class="role-title">Developer Advisor</div>
-          <div class="role-meta">Nov 2012 – Jul 2019 · 6 yrs 9 mos</div>
-          <p class="role-desc">Hands-on development within a scrum team, collaborating with product owners on Java web services, REST APIs, and Oracle WebCenter Sites. Extensive work in application security frameworks and content management processes.</p>
+          <div class="role-meta">Nov 2012 – Jul 2019</div>
+          <p class="role-summary">Led development on the Anthem Reimagined portal — a full architectural overhaul to Angular, microservices, OAuth 2.0, and AWS.</p>
+          <details class="toggle">
+            <summary></summary>
+            <div class="toggle-body">
+              <ul>
+                <li>Built Java microservices with custom OAuth 2.0 / JWT security layer.</li>
+                <li>Developed Angular front end and Oracle Web Center Sites integrations.</li>
+                <li>Implemented enterprise search using GSA and iFinder Elastic.</li>
+                <li>Drove 508 accessibility, SEO, and A/B testing with Adobe Target.</li>
+                <li>Collaborated with DevOps on AWS migration; followed SAFe and CI/CD practices.</li>
+              </ul>
+            </div>
+          </details>
         </div>
 
         <div class="role">
           <div class="role-title">Developer Sr.</div>
-          <div class="role-meta">Nov 2010 – Nov 2012 · 2 yrs 1 mo</div>
+          <div class="role-meta">Nov 2010 – Nov 2012</div>
+          <p class="role-summary">Led project execution on the Member Portal — a unified SOA-backed customer experience covering Claims, Provider, and ID Card features.</p>
+          <details class="toggle">
+            <summary></summary>
+            <div class="toggle-body">
+              <ul>
+                <li>Owned security and user domain services with full documentation.</li>
+                <li>Led agile ceremonies, task tracking, and JAD sessions with product owners.</li>
+                <li>Delivered caching improvements to reduce login latency.</li>
+                <li>Contributed to Liferay portal and mobile initiatives.</li>
+              </ul>
+            </div>
+          </details>
         </div>
 
         <div class="role">
-          <div class="role-title">Programming Analyst</div>
-          <div class="role-meta">Aug 2005 – Oct 2010 · 5 yrs 3 mos · Columbus, Ohio</div>
+          <div class="role-title">Consultant / Programmer Analyst</div>
+          <div class="role-meta">Aug 2005 – Nov 2010</div>
+          <p class="role-summary">Multiple cross-functional engagements covering SOA services, enterprise security, and backend integration during the WellPoint merger.</p>
+          <details class="toggle">
+            <summary></summary>
+            <div class="toggle-body">
+              <ul>
+                <li><strong>Member Portal SOA (2009–2010)</strong> — Built Apache Axis2 web services aggregating Eligibility, Benefits, Claims, and Provider backends; digital signing via Apache Rampart.</li>
+                <li><strong>EAM/IAM Security (2005–2008)</strong> — Managed user registration/login for internet and intranet apps; configured Siteminder, SAML federation, LDAP, and 508/PCI compliance.</li>
+                <li><strong>NASCO ECS (2008)</strong> — Enhanced JMS middleware for HIPAA X12 transactions; DB2 z/OS stored procedures, WebLogic/MQ binding.</li>
+                <li><strong>National Member &amp; Employer (2008–2009)</strong> — SAML SSO integration; Stellent-to-file content management migration.</li>
+                <li><strong>NRRI Knowledge Communities (2009)</strong> — Customised a Liferay collaboration portal with Lucene search and LDAP for national research communities.</li>
+              </ul>
+            </div>
+          </details>
         </div>
       </div>
+
+      <!-- Earlier career -->
+      <details class="earlier-career">
+        <summary>Earlier Career — Pre-Anthem (2004 – 2005)</summary>
+        <div class="earlier-body">
+          <div class="role">
+            <div class="role-title">Consultant — E-Learning Platform</div>
+            <div class="role-meta">Jan 2005 – May 2005 · Thomson E-Learning</div>
+            <p class="role-summary">EJB-based Upload/Download module and web reporting portal for centralised e-learning data management.</p>
+          </div>
+          <div class="role">
+            <div class="role-title">Consultant — Fantasy Football Application</div>
+            <div class="role-meta">Oct 2004 – Jan 2005 · Ascendum</div>
+            <p class="role-summary">Real-time scoring engine, live RSS integration, and front-end system for a web-based fantasy football platform using Struts.</p>
+          </div>
+          <div class="role">
+            <div class="role-title">Consultant — Corporate Lending Module</div>
+            <div class="role-meta">Mar 2004 – Oct 2004 · EXIM Bank (Finacle 7.2)</div>
+            <p class="role-summary">Extended the Finacle banking platform with corporate lending workflows covering account opening, disbursements, and rescheduling.</p>
+          </div>
+        </div>
+      </details>
     </section>
 
+    <!-- Education -->
     <section>
       <h2>Education</h2>
       <div class="edu-entry">
-        <div class="edu-degree">Bachelor of Engineering (B.E.), Computer Science</div>
-        <div class="edu-meta">1998 – 2002</div>
+        <div class="edu-degree">Bachelor of Engineering, Computer Science</div>
+        <div class="edu-meta">Madras University · 1998 – 2002</div>
       </div>
     </section>
 
-    <section>
-      <h2>Top Skills</h2>
-      <div class="tags">
-        <span class="tag">Palantir</span>
-        <span class="tag">Artificial Intelligence (AI)</span>
-        <span class="tag">Team Building</span>
-      </div>
-    </section>
-
+    <!-- Certifications -->
     <section>
       <h2>Certifications</h2>
       <ul class="cert-list">
         <li>Certified Palantir Foundry Data Engineer</li>
+        <li>SAFe Scrum Master</li>
+        <li>Certified Scrum Master (CSM)</li>
+        <li>Certified Scrum Developer (CSD)</li>
         <li>Sun Certified Business Component Developer (SCBCD)</li>
+        <li>Sun Certified Developer</li>
       </ul>
     </section>
 
