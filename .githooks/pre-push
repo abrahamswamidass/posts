@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Pre-push hook: inject Google Analytics into any HTML files missing it,
+# then auto-commit the changes before the push goes through.
+
+cd "$(git rev-parse --show-toplevel)"
+
+echo "→ Checking Google Analytics injection..."
+output=$(bash inject-ga.sh)
+echo "$output"
+
+# If any files were modified, stage and commit them
+if ! git diff --quiet -- "*.html" "*/*.html" "*/*/*.html" 2>/dev/null; then
+  git add $(git diff --name-only -- "*.html" "*/*.html" "*/*/*.html")
+  git commit -m "chore: inject Google Analytics [auto]
+
+https://claude.ai/code/session_01HsFi47uUq8vQUfrkCkzbPS"
+  echo "→ GA changes committed."
+fi
+
+exit 0
