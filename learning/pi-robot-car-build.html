@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Raspberry Pi Robot Car — Notes from the Workbench</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #1a1a1a;
+      --text-secondary: #555;
+      --text-muted: #888;
+      --bg: #faf9f7;
+      --bg-card: #fff;
+      --accent: #c45d2c;
+      --accent-light: #f4ebe4;
+      --green: #2d6a4f;
+      --border: #e5e2dd;
+      --serif: 'Source Serif 4', Georgia, serif;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--serif);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.8;
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(160deg, #0d1f12 0%, #132b1a 45%, #1c3d25 75%, #1a3a2c 100%);
+      color: white;
+      padding: 80px 24px 72px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 90%, rgba(45, 106, 79, 0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 15%, rgba(196, 93, 44, 0.12) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-back {
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 28px;
+      transition: color 0.15s;
+    }
+    .hero-back:hover { color: rgba(255,255,255,0.8); }
+
+    .hero-tag {
+      font-family: var(--sans);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      letter-spacing: -0.3px;
+    }
+
+    .hero-subtitle {
+      font-family: var(--sans);
+      font-size: 16px;
+      color: rgba(255,255,255,0.6);
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* Article body */
+    .article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+
+    .lead {
+      font-size: 1.2rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      font-style: italic;
+    }
+
+    h2 {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 52px 0 20px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+
+    p {
+      margin-bottom: 24px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    /* Figures */
+    figure {
+      margin: 36px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    figure img {
+      width: 100%;
+      display: block;
+      max-height: 480px;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    figcaption {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 10px 14px;
+      line-height: 1.5;
+    }
+
+    /* Two-up image grid */
+    .img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 36px 0;
+    }
+
+    .img-grid figure {
+      margin: 0;
+    }
+
+    /* Callout */
+    .callout {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 16px 20px;
+      margin: 32px 0;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .callout strong {
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Parts list */
+    .parts {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+
+    .parts h3 {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .parts ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 24px;
+    }
+
+    .parts li {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .parts li::before {
+      content: '·';
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .footer a {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+    .footer a:hover { color: var(--accent); }
+
+    @media (max-width: 520px) {
+      .img-grid { grid-template-columns: 1fr; }
+      .parts ul { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <a class="hero-back" href="../index.html">← Posts</a>
+    <div class="hero-tag">Learning &amp; Making</div>
+    <h1>Building a Raspberry Pi Robot Car — Notes from the Workbench</h1>
+    <p class="hero-subtitle">A weekend build log: chassis, wiring, a Robot HAT, and the moment those green LEDs first blinked to life.</p>
+  </div>
+</div>
+
+<article class="article">
+
+  <p class="lead">It started with a kit and a free weekend. By the end of it, four wheels were spinning under the control of a Raspberry Pi tucked into a tidy acrylic frame — and I'd learned more about motors, HATs, and ribbon cables than I expected to.</p>
+
+  <h2>What's in the Box</h2>
+
+  <p>The kit ships with everything you need to build a 4-wheel robot car around a Raspberry Pi. It supports the Pi 4, Pi 5, and the compact Zero 2 W — each with slightly different assembly paths. The instruction sheet lays it all out clearly, though small screws and acrylic pieces mean patience is the most important tool on the bench.</p>
+
+  <figure>
+    <img src="images/assembly-guide.jpg" alt="Assembly instruction sheet showing step-by-step build guide for the Raspberry Pi robot car">
+    <figcaption>The instruction sheet covers three Pi variants — Pi 4/5 and Zero 2 W — each with a slightly different mounting and cable approach.</figcaption>
+  </figure>
+
+  <div class="parts">
+    <h3>Key Components</h3>
+    <ul>
+      <li>Raspberry Pi (4, 5, or Zero 2 W)</li>
+      <li>Robot HAT (motor controller)</li>
+      <li>4-wheel acrylic chassis</li>
+      <li>2× DC motors with wheels</li>
+      <li>Ultrasonic distance sensor</li>
+      <li>Camera module with mount</li>
+      <li>Speaker module</li>
+      <li>FFC / FPC ribbon cable</li>
+      <li>M2.5 standoffs and screws</li>
+      <li>USB mini microphone</li>
+    </ul>
+  </div>
+
+  <h2>Building the Chassis</h2>
+
+  <p>The base comes together quickly. Four nylon standoffs go into the acrylic A-plate, then the Raspberry Pi mounts on top. Two yellow DC motors bolt to the rear, their red and black wires snaking forward to meet the Robot HAT later. With the wheels pressed on, the skeleton already feels solid — you can see how it'll carry everything else.</p>
+
+  <figure>
+    <img src="images/chassis-underside.jpg" alt="Underside of the robot car chassis showing two yellow DC motors and acrylic frame">
+    <figcaption>The chassis from below — two yellow DC motors drive the rear wheels, while the white acrylic frame keeps everything square.</figcaption>
+  </figure>
+
+  <h2>The Brain: Robot HAT</h2>
+
+  <p>The Robot HAT is where it all connects. It sits on top of the Raspberry Pi via the GPIO header, and from there it fans out to the motors, servos, sensors, and a small speaker. The board is dense — resistors, ICs, screw terminals, and a satisfying grid of green and red indicator LEDs that flash on boot.</p>
+
+  <p>Getting the FFC ribbon cable right is the trickiest step. Lift the tab, seat the cable, press it down — in the right order, aligned correctly. The instructions are precise here for good reason; a misaligned ribbon is the most common source of headaches in this build.</p>
+
+  <figure>
+    <img src="images/robot-hat-board.jpg" alt="Close-up of the Robot HAT circuit board showing speaker, Ethernet connector, and green LED indicators">
+    <figcaption>The Robot HAT carries the speaker, status LEDs, and all the connectors the peripheral modules plug into. The Ethernet label on the connector is for the inter-board communication bus.</figcaption>
+  </figure>
+
+  <div class="callout">
+    <strong>Tip</strong>
+    Seat the FPC cable before mounting the HAT to the Pi — it's much easier to handle when the board is lying flat on the table.
+  </div>
+
+  <h2>Wiring Everything Together</h2>
+
+  <p>Once the HAT is mounted, the rest is a matter of routing. Motor wires, servo cables for the front steering, the ultrasonic sensor at the nose, and the camera up top all terminate on the HAT or the Pi's ports. Spiral cable wrap keeps the harness tidy and stops anything from snagging on the wheels.</p>
+
+  <figure>
+    <img src="images/wired-top-view.jpg" alt="Top-down view of the assembled robot car showing the Robot HAT, wiring, and camera mount">
+    <figcaption>From above — the Robot HAT occupies the upper deck, with the cable harness spiralled and routed cleanly to each module. The camera sits at the front on a servo-driven pan mount.</figcaption>
+  </figure>
+
+  <h2>First Boot</h2>
+
+  <p>Plugging in power for the first time is the payoff moment. The Robot HAT's LEDs cycle green, the Pi boots, and the ultrasonic sensor's orange indicators blink as it starts ranging. The speaker clicks. Everything is where it should be.</p>
+
+  <p>At this stage the car doesn't move on its own — that requires loading the software stack and writing the control logic, which is the next chapter. But seeing it alive and responding to queries from a laptop over the local network was more satisfying than expected.</p>
+
+  <figure>
+    <img src="images/powered-on-front.jpg" alt="Front view of the completed Raspberry Pi robot car with green LEDs lit and ultrasonic sensor visible">
+    <figcaption>First power-on — the green LEDs on the Robot HAT light up, the red status indicator holds steady, and the ultrasonic sensor at the nose starts reading distance. Build complete.</figcaption>
+  </figure>
+
+  <h2>What's Next</h2>
+
+  <p>The hardware is done. What follows is where it gets interesting: installing the camera streaming stack, writing motor control code, and eventually getting it to navigate autonomously using the ultrasonic sensor to avoid obstacles. There's also the microphone — small and easy to overlook in the box — which opens up voice command possibilities.</p>
+
+  <p>More notes to follow as the software side takes shape.</p>
+
+</article>
+
+<footer class="footer">
+  <a href="../index.html">← Posts</a>
+</footer>
+
+</body>
+</html>
