@@ -231,6 +231,30 @@
       font-weight: 700;
     }
 
+    /* Video */
+    .video-wrap {
+      margin: 36px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+    }
+
+    .video-wrap video {
+      width: 100%;
+      display: block;
+      max-height: 640px;
+    }
+
+    .video-caption {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 10px 14px;
+      background: var(--bg-card);
+      line-height: 1.5;
+    }
+
     /* Footer */
     .footer {
       border-top: 1px solid var(--border);
@@ -349,11 +373,23 @@
     <figcaption>First power-on — the green LEDs on the Robot HAT light up, the red status indicator holds steady, and the ultrasonic sensor at the nose starts reading distance. Build complete.</figcaption>
   </figure>
 
+  <h2>Voice Control + Claude API Demo</h2>
+
+  <p>With the hardware done, the next step was software: a voice command loop that listens through the USB microphone, sends the speech to the Claude API, and acts on the response. Movement commands — forward, back, turn left, turn right, stop — drive the wheels directly. Everything else comes back as a spoken reply through the speaker.</p>
+
+  <p>The loop is intentionally simple: record a short audio clip, transcribe it, hand it to Claude with a system prompt that classifies the intent, then either fire a motor command or speak the answer aloud. Latency is low enough to feel responsive.</p>
+
+  <div class="video-wrap">
+    <video controls preload="metadata" playsinline>
+      <source src="voice_command.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-caption">PiCar-X responding to voice — movement commands drive the wheels; everything else gets a spoken reply via the Claude API.</div>
+  </div>
+
   <h2>What's Next</h2>
 
-  <p>The hardware is done. What follows is where it gets interesting: installing the camera streaming stack, writing motor control code, and eventually getting it to navigate autonomously using the ultrasonic sensor to avoid obstacles. There's also the microphone — small and easy to overlook in the box — which opens up voice command possibilities.</p>
-
-  <p>More notes to follow as the software side takes shape.</p>
+  <p>The voice loop works reliably for basic commands. Next areas to explore: obstacle avoidance using the ultrasonic sensor, camera-based person following with the HOG detector, and chaining multi-step instructions ("go forward three seconds, then turn right").</p>
 
 </article>
 
