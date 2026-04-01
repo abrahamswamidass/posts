@@ -167,32 +167,56 @@
     <ul id="list"></ul>
   </div>
 
+  <script type="application/json" id="posts-data">
+[
+  {
+    "file": "learning/picarx_architecture.html",
+    "title": "PiCar-X System Architecture — Learning",
+    "date": "2026-04-01",
+    "category": "Learning"
+  },
+  {
+    "file": "learning/pi-robot-car-build.html",
+    "title": "Building a Raspberry Pi Robot Car — Notes from the Workbench",
+    "date": "2026-03-28",
+    "category": "Learning"
+  },
+  {
+    "file": "portfolio/profile.html",
+    "title": "Abraham Swamidass — Profile",
+    "date": "2026-03-24",
+    "category": "Portfolio"
+  },
+  {
+    "file": "science/sea-rise.html",
+    "title": "From the Seafloor to the Sky — How a Pin in the Laccadive Sea Reveals Earth's Climate Story",
+    "date": "2026-03-24",
+    "category": "Science"
+  }
+]
+</script>
+
   <script>
-    fetch('posts.json')
-      .then(r => r.json())
-      .then(posts => {
-        const ul = document.getElementById('list');
-        if (!posts.length) {
-          ul.innerHTML = '<li class="error">No posts yet.</li>';
-          return;
-        }
-        ul.innerHTML = posts.filter(p => p.category !== 'Portfolio').map(p => {
-          const date = p.date
-            ? new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
-            : '';
-          const category = p.category
-            ? `<span class="category">${p.category}</span>`
-            : '';
-          const meta = (date || category)
-            ? `<div class="meta">${date ? `<span>${date}</span>` : ''}${category}</div>`
-            : '';
-          return `<li><a href="${p.file}">${p.title}</a>${meta}</li>`;
-        }).join('');
-      })
-      .catch(() => {
-        document.getElementById('list').innerHTML =
-          '<li class="error">Could not load posts.</li>';
-      });
+    (function () {
+      const posts = JSON.parse(document.getElementById('posts-data').textContent);
+      const ul = document.getElementById('list');
+      if (!posts.length) {
+        ul.innerHTML = '<li class="error">No posts yet.</li>';
+        return;
+      }
+      ul.innerHTML = posts.filter(p => p.category !== 'Portfolio').map(p => {
+        const date = p.date
+          ? new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+          : '';
+        const category = p.category
+          ? `<span class="category">${p.category}</span>`
+          : '';
+        const meta = (date || category)
+          ? `<div class="meta">${date ? `<span>${date}</span>` : ''}${category}</div>`
+          : '';
+        return `<li><a href="${p.file}">${p.title}</a>${meta}</li>`;
+      }).join('');
+    })();
   </script>
 </body>
 </html>

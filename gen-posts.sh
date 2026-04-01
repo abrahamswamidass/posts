@@ -58,5 +58,19 @@ with open('posts.json', 'w') as out:
     json.dump(posts, out, indent=2, ensure_ascii=False)
     out.write('\n')
 
-print(f"Written {len(posts)} post(s) to posts.json")
+# Also inline the JSON into index.html so it works without a server
+posts_json = json.dumps(posts, indent=2, ensure_ascii=False)
+with open('index.html') as fh:
+    html = fh.read()
+
+import re as _re
+html = _re.sub(
+    r'(<script type="application/json" id="posts-data">)[\s\S]*?(</script>)',
+    f'\\1\n{posts_json}\n\\2',
+    html
+)
+with open('index.html', 'w') as fh:
+    fh.write(html)
+
+print(f"Written {len(posts)} post(s) to posts.json and index.html")
 EOF
