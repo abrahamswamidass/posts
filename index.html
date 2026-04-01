@@ -32,6 +32,54 @@
       margin: 0 auto;
     }
 
+    /* Profile header */
+    .profile-header {
+      padding: 0 0 40px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-name {
+      font-size: 1.6rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .profile-title {
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .profile-location {
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .profile-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .profile-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      margin-bottom: 0;
+      display: inline;
+      transition: color 0.15s;
+    }
+    .profile-links a:hover { color: var(--accent); }
+
     h1 {
       font-size: 13px;
       font-family: var(--sans);
@@ -39,7 +87,7 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 48px;
+      margin-bottom: 32px;
     }
 
     ul {
@@ -105,6 +153,16 @@
 </head>
 <body>
   <div class="container">
+    <div class="profile-header">
+      <div class="profile-name">Abraham Swamidass</div>
+      <div class="profile-title">Sr. Staff Engineer — InteLogix · Cardinal Health</div>
+      <div class="profile-location">Columbus, Ohio</div>
+      <div class="profile-links">
+        <a href="portfolio/profile.html">Profile &amp; Portfolio</a>
+        <a href="https://www.linkedin.com/in/abraham-swamidass-758a023b/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:winfredbe@gmail.com">winfredbe@gmail.com</a>
+      </div>
+    </div>
     <h1>Posts</h1>
     <ul id="list"></ul>
   </div>
@@ -118,7 +176,7 @@
           ul.innerHTML = '<li class="error">No posts yet.</li>';
           return;
         }
-        ul.innerHTML = posts.map(p => {
+        ul.innerHTML = posts.filter(p => p.category !== 'Portfolio').map(p => {
           const date = p.date
             ? new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
             : '';

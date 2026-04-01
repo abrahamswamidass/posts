@@ -1,5 +1,11 @@
 [
   {
+    "file": "learning/picarx_architecture.html",
+    "title": "PiCar-X System Architecture — Learning",
+    "date": "2026-04-01",
+    "category": "Learning"
+  },
+  {
     "file": "learning/pi-robot-car-build.html",
     "title": "Building a Raspberry Pi Robot Car — Notes from the Workbench",
     "date": "2026-03-28",
