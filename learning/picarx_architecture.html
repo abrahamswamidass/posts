@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PiCar-X Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2330;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #58677a;
+    --green: #39d353;
+    --green-bg: rgba(57,211,83,0.08);
+    --green-border: rgba(57,211,83,0.25);
+    --blue: #58a6ff;
+    --blue-bg: rgba(88,166,255,0.08);
+    --blue-border: rgba(88,166,255,0.25);
+    --amber: #e3b341;
+    --amber-bg: rgba(227,179,65,0.08);
+    --amber-border: rgba(227,179,65,0.22);
+    --teal: #39c5cf;
+    --teal-bg: rgba(57,197,207,0.08);
+    --teal-border: rgba(57,197,207,0.22);
+    --font: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    min-height: 100vh;
+    padding: 32px 24px 80px;
+  }
+
+  header {
+    max-width: 860px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+
+  .logo { display: flex; align-items: center; gap: 10px; }
+
+  .logo-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--green-bg); border: 1px solid var(--green-border);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 16px; height: 16px; }
+
+  h1 { font-size: 18px; font-weight: 500; letter-spacing: -0.3px; color: var(--text); }
+
+  .version {
+    font-family: var(--mono); font-size: 11px; color: var(--text3);
+    padding: 3px 8px; border: 1px solid var(--border); border-radius: 4px;
+  }
+
+  .hint {
+    max-width: 860px; margin: 0 auto 20px;
+    font-size: 11px; color: var(--text3); font-family: var(--mono);
+  }
+
+  .arch {
+    max-width: 860px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 0;
+  }
+
+  .layer {
+    border: 1px solid var(--border2); border-radius: 10px;
+    padding: 16px 20px; background: var(--bg2); position: relative;
+  }
+  .layer.dev  { border-color: var(--blue-border);  background: var(--blue-bg); }
+  .layer.hat  { border-color: var(--green-border); background: var(--green-bg); }
+  .layer.caps { border-color: var(--amber-border); background: var(--amber-bg); }
+
+  .layer-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .layer.dev  .layer-label { color: var(--blue); }
+  .layer.hat  .layer-label { color: var(--green); }
+  .layer.pi   .layer-label { color: var(--teal); }
+  .layer.hw   .layer-label { color: var(--text2); }
+  .layer.caps .layer-label { color: var(--amber); }
+
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .chip {
+    font-family: var(--mono); font-size: 11px;
+    padding: 4px 10px; border-radius: 5px;
+    border: 1px solid var(--border2);
+    background: rgba(255,255,255,0.03);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .chip:hover { background: rgba(255,255,255,0.07); color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .chip.active { outline: 1px solid rgba(255,255,255,0.4); color: var(--text); }
+
+  .chip.blue  { border-color: var(--blue-border);  color: var(--blue);  background: var(--blue-bg); }
+  .chip.green { border-color: var(--green-border); color: var(--green); background: var(--green-bg); }
+  .chip.amber { border-color: var(--amber-border); color: var(--amber); background: var(--amber-bg); }
+  .chip.teal  { border-color: var(--teal-border);  color: var(--teal);  background: var(--teal-bg); }
+
+  /* Tooltip */
+  #tooltip {
+    position: fixed;
+    z-index: 9999;
+    max-width: 300px;
+    min-width: 200px;
+    background: #1c2330;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 9px;
+    padding: 13px 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  #tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #tooltip .tt-title {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--text); margin-bottom: 7px;
+  }
+  #tooltip .tt-desc {
+    font-family: var(--font); font-size: 12px;
+    color: var(--text2); line-height: 1.65;
+  }
+  #tooltip .tt-tag {
+    display: inline-block; margin-top: 9px;
+    font-family: var(--mono); font-size: 10px;
+    padding: 2px 8px; border-radius: 3px;
+    border: 1px solid var(--border2); color: var(--text3);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .sub-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .sub-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .sub-section { display: flex; flex-direction: column; gap: 7px; }
+
+  .sub-label {
+    font-size: 10px; color: var(--text3);
+    letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
+  }
+
+  .connector {
+    display: flex; align-items: center; gap: 12px; padding: 8px 0;
+  }
+  .conn-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  }
+  .conn-label {
+    font-family: var(--mono); font-size: 10px; color: var(--text3);
+    white-space: nowrap; padding: 3px 10px;
+    border: 1px solid var(--border); border-radius: 20px; background: var(--bg3);
+  }
+
+  .workflow-bar {
+    margin-top: 12px; padding: 8px 12px;
+    background: rgba(0,0,0,0.3); border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: var(--mono); font-size: 10px;
+    color: var(--text3); line-height: 1.8;
+  }
+  .workflow-bar span { color: var(--blue); }
+  .workflow-bar .arrow { color: var(--text3); margin: 0 4px; }
+
+  .pi-inner { display: flex; flex-direction: column; gap: 12px; }
+  .pi-spec-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+  .spec-badge {
+    font-family: var(--mono); font-size: 10px; color: var(--text3);
+    padding: 2px 7px; border-radius: 3px;
+    border: 1px solid var(--border); background: var(--bg3);
+  }
+
+  @media (max-width: 600px) {
+    .sub-grid { grid-template-columns: 1fr; }
+    .sub-grid-3 { grid-template-columns: 1fr 1fr; }
+    header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    #tooltip { max-width: 240px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="tooltip">
+  <div class="tt-title" id="tt-title"></div>
+  <div class="tt-desc"  id="tt-desc"></div>
+  <span class="tt-tag"  id="tt-tag"></span>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="5" width="10" height="7" rx="1.5" stroke="#39d353" stroke-width="1.2"/>
+        <path d="M6 5V3.5M8 5V3M10 5V3.5" stroke="#39d353" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="6" cy="8.5" r="1" fill="#39d353"/>
+        <circle cx="10" cy="8.5" r="1" fill="#39d353"/>
+        <path d="M7 10.5h2" stroke="#39d353" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1>PiCar-X System Architecture</h1>
+  </div>
+  <span class="version">Raspberry Pi 4 · v2.0</span>
+</header>
+
+<p class="hint">click any component chip for details · esc to dismiss</p>
+
+<div class="arch">
+
+  <!-- Dev Workflow -->
+  <div class="layer dev">
+    <div class="layer-label">Development workflow</div>
+    <div class="chip-grid">
+      <span class="chip blue"
+        data-title="Claude Code"
+        data-desc="AI-powered CLI that helps you write, edit, and commit PiCar-X Python scripts on your Windows machine. Acts as your coding co-pilot for the entire dev loop."
+        data-tag="Windows · CLI">Claude Code (Windows)</span>
+      <span class="chip blue"
+        data-title="GitHub · picarx-scripts"
+        data-desc="Central git repository where all your scripts live. Push from Windows, pull on the Pi. Acts as the version-controlled bridge between your dev machine and the robot."
+        data-tag="git remote · version control">GitHub · picarx-scripts</span>
+      <span class="chip blue"
+        data-title="SSH · PowerShell"
+        data-desc="Secure Shell lets you remotely log into the Raspberry Pi from Windows PowerShell. Run: ssh pi@picarx.local after the Pi boots on your WiFi network."
+        data-tag="ssh pi@picarx.local">SSH · PowerShell</span>
+      <span class="chip blue"
+        data-title="VS Code Remote SSH"
+        data-desc="VS Code extension that opens and edits files directly on the Pi as if they were local. Full IntelliSense, integrated terminal, and file browser — all over SSH."
+        data-tag="Extension: Remote - SSH">VS Code Remote SSH</span>
+      <span class="chip blue"
+        data-title="git push → git pull"
+        data-desc="The core dev loop: write script on Windows → git push to GitHub → SSH into Pi → git pull → python3 script.py. Changes propagate to the robot in seconds."
+        data-tag="dev loop · ~30 seconds">git push → git pull</span>
+    </div>
+    <div class="workflow-bar">
+      <span>write script</span><span class="arrow">→</span>
+      <span>git push</span><span class="arrow">→</span>
+      <span>ssh pi@picarx.local</span><span class="arrow">→</span>
+      <span>git pull</span><span class="arrow">→</span>
+      <span>python3 script.py</span>
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="conn-line"></div>
+    <span class="conn-label">WiFi · SSH · git</span>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- Raspberry Pi 4 -->
+  <div class="layer pi">
+    <div class="layer-label">Raspberry Pi 4 · BCM2711 · ARM Cortex-A72 · 1.8GHz</div>
+    <div class="pi-inner">
+      <div class="pi-spec-bar">
+        <span class="spec-badge">4GB LPDDR4-3200</span>
+        <span class="spec-badge">VideoCore VI GPU</span>
+        <span class="spec-badge">Raspberry Pi OS 64-bit</span>
+        <span class="spec-badge">microSD boot</span>
+      </div>
+      <div class="sub-grid">
+        <div class="sub-section">
+          <span class="sub-label">Connectivity</span>
+          <div class="chip-grid">
+            <span class="chip teal"
+              data-title="WiFi 802.11ac"
+              data-desc="Dual-band 2.4GHz/5GHz WiFi built into the Pi 4. Used to SSH in from Windows and pull scripts from GitHub — no ethernet cable needed once configured."
+              data-tag="2.4GHz / 5GHz dual-band">WiFi 802.11ac</span>
+            <span class="chip teal"
+              data-title="Bluetooth 5.0"
+              data-desc="Built-in Bluetooth 5.0 with BLE support. Can connect a wireless gamepad or phone for manual control of the PiCar-X without needing WiFi."
+              data-tag="BLE + Classic">Bluetooth 5.0</span>
+            <span class="chip teal"
+              data-title="Gigabit Ethernet"
+              data-desc="Wired ethernet port on the Pi 4. Useful during initial setup or when WiFi is unreliable. Full gigabit speed — far faster than the Pi 3's 100Mbps."
+              data-tag="RJ45 · 1Gbps">Gigabit Ethernet</span>
+            <span class="chip teal"
+              data-title="USB 3.0 ×2"
+              data-desc="Two USB 3.0 ports (blue). Used for the USB mini microphone in the PiCar-X kit and any other high-bandwidth USB peripherals like storage drives."
+              data-tag="5Gbps · blue ports">USB 3.0 ×2</span>
+            <span class="chip teal"
+              data-title="USB 2.0 ×2"
+              data-desc="Two USB 2.0 ports (black). Good for keyboards, mice, or additional storage during development. Lower bandwidth than the USB 3.0 ports but sufficient for most peripherals."
+              data-tag="480Mbps · black ports">USB 2.0 ×2</span>
+            <span class="chip teal"
+              data-title="micro HDMI ×2"
+              data-desc="Two micro HDMI ports supporting dual 4K@60fps displays. Useful during initial Pi setup before switching to headless SSH mode. Requires a micro HDMI adapter."
+              data-tag="4K@60fps · needs adapter">micro HDMI ×2</span>
+          </div>
+        </div>
+        <div class="sub-section">
+          <span class="sub-label">Hardware interfaces</span>
+          <div class="chip-grid">
+            <span class="chip"
+              data-title="40-pin GPIO header"
+              data-desc="General Purpose Input/Output header with 26 GPIO pins plus power, ground, and protocol pins. The Robot HAT plugs directly onto all 40 pins, giving it access to I2C, SPI, UART, PWM, and 3.3V/5V power."
+              data-tag="2×20 · 2.54mm pitch">40-pin GPIO</span>
+            <span class="chip"
+              data-title="Camera CSI port"
+              data-desc="Camera Serial Interface — a 15-pin ribbon cable connector. The FFC/FPC cable from your Pi Camera module plugs in here. Supports 1080p@30fps or 720p@60fps natively."
+              data-tag="15-pin ribbon · CSI-2">Camera CSI port</span>
+            <span class="chip"
+              data-title="I2C bus"
+              data-desc="Inter-Integrated Circuit — a two-wire serial protocol (SDA + SCL). The Robot HAT communicates with the Pi via I2C at address 0x14. Also used by the PCA9685 PWM controller."
+              data-tag="SDA/SCL · GPIO 2/3 · 400kHz">I2C bus</span>
+            <span class="chip"
+              data-title="SPI"
+              data-desc="Serial Peripheral Interface — a high-speed 4-wire synchronous protocol. Available on GPIO 9/10/11. Used for displays, fast ADCs, or sensors that require higher bandwidth than I2C."
+              data-tag="MOSI/MISO/SCLK/CS">SPI</span>
+            <span class="chip"
+              data-title="UART"
+              data-desc="Universal Asynchronous Receiver-Transmitter — a serial protocol on GPIO 14 (TX) and 15 (RX). Used to connect additional microcontrollers, GPS modules, or serial debug consoles."
+              data-tag="TX/RX · GPIO 14/15">UART</span>
+            <span class="chip"
+              data-title="Hardware PWM"
+              data-desc="Pulse Width Modulation on GPIO 12 and 13. Used for precise servo control and motor speed. The Robot HAT extends this to 16 channels via the PCA9685 chip over I2C."
+              data-tag="GPIO 12/13 · hardware PWM">PWM</span>
+          </div>
+        </div>
+        <div class="sub-section">
+          <span class="sub-label">Software stack</span>
+          <div class="chip-grid">
+            <span class="chip"
+              data-title="Python 3.x"
+              data-desc="Primary language for PiCar-X development. All SunFounder libraries are Python-based. Pre-installed on Raspberry Pi OS — no setup needed. Use pip3 to install additional packages."
+              data-tag="pre-installed · pip3">Python 3.x</span>
+            <span class="chip"
+              data-title="picarx library"
+              data-desc="SunFounder's official high-level Python library. Provides clean methods like px.forward(30), px.set_dir_servo_angle(20), px.stop(), and px.get_distance(). Install via GitHub."
+              data-tag="from picarx import Picarx">picarx library</span>
+            <span class="chip"
+              data-title="OpenCV"
+              data-desc="Open Source Computer Vision library. Used for camera capture, image processing, person detection (HOG), color tracking, line detection, and video streaming. Essential for vision projects."
+              data-tag="pip install opencv-python">OpenCV</span>
+            <span class="chip"
+              data-title="robot-hat"
+              data-desc="SunFounder's lower-level hardware abstraction library. Handles I2C communication with the Robot HAT, PWM signal generation, ADC reads, and GPIO management. Installed as a picarx dependency."
+              data-tag="picarx dependency">robot-hat</span>
+            <span class="chip"
+              data-title="pigpio"
+              data-desc="Raspberry Pi GPIO library with microsecond-level timing precision. Required for accurate pulse measurement from the HC-SR04 ultrasonic sensor and software PWM generation."
+              data-tag="sudo pigpiod to start daemon">pigpio</span>
+            <span class="chip"
+              data-title="RPi.GPIO"
+              data-desc="Standard Raspberry Pi GPIO library. Simpler than pigpio but sufficient for basic digital I/O, button reads, and LED control. Pre-installed on Raspberry Pi OS."
+              data-tag="import RPi.GPIO as GPIO">RPi.GPIO</span>
+          </div>
+        </div>
+        <div class="sub-section">
+          <span class="sub-label">AI / vision</span>
+          <div class="chip-grid">
+            <span class="chip"
+              data-title="HOG person detection"
+              data-desc="Histogram of Oriented Gradients — a classical computer vision algorithm built into OpenCV. No model training required. Runs at ~5-8fps on Pi 4. Best starting point for person following projects."
+              data-tag="cv2.HOGDescriptor · no training">HOG person detection</span>
+            <span class="chip"
+              data-title="MobileNet SSD"
+              data-desc="Lightweight deep learning object detector. Faster and more accurate than HOG. Detects 20 object classes including people, cars, and animals at ~15fps on Pi 4 via TensorFlow Lite."
+              data-tag="TFLite · 20 classes · ~15fps">MobileNet SSD</span>
+            <span class="chip"
+              data-title="YOLOv5n (nano)"
+              data-desc="The nano variant of YOLO (You Only Look Once). Most accurate option for real-time detection on Pi 4. Detects 80 COCO classes. Requires ~500MB RAM. Install via ultralytics."
+              data-tag="ultralytics · 80 classes · ~20fps">YOLOv5n</span>
+            <span class="chip"
+              data-title="Face recognition"
+              data-desc="Uses the face_recognition library (built on dlib) to detect and identify known faces from the camera feed. Can trigger actions when a specific person is recognized."
+              data-tag="pip install face_recognition">face recognition</span>
+            <span class="chip"
+              data-title="Line detection (CV)"
+              data-desc="OpenCV-based algorithm using Canny edge detection and Hough transform to detect lane lines or track lines on the floor. Works alongside the grayscale sensors for dual-redundancy."
+              data-tag="cv2.HoughLinesP · Canny edges">line detection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="conn-line"></div>
+    <span class="conn-label">40-pin GPIO header</span>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- Robot HAT -->
+  <div class="layer hat">
+    <div class="layer-label">SunFounder Robot HAT · I²C bridge &amp; power management</div>
+    <div class="chip-grid">
+      <span class="chip green"
+        data-title="TB6612FNG motor driver"
+        data-desc="Dual H-bridge motor driver IC from Toshiba. Controls both rear TT motors independently — forward, reverse, brake, and coast. Handles up to 1.2A continuous per channel."
+        data-tag="1.2A/ch · 15V max · Toshiba">TB6612FNG motor driver</span>
+      <span class="chip green"
+        data-title="PCA9685 · 16-ch PWM"
+        data-desc="16-channel 12-bit PWM controller from NXP. Talks to the Pi over I2C and generates precise 50Hz servo PWM signals independently. Controls steering + camera pan + camera tilt servos."
+        data-tag="I2C · 50Hz · 12-bit · NXP">PCA9685 · 16-ch PWM</span>
+      <span class="chip green"
+        data-title="I²C address 0x14"
+        data-desc="The Robot HAT's fixed I2C device address. The Pi communicates with the HAT here. Verify connection is working by running: i2cdetect -y 1 in terminal — you should see 0x14."
+        data-tag="i2cdetect -y 1">I²C (addr 0x14)</span>
+      <span class="chip green"
+        data-title="12-bit ADC"
+        data-desc="Analog-to-Digital Converter onboard the Robot HAT. Reads analog voltage levels (0–3.3V) in 4096 steps. Used to monitor battery voltage and read analog sensor outputs."
+        data-tag="0–3.3V · 4096 steps">12-bit ADC</span>
+      <span class="chip green"
+        data-title="Power management"
+        data-desc="The HAT regulates and distributes power from the 7.4V battery pack: 5V stepped down for the Pi via the GPIO header, regulated 5V for servos, and direct 7.4V for TT motors."
+        data-tag="7.4V in → 5V Pi + servos">Power management</span>
+      <span class="chip green"
+        data-title="Battery monitor"
+        data-desc="Reads battery voltage via the onboard 12-bit ADC. The picarx library exposes this so you can check remaining charge and trigger a low-battery warning in your scripts."
+        data-tag="px.get_battery_voltage()">Battery monitor</span>
+      <span class="chip green"
+        data-title="Buzzer"
+        data-desc="Piezo buzzer on the Robot HAT. Can play tones and beeps from Python. Useful for audio feedback — beep when an obstacle is detected, play a startup jingle, or signal low battery."
+        data-tag="px.set_buzzer_tone(freq)">Buzzer</span>
+      <span class="chip green"
+        data-title="Status LEDs"
+        data-desc="Onboard indicator LEDs on the Robot HAT. Green LED = HAT is powered and communicating with the Pi. Red LED = fault condition or low battery warning."
+        data-tag="Green = OK · Red = fault">Status LEDs</span>
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="conn-line"></div>
+    <span class="conn-label">motor wires · servo signals · 4-pin &amp; 5-pin sensor cables</span>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- PiCar-X Hardware -->
+  <div class="layer hw">
+    <div class="layer-label">PiCar-X hardware</div>
+    <div class="sub-grid-3">
+      <div class="sub-section">
+        <span class="sub-label">Actuators</span>
+        <div class="chip-grid">
+          <span class="chip"
+            data-title="TT Motor ×2 (rear drive)"
+            data-desc="Two yellow DC gear motors drive the rear wheels independently. Connected to the TB6612FNG driver on the Robot HAT. Control speed (0–100%) and direction via Python."
+            data-tag="px.forward() · px.backward()">TT Motor ×2 (rear drive)</span>
+          <span class="chip"
+            data-title="Steering servo (front)"
+            data-desc="Controls left/right steering of the front axle. Angle range is ±30°, centered at 0°. Must be calibrated in software before first drive. Set with px.set_dir_servo_angle(angle)."
+            data-tag="±30° · calibrate first">Steering servo (front)</span>
+          <span class="chip"
+            data-title="Camera pan servo"
+            data-desc="Rotates the camera module left and right on its gimbal. Allows the car to track an object sideways while remaining stationary. Range ±90°."
+            data-tag="±90° · set_camera_servo1_angle()">Camera pan servo</span>
+          <span class="chip"
+            data-title="Camera tilt servo"
+            data-desc="Tilts the camera up and down on the gimbal. Angle down for line following, level/up for person tracking. Range approximately ±35°."
+            data-tag="±35° · set_camera_servo2_angle()">Camera tilt servo</span>
+        </div>
+      </div>
+      <div class="sub-section">
+        <span class="sub-label">Sensors</span>
+        <div class="chip-grid">
+          <span class="chip"
+            data-title="HC-SR04 ultrasonic sensor"
+            data-desc="Measures distance using ultrasonic pulses — emits a 40kHz burst and times the echo. Range: 2cm–400cm, accuracy ±3mm. Mounted at the front for obstacle detection."
+            data-tag="2–400cm · px.get_distance()">HC-SR04 ultrasonic</span>
+          <span class="chip"
+            data-title="Grayscale sensors ×3"
+            data-desc="Three IR reflective sensors on the car's underside. Detect the contrast between a dark line and light floor. Returns analog values used to steer and keep the line centered."
+            data-tag="IR reflective · analog 0–1000">Grayscale ×3 (line follow)</span>
+          <span class="chip"
+            data-title="Pi Camera module"
+            data-desc="Official Raspberry Pi camera connected via FFC ribbon cable to the CSI port. Mounted on the pan/tilt gimbal. Powers all CV features — person tracking, face detection, live streaming."
+            data-tag="1080p@30fps · CSI ribbon">Pi Camera module</span>
+          <span class="chip"
+            data-title="USB microphone"
+            data-desc="Compact USB mini mic included in the kit. Plug-and-play on Raspberry Pi OS. Used with the SpeechRecognition or Whisper library to add voice command capability to the car."
+            data-tag="USB plug-and-play">USB microphone</span>
+        </div>
+      </div>
+      <div class="sub-section">
+        <span class="sub-label">Power</span>
+        <div class="chip-grid">
+          <span class="chip"
+            data-title="18650 Li-ion cells ×2"
+            data-desc="Two 18650 lithium-ion cells in the battery holder. Use protected cells with ~2500mAh capacity. Charge separately with an 18650-compatible charger — not charged via the car."
+            data-tag="3.6V each · ~2500mAh · protected">18650 Li-ion ×2</span>
+          <span class="chip"
+            data-title="7.4V battery pack"
+            data-desc="Two 18650 cells wired in series produce 7.4V nominal (8.4V fully charged, ~6V cutoff). Powers the Robot HAT which steps down to 5V for the Pi and servos."
+            data-tag="7.4V nominal · 8.4V full charge">7.4V battery pack</span>
+          <span class="chip"
+            data-title="Power switch"
+            data-desc="Physical rocker switch on the battery pack. Always run 'sudo shutdown now' and wait for the Pi's green LED to stop blinking before switching off — cutting power can corrupt the SD card."
+            data-tag="⚠ always shutdown first">Power switch</span>
+          <span class="chip"
+            data-title="~60–90 min runtime"
+            data-desc="Typical battery life on a full charge with normal driving. Heavy workloads like continuous camera + CV inference drain faster. Motors and servos are the main current draw."
+            data-tag="~2500mAh · varies by load">~60–90 min runtime</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- Capabilities -->
+  <div class="layer caps">
+    <div class="layer-label">What you can build</div>
+    <div class="chip-grid">
+      <span class="chip amber"
+        data-title="Obstacle avoidance"
+        data-desc="Uses the HC-SR04 ultrasonic sensor to detect objects ahead. When distance drops below ~30cm, the car steers around the obstacle and continues forward autonomously."
+        data-tag="px.get_distance() · HC-SR04">Obstacle avoidance</span>
+      <span class="chip amber"
+        data-title="Line following"
+        data-desc="Reads the 3 undercarriage grayscale sensors. PID control steers to keep the dark line centered under the middle sensor. A classic and satisfying robotics project."
+        data-tag="grayscale ×3 · PID control">Line following</span>
+      <span class="chip amber"
+        data-title="Live video streaming"
+        data-desc="Stream the camera feed over WiFi using Flask + OpenCV served as MJPEG. View in any browser on your home network. Add bounding box overlays on top of the live stream."
+        data-tag="Flask · MJPEG · browser">Live video streaming</span>
+      <span class="chip amber"
+        data-title="Voice control"
+        data-desc="Use the USB mic with the SpeechRecognition library (Google API) or local Whisper model to listen for spoken commands like 'forward', 'stop', 'turn left'."
+        data-tag="SpeechRecognition · Whisper">Voice control</span>
+      <span class="chip amber"
+        data-title="Web remote control"
+        data-desc="Build a Flask web app that serves a D-pad or joystick UI in your browser. Send drive commands via HTTP requests or WebSockets. Control from any phone or laptop on your WiFi."
+        data-tag="Flask · WebSockets · any browser">Web remote control</span>
+      <span class="chip amber"
+        data-title="Computer vision"
+        data-desc="Use OpenCV on the Pi camera for color blob tracking, Canny edge detection, object classification, QR code scanning, and more. No GPU required for most real-time tasks at 320×240."
+        data-tag="OpenCV · 10-20fps · 320×240">Computer vision</span>
+      <span class="chip amber"
+        data-title="Person following"
+        data-desc="Detect a person using HOG or MobileNet SSD. Steer toward them based on bounding box center X offset from frame center. Adjust speed using bounding box height as a distance proxy."
+        data-tag="HOG · MobileNet · YOLOv5n">Person following</span>
+      <span class="chip amber"
+        data-title="Face recognition"
+        data-desc="Use the face_recognition library (dlib) to identify known individuals. Trigger different car behaviors per person — greet by name, follow a specific face, or restrict access."
+        data-tag="dlib · face_recognition · ~3fps">Face recognition</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tooltip  = document.getElementById('tooltip');
+  const ttTitle  = document.getElementById('tt-title');
+  const ttDesc   = document.getElementById('tt-desc');
+  const ttTag    = document.getElementById('tt-tag');
+  let activeChip = null;
+
+  function positionTooltip(e) {
+    const pad = 14;
+    const tw  = 300;
+    const th  = tooltip.offsetHeight || 120;
+    const vw  = window.innerWidth;
+    const vh  = window.innerHeight;
+    let x = e.clientX + pad;
+    let y = e.clientY + pad;
+    if (x + tw > vw - 8) x = e.clientX - tw - pad;
+    if (y + th > vh - 8) y = e.clientY - th - pad;
+    if (x < 8) x = 8;
+    if (y < 8) y = 8;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top  = y + 'px';
+  }
+
+  function showTooltip(chip, e) {
+    if (activeChip === chip) { hideTooltip(); return; }
+    if (activeChip) activeChip.classList.remove('active');
+    activeChip = chip;
+    chip.classList.add('active');
+    ttTitle.textContent = chip.dataset.title || chip.textContent.trim();
+    ttDesc.textContent  = chip.dataset.desc  || '';
+    ttTag.textContent   = chip.dataset.tag   || '';
+    ttTag.style.display = chip.dataset.tag ? 'inline-block' : 'none';
+    tooltip.classList.add('visible');
+    positionTooltip(e);
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove('visible');
+    if (activeChip) { activeChip.classList.remove('active'); activeChip = null; }
+  }
+
+  document.querySelectorAll('.chip[data-desc]').forEach(chip => {
+    chip.addEventListener('click', e => { e.stopPropagation(); showTooltip(chip, e); });
+  });
+
+  document.addEventListener('click', hideTooltip);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTooltip(); });
+</script>
+
+</body>
+</html>
