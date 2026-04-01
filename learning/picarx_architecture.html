@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PiCar-X Architecture</title>
+<title>PiCar-X System Architecture — Learning</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,6 +40,25 @@
     font-size: 14px;
     min-height: 100vh;
     padding: 32px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-block;
+    max-width: 860px;
+    margin: 0 auto 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--text2); }
+
+  .back-wrap {
+    max-width: 860px;
+    margin: 0 auto;
   }
 
   header {
@@ -200,6 +219,14 @@
     #tooltip { max-width: 240px; }
   }
 </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WND1ZWTYSM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WND1ZWTYSM');
+  </script>
 </head>
 <body>
 
@@ -208,6 +235,8 @@
   <div class="tt-desc"  id="tt-desc"></div>
   <span class="tt-tag"  id="tt-tag"></span>
 </div>
+
+<div class="back-wrap"><a class="back-link" href="../index.html">← Posts</a></div>
 
 <header>
   <div class="logo">
@@ -611,6 +640,10 @@
   document.addEventListener('click', hideTooltip);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTooltip(); });
 </script>
+
+<footer style="max-width:860px; margin: 48px auto 0; padding: 24px 0; border-top: 1px solid var(--border);">
+  <a href="../index.html" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); text-decoration: none;" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color='var(--text3)'">← Posts</a>
+</footer>
 
 </body>
 </html>
