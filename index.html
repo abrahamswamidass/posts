@@ -3,171 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Posts</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Abraham Swamidass</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --text: #1a1a1a;
-      --text-secondary: #555;
-      --text-muted: #888;
-      --bg: #faf9f7;
-      --accent: #c45d2c;
-      --border: #e5e2dd;
-      --serif: 'Source Serif 4', Georgia, serif;
-      --sans: 'Inter', -apple-system, sans-serif;
-    }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: var(--serif);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 64px 24px;
+      background: #020408;
+      color: #c9d1d9;
+      overflow-x: hidden;
     }
 
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
+    #journey {
+      position: relative;
+      width: 100%;
+      height: 10000px;
     }
 
-    /* Profile header */
-    .profile-header {
-      padding: 0 0 40px;
-      margin-bottom: 40px;
-      border-bottom: 1px solid var(--border);
+    #space {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* ── Earth / Profile node ── */
+    #earth-node {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 20;
+      width: min(340px, 90vw);
     }
 
     .profile-name {
-      font-size: 1.6rem;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 22px;
       font-weight: 600;
-      line-height: 1.2;
-      margin-bottom: 6px;
+      color: #e6edf3;
+      margin-bottom: 5px;
     }
 
-    .profile-title {
-      font-family: var(--sans);
-      font-size: 14px;
-      color: var(--accent);
-      font-weight: 500;
+    .profile-role {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #58a6ff;
       margin-bottom: 4px;
+      letter-spacing: 0.03em;
     }
 
-    .profile-location {
-      font-family: var(--sans);
-      font-size: 13px;
-      color: var(--text-muted);
+    .profile-loc {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #58677a;
       margin-bottom: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .profile-links {
       display: flex;
+      justify-content: center;
+      gap: 10px;
       flex-wrap: wrap;
-      gap: 16px;
-      font-family: var(--sans);
-      font-size: 13px;
     }
 
     .profile-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 400;
-      margin-bottom: 0;
-      display: inline;
-      transition: color 0.15s;
-    }
-    .profile-links a:hover { color: var(--accent); }
-
-    h1 {
-      font-size: 13px;
-      font-family: var(--sans);
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 32px;
+      color: #8b949e;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 4px 10px;
+      border-radius: 3px;
+      transition: color 0.15s, border-color 0.15s;
     }
 
-    ul {
-      list-style: none;
+    .profile-links a:hover { color: #e6edf3; border-color: rgba(255,255,255,0.3); }
+
+    /* ── Waypoints ── */
+    #waypoints { position: absolute; inset: 0; pointer-events: none; }
+
+    .waypoint {
+      position: absolute;
+      pointer-events: none;
     }
 
-    li {
-      border-top: 1px solid var(--border);
-      padding: 24px 0;
-    }
-
-    li:last-child {
-      border-bottom: 1px solid var(--border);
-    }
-
-    a {
-      font-size: 1.25rem;
-      font-weight: 400;
-      line-height: 1.4;
-      color: var(--text);
+    .wp-title {
+      display: block;
+      pointer-events: all;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.45;
+      color: #c9d1d9;
       text-decoration: none;
       transition: color 0.15s;
-      display: block;
-      margin-bottom: 8px;
+    }
+    .wp-title:hover { color: #39d353; }
+
+    .wp-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: #58677a;
+      margin-top: 3px;
+      letter-spacing: 0.04em;
     }
 
-    a:hover {
-      color: var(--accent);
+    /* ── Alpha Centauri node ── */
+    #alpha-node {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 20;
     }
 
-    .meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--sans);
-      font-size: 12px;
-      color: var(--text-muted);
+    .alpha-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,251,210,0.35);
+      margin-top: 12px;
     }
 
-    .category {
-      background: #eeece8;
-      color: var(--text-secondary);
-      padding: 2px 8px;
-      border-radius: 3px;
-      font-weight: 500;
-      letter-spacing: 0.03em;
+    /* ── Scroll hint ── */
+    #scroll-hint {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      color: rgba(255,255,255,0.18);
+      letter-spacing: 0.15em;
+      text-align: center;
+      z-index: 20;
+      animation: fadeOut 5s ease-in 2.5s forwards;
     }
 
-    .error {
-      font-family: var(--sans);
-      font-size: 14px;
-      color: var(--text-muted);
-    }
+    @keyframes fadeOut { to { opacity: 0; } }
   </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WND1ZWTYSM"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-WND1ZWTYSM');
-  </script>
 </head>
 <body>
-  <div class="container">
-    <div class="profile-header">
-      <div class="profile-name">Abraham Swamidass</div>
-      <div class="profile-title">Sr. Staff Engineer — InteLogix · Cardinal Health</div>
-      <div class="profile-location">Columbus, Ohio</div>
-      <div class="profile-links">
-        <a href="portfolio/profile.html">Profile &amp; Portfolio</a>
-        <a href="https://www.linkedin.com/in/abraham-swamidass-758a023b/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:winfredbe@gmail.com">winfredbe@gmail.com</a>
-      </div>
+
+<div id="journey">
+  <svg id="space" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <div id="earth-node">
+    <div class="profile-name">Abraham Swamidass</div>
+    <div class="profile-role">Sr. Staff Engineer — InteLogix · Cardinal Health</div>
+    <div class="profile-loc">Columbus, Ohio</div>
+    <div class="profile-links">
+      <a href="portfolio/profile.html">Profile &amp; Portfolio</a>
+      <a href="https://www.linkedin.com/in/abraham-swamidass-758a023b/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:winfredbe@gmail.com">Email</a>
     </div>
-    <h1>Posts</h1>
-    <ul id="list"></ul>
   </div>
 
-  <script type="application/json" id="posts-data">
+  <div id="scroll-hint">↓ &nbsp; scroll to journey &nbsp; ↓</div>
+
+  <div id="waypoints"></div>
+
+  <div id="alpha-node">
+    <div class="alpha-label">α Centauri &nbsp;·&nbsp; 4.37 light years</div>
+  </div>
+</div>
+
+<!-- Posts data inlined by gen-posts.sh -->
+<script type="application/json" id="posts-data">
 [
   {
     "file": "learning/picarx_architecture.html",
@@ -196,27 +205,305 @@
 ]
 </script>
 
-  <script>
-    (function () {
-      const posts = JSON.parse(document.getElementById('posts-data').textContent);
-      const ul = document.getElementById('list');
-      if (!posts.length) {
-        ul.innerHTML = '<li class="error">No posts yet.</li>';
-        return;
+<script>
+(function () {
+
+  // ─────────────────────────────────────────────
+  // Constants
+  // ─────────────────────────────────────────────
+  const TOTAL_H   = 10000;
+  const EARTH_Y   = 210;    // centre of Earth dot
+  const SLOTS_Y0  = 460;    // first slot Y
+  const SLOTS_Y1  = 9250;   // last slot Y
+  const ALPHA_Y   = 9620;   // Alpha Centauri Y
+  const N_SLOTS   = 100;
+  const N_STARS   = 750;
+
+  // ─────────────────────────────────────────────
+  // 100 PRESET SLOT OFFSETS (side × magnitude)
+  // Each entry: [side, offsetFraction]
+  // side: +1 = right of path, -1 = left
+  // These are fixed — posts hang here in order.
+  // ─────────────────────────────────────────────
+  const SLOT_CONFIG = [
+    [1,.88],[-1,.82],[1,.90],[-1,.86],[1,.85],
+    [-1,.88],[1,.83],[-1,.90],[1,.87],[-1,.84],
+    [1,.90],[-1,.85],[1,.86],[-1,.88],[1,.84],
+    [-1,.87],[1,.90],[-1,.83],[1,.85],[-1,.89],
+    [1,.87],[-1,.84],[1,.88],[-1,.86],[1,.83],
+    [-1,.90],[1,.85],[-1,.87],[1,.89],[-1,.84],
+    [1,.86],[-1,.88],[1,.83],[-1,.90],[1,.85],
+    [-1,.87],[1,.84],[-1,.86],[1,.90],[-1,.83],
+    [1,.88],[-1,.85],[1,.87],[-1,.89],[1,.84],
+    [-1,.86],[1,.90],[-1,.83],[1,.85],[-1,.88],
+    [1,.84],[-1,.87],[1,.89],[-1,.85],[1,.86],
+    [-1,.90],[1,.83],[-1,.88],[1,.85],[-1,.87],
+    [1,.89],[-1,.84],[1,.86],[-1,.88],[1,.83],
+    [-1,.90],[1,.87],[-1,.85],[1,.84],[-1,.86],
+    [1,.90],[-1,.83],[1,.88],[-1,.87],[1,.85],
+    [-1,.84],[1,.86],[-1,.90],[1,.83],[-1,.88],
+    [1,.85],[-1,.87],[1,.89],[-1,.84],[1,.86],
+    [-1,.88],[1,.83],[-1,.90],[1,.87],[-1,.85],
+    [1,.84],[-1,.86],[1,.90],[-1,.83],[1,.88],
+    [-1,.85],[1,.87],[-1,.89],[1,.84],[-1,.86],
+  ];
+
+  // Cosmic landmarks — fixed decorative markers
+  const LANDMARKS = [
+    { y:  680, text: 'Moon orbit' },
+    { y: 1280, text: 'Near-Earth Objects' },
+    { y: 1950, text: 'Mars  ·  225M km' },
+    { y: 2850, text: 'Asteroid Belt' },
+    { y: 3750, text: 'Jupiter  ·  778M km' },
+    { y: 4750, text: 'Saturn  ·  1.43B km' },
+    { y: 5700, text: 'Uranus  ·  2.87B km' },
+    { y: 6600, text: 'Neptune  ·  4.50B km' },
+    { y: 7280, text: 'Pluto  ·  5.91B km' },
+    { y: 7980, text: 'Heliosphere boundary' },
+    { y: 8680, text: 'Oort Cloud' },
+    { y: 9100, text: 'Interstellar space' },
+  ];
+
+  // ─────────────────────────────────────────────
+  // SVG helpers
+  // ─────────────────────────────────────────────
+  const NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) {
+    const e = document.createElementNS(NS, tag);
+    if (attrs) for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  }
+
+  // Seeded PRNG (Park-Miller) — same stars every render
+  function prng(seed) {
+    let s = seed;
+    return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+  }
+
+  // ─────────────────────────────────────────────
+  // Build / rebuild the scene
+  // ─────────────────────────────────────────────
+  function build() {
+    const W  = window.innerWidth;
+    const PX = W / 2;  // path X (centre of page)
+    const maxOff = Math.min(W * 0.30, 240);
+    const maxLW  = Math.min(maxOff - 16, 220);
+
+    // Compute 100 slot positions from constants + window width
+    const slots = SLOT_CONFIG.map(([side, frac], i) => {
+      const t = Math.pow(i / (N_SLOTS - 1), 0.72);
+      const y = SLOTS_Y0 + t * (SLOTS_Y1 - SLOTS_Y0);
+      const lx = PX + side * maxOff * frac;
+      return { y, side, cx: PX, lx };
+    });
+
+    // Parse posts (exclude Portfolio — it lives in the profile header)
+    const posts = JSON.parse(document.getElementById('posts-data').textContent)
+      .filter(p => p.category !== 'Portfolio');
+
+    // ── Reset SVG ──
+    const svg = document.getElementById('space');
+    svg.innerHTML = '';
+
+    // ── Defs ──
+    const defs = el('defs');
+
+    // Path gradient (userSpaceOnUse so it works on strokes)
+    const grad = el('linearGradient', {
+      id: 'path-grad', gradientUnits: 'userSpaceOnUse',
+      x1: PX, y1: EARTH_Y + 22, x2: PX, y2: ALPHA_Y - 15
+    });
+    const gs = [
+      ['0%',   '#4a9eff', '0.45'],
+      ['45%',  '#b0c8ff', '0.12'],
+      ['100%', '#fffbe6', '0.28'],
+    ];
+    gs.forEach(([off, color, op]) => {
+      const s = el('stop', { offset: off, 'stop-color': color, 'stop-opacity': op });
+      grad.appendChild(s);
+    });
+    defs.appendChild(grad);
+
+    // Glow filter
+    const fGlow = el('filter', { id: 'glow', x: '-150%', y: '-150%', width: '400%', height: '400%' });
+    const fBlur = el('feGaussianBlur', { in: 'SourceGraphic', stdDeviation: '2.5', result: 'b' });
+    const fMerge = el('feMerge');
+    fMerge.append(el('feMergeNode', { in: 'b' }), el('feMergeNode', { in: 'SourceGraphic' }));
+    fGlow.append(fBlur, fMerge);
+    defs.appendChild(fGlow);
+
+    svg.appendChild(defs);
+
+    // ── Stars ──
+    const rand = prng(42);
+    for (let i = 0; i < N_STARS; i++) {
+      const x  = rand() * W;
+      const y  = rand() * TOTAL_H;
+      const r  = rand() < 0.84 ? 0.4 + rand() * 0.8 : 1.1 + rand() * 1.7;
+      const op = 0.2 + rand() * 0.8;
+      const cr = rand();
+      const fill = cr < 0.72 ? `rgba(210,225,255,${op.toFixed(2)})`
+                 : cr < 0.90 ? `rgba(255,235,160,${op.toFixed(2)})`
+                 :              `rgba(160,190,255,${op.toFixed(2)})`;
+      const c = el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: r.toFixed(2), fill });
+      if (rand() < 0.2) {
+        const dur = (2.5 + rand() * 5).toFixed(1) + 's';
+        const begin = (rand() * 6).toFixed(1) + 's';
+        c.appendChild(el('animate', {
+          attributeName: 'opacity',
+          values: `${op.toFixed(2)};${(op*0.2).toFixed(2)};${op.toFixed(2)}`,
+          dur, begin, repeatCount: 'indefinite'
+        }));
       }
-      ul.innerHTML = posts.filter(p => p.category !== 'Portfolio').map(p => {
-        const date = p.date
-          ? new Date(p.date + 'T00:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
-          : '';
-        const category = p.category
-          ? `<span class="category">${p.category}</span>`
-          : '';
-        const meta = (date || category)
-          ? `<div class="meta">${date ? `<span>${date}</span>` : ''}${category}</div>`
-          : '';
-        return `<li><a href="${p.file}">${p.title}</a>${meta}</li>`;
-      }).join('');
-    })();
-  </script>
+      svg.appendChild(c);
+    }
+
+    // ── Nebula smears ──
+    [
+      { cx: W*.18, cy: 1800, rx: 180, ry: 550, col: '88,130,255' },
+      { cx: W*.82, cy: 4200, rx: 200, ry: 600, col: '57,180,100' },
+      { cx: W*.12, cy: 6800, rx: 190, ry: 500, col: '255,120,70' },
+      { cx: W*.88, cy: 8400, rx: 160, ry: 420, col: '130,80,255'  },
+    ].forEach((n, ni) => {
+      const fid = `nf${ni}`;
+      const nf = el('filter', { id: fid });
+      nf.appendChild(el('feGaussianBlur', { stdDeviation: '55' }));
+      defs.appendChild(nf);
+      svg.appendChild(el('ellipse', {
+        cx: n.cx.toFixed(0), cy: n.cy, rx: n.rx, ry: n.ry,
+        fill: `rgba(${n.col},0.04)`, filter: `url(#${fid})`
+      }));
+    });
+
+    // ── Journey path ──
+    svg.appendChild(el('line', {
+      x1: PX, y1: EARTH_Y + 22, x2: PX, y2: ALPHA_Y - 15,
+      stroke: 'rgba(88,166,255,0.08)', 'stroke-width': '3'
+    }));
+    svg.appendChild(el('line', {
+      x1: PX, y1: EARTH_Y + 22, x2: PX, y2: ALPHA_Y - 15,
+      stroke: 'url(#path-grad)', 'stroke-width': '1',
+      'stroke-dasharray': '3 9'
+    }));
+
+    // ── Earth dot + pulse ──
+    const ePulse = el('circle', { cx: PX, cy: EARTH_Y, r: '8',
+      fill: 'none', stroke: 'rgba(74,158,255,0.3)', 'stroke-width': '1' });
+    ePulse.append(
+      el('animate', { attributeName: 'r', values: '8;20;8', dur: '3s', repeatCount: 'indefinite' }),
+      el('animate', { attributeName: 'opacity', values: '0.5;0;0.5', dur: '3s', repeatCount: 'indefinite' })
+    );
+    svg.append(ePulse, el('circle', { cx: PX, cy: EARTH_Y, r: '5', fill: '#4a9eff', filter: 'url(#glow)' }));
+
+    // ── Traveling light ──
+    const traveler = el('circle', { cx: PX, cy: EARTH_Y + 22, r: '1.4', fill: 'rgba(255,255,255,0.6)' });
+    traveler.appendChild(el('animate', {
+      attributeName: 'cy',
+      from: EARTH_Y + 22, to: ALPHA_Y - 15,
+      dur: '32s', repeatCount: 'indefinite'
+    }));
+    svg.appendChild(traveler);
+
+    // ── Alpha Centauri dot + pulse ──
+    const aPulse = el('circle', { cx: PX, cy: ALPHA_Y, r: '6',
+      fill: 'none', stroke: 'rgba(255,251,210,0.15)', 'stroke-width': '1' });
+    aPulse.append(
+      el('animate', { attributeName: 'r', values: '6;18;6', dur: '4s', repeatCount: 'indefinite' }),
+      el('animate', { attributeName: 'opacity', values: '0.4;0;0.4', dur: '4s', repeatCount: 'indefinite' })
+    );
+    svg.append(aPulse, el('circle', { cx: PX, cy: ALPHA_Y, r: '3', fill: '#fffbe6', opacity: '0.7' }));
+
+    // ── Cosmic landmarks ──
+    LANDMARKS.forEach((lm, li) => {
+      const side = li % 2 === 0 ? -1 : 1;
+      const lx = PX + side * 14;
+      const anchor = side === 1 ? 'start' : 'end';
+      svg.appendChild(el('line', {
+        x1: PX - 4, y1: lm.y, x2: PX + 4, y2: lm.y,
+        stroke: 'rgba(255,255,255,0.15)', 'stroke-width': '0.8'
+      }));
+      const txt = el('text', {
+        x: lx, y: lm.y + 4,
+        fill: 'rgba(255,255,255,0.18)',
+        'font-size': '9.5',
+        'font-family': 'IBM Plex Mono, monospace',
+        'text-anchor': anchor,
+        'letter-spacing': '0.06em'
+      });
+      txt.textContent = lm.text;
+      svg.appendChild(txt);
+    });
+
+    // ── 100 preset slot markers + connectors ──
+    slots.forEach((s, i) => {
+      const occupied = i < posts.length;
+      if (occupied) {
+        svg.appendChild(el('line', {
+          x1: s.cx, y1: s.y.toFixed(1),
+          x2: (s.lx + (s.side === 1 ? -8 : 8)).toFixed(1), y2: s.y.toFixed(1),
+          stroke: 'rgba(57,211,83,0.22)', 'stroke-width': '0.8'
+        }));
+        svg.appendChild(el('circle', {
+          cx: s.cx, cy: s.y.toFixed(1), r: '3',
+          fill: '#39d353', filter: 'url(#glow)'
+        }));
+      } else {
+        svg.appendChild(el('circle', {
+          cx: s.cx, cy: s.y.toFixed(1), r: '1.2',
+          fill: 'rgba(255,255,255,0.1)'
+        }));
+      }
+    });
+
+    // ── Position HTML nodes ──
+    document.getElementById('earth-node').style.top  = (EARTH_Y - 130) + 'px';
+    document.getElementById('scroll-hint').style.top = (EARTH_Y + 145) + 'px';
+    document.getElementById('alpha-node').style.top  = (ALPHA_Y + 16) + 'px';
+
+    // ── Post waypoint labels ──
+    const wpContainer = document.getElementById('waypoints');
+    wpContainer.innerHTML = '';
+
+    posts.forEach((post, i) => {
+      if (i >= N_SLOTS) return;
+      const s = slots[i];
+      const isRight = s.side === 1;
+      const date = post.date
+        ? new Date(post.date + 'T00:00:00Z').toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC'
+          })
+        : '';
+
+      const div = document.createElement('div');
+      div.className = 'waypoint';
+      const left = isRight ? s.lx + 8 : s.lx - 8 - maxLW;
+      div.style.cssText =
+        `top:${s.y.toFixed(1)}px;` +
+        `left:${left.toFixed(1)}px;` +
+        `max-width:${maxLW}px;` +
+        `transform:translateY(-50%);` +
+        `text-align:${isRight ? 'left' : 'right'};`;
+
+      const a = document.createElement('a');
+      a.className = 'wp-title';
+      a.href = post.file;
+      a.textContent = post.title;
+
+      const m = document.createElement('div');
+      m.className = 'wp-meta';
+      m.textContent = [date, post.category].filter(Boolean).join(' · ');
+
+      div.append(a, m);
+      wpContainer.appendChild(div);
+    });
+  }
+
+  build();
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(build, 200); });
+
+})();
+</script>
+
 </body>
 </html>
