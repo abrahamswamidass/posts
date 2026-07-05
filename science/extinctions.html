@@ -327,6 +327,26 @@
       font-size:11px; color:rgba(255,255,255,0.2);
     }
 
+    /* ── Species spotlight (inline facts) ── */
+    .species-fact {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border-left: 2px solid rgba(255,255,255,0.12);
+      border-radius: 0 6px 6px 0;
+    }
+    .species-fact-label {
+      font-size: 9px; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,0.22); margin-bottom: 8px;
+    }
+    .species-fact p {
+      font-size: 12.5px; color: rgba(255,255,255,0.48);
+      margin-bottom: 6px; line-height: 1.65;
+    }
+    .species-fact p:last-child { margin-bottom: 0; }
+    .species-fact strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+    .species-fact em { color: rgba(255,255,255,0.62); font-style: italic; }
+
     /* ── Species hover preview ── */
     .card { position: relative; }
 
@@ -487,6 +507,12 @@
       <div class="card-date">3,700 million years ago</div>
       <div class="card-title">First Life — Single-Celled Organisms</div>
       <div class="card-body">The oldest confirmed evidence of life: stromatolites (layered microbial mats) preserved in ancient rock. These prokaryotes — ancestors of all bacteria — have no nucleus, no organelles. Just a membrane, DNA, and an astonishing drive to replicate.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — Stromatolites</div>
+        <p><strong>They built the air you are breathing right now.</strong> Before cyanobacteria began photosynthesising, Earth's atmosphere was mostly nitrogen and CO₂. Every molecule of free oxygen in today's atmosphere is the product of billions of years of microbial metabolism. The sky is a waste product.</p>
+        <p><strong>They grow about 0.3 mm per year.</strong> A stromatolite column one metre tall has been building for roughly 3,300 years — older than the Roman Empire, older than most written languages.</p>
+        <p><strong>They are still alive.</strong> Living stromatolites thrive today in Shark Bay, Western Australia and the Bahamas — in hypersaline water where grazers cannot survive. These are not fossils. They are the same organism, unchanged, building the same structures it built 3.7 billion years ago.</p>
+      </div>
       <div class="card-locations"><span class="loc-tag">Isua Formation, Greenland</span><span class="loc-tag">Pilbara, Western Australia</span></div>
     </div>
   </div>
@@ -574,6 +600,12 @@
       <div class="card-date">541 million years ago</div>
       <div class="card-title">Cambrian Explosion — The Body Plan Revolution</div>
       <div class="card-body">Within 25 million years, every major animal body plan that exists today appears in the fossil record. Eyes evolve for the first time. Predation begins. Hard shells and skeletons erupt across the tree of life — partly as armor against the new danger of being eaten. The arms race that defines animal evolution starts here.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Anomalocaris canadensis</em></div>
+        <p><strong>Its name means "abnormal shrimp" — and scientists were embarrassed by it.</strong> When the fossils were first found, the circular jaw was classified as a jellyfish, the grasping appendages as a shrimp, and the body as a cucumber-like organism. Three different "species." It took decades to realise they were parts of the same animal.</p>
+        <p><strong>Its eyes had up to 16,000 lenses</strong> — more than a modern dragonfly. It could see in almost every direction simultaneously. In a world where most animals were barely centimetres long, <em>Anomalocaris</em> stretched a full metre and hunted with vision no creature had possessed before.</p>
+        <p><strong>Its circular jaw had 32 overlapping plates</strong> arranged like a pineapple ring. It couldn't fully close — which puzzled scientists who couldn't figure out how it ate hard-shelled prey. Current theory: it was a filter feeder in old age, a predator when young. The monster of the Cambrian seas wore many faces.</p>
+      </div>
       <div class="card-locations"><span class="loc-tag">Burgess Shale, British Columbia</span><span class="loc-tag">Chengjiang, Yunnan, China</span><span class="loc-tag">Emu Bay Shale, Australia</span></div>
     </div>
   </div>
@@ -588,6 +620,12 @@
       <div class="card-date">443 million years ago</div>
       <div class="card-title">End-Ordovician Extinction — #1 of the Big Five</div>
       <div class="card-body">Gondwana drifts over the South Pole. Ice caps grow. Sea levels drop by 100 metres, draining shallow continental seas where most marine life lives. Then the ice melts rapidly, flooding warmer anoxic water back over the reefs. Two pulses of extinction: 85% of all species gone. Trilobites, brachiopods, graptolites — whole groups wiped out.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — Trilobita</div>
+        <p><strong>They survived for 270 million years</strong> — three times longer than dinosaurs, 1,350 times longer than modern humans. They appeared before complex animals existed and outlasted three separate mass extinctions before finally succumbing in the fourth (the Great Dying, 252 Ma).</p>
+        <p><strong>Their eyes were made of calcite crystal</strong> — the same mineral as limestone. No other animal in the history of life has evolved mineral lenses. The calcite gave them perfectly clear, distortion-free vision underwater and couldn't be compressed or deformed by pressure. It was, in a sense, a perfect optical material — and evolution found it once, in the Cambrian, and never again.</p>
+        <p><strong>Some could roll into a perfect ball,</strong> like a modern pillbug, locking their head shield to their tail plate with a precision fit. Enrolled specimens are found in mass-death assemblages, suggesting they died protecting themselves — curled up against a catastrophe they couldn't outlast.</p>
+      </div>
       <div class="severity">
         <div class="severity-label">Species lost · ~85%</div>
         <div class="severity-bar"><div class="severity-fill" style="width:85%"></div></div>
@@ -619,6 +657,12 @@
       <div class="card-date">375 – 359 million years ago</div>
       <div class="card-title">Late Devonian Extinction — #2 of the Big Five</div>
       <div class="card-body">A prolonged crisis rather than a single event. Land plants spread across continents, their roots breaking down rock and pumping nutrients into the ocean — causing algal blooms that strip oxygen from the water. Reef ecosystems collapse. The warm shallow seas that filled with extraordinary Devonian fish life go dark. 75% of species lost over perhaps 20 million years. Land vertebrates — fish learning to walk — survive the oceans' collapse by leaving.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Dunkleosteus terrelli</em></div>
+        <p><strong>It had no teeth.</strong> What looked like fangs were sharpened edges of its skull bone — self-sharpening plates that ground against each other every time the jaw closed, maintaining a razor edge throughout its life. No enamel, no roots, no decay. Just bone that got sharper with use.</p>
+        <p><strong>Its bite force reached an estimated 8,000 psi</strong> — stronger than a great white shark, stronger than a crocodile, among the highest of any fish ever measured. It could open its jaw fully in less than 1/50th of a second, creating a suction that pulled prey helplessly inward before they could react.</p>
+        <p><strong>We have never found its body.</strong> The rear half was cartilage, which doesn't fossilise. Every reconstruction of <em>Dunkleosteus</em> is extrapolated from the head alone — the rest is educated guesswork. The most feared predator of the Devonian seas is known only from its face.</p>
+      </div>
       <div class="severity">
         <div class="severity-label">Species lost · ~75%</div>
         <div class="severity-bar"><div class="severity-fill" style="width:75%"></div></div>
@@ -663,6 +707,12 @@
       <div class="card-date">252 million years ago</div>
       <div class="card-title">End-Permian Extinction — "The Great Dying"</div>
       <div class="card-body">The worst day in the history of complex life. The Siberian Traps — a volcanic province the size of Australia — erupt for a million years, releasing enough CO₂ and SO₂ to warm the oceans by 10°C, acidify the seas, and strip the upper ocean of oxygen. 96% of all marine species vanish. 70% of land vertebrate species. Coral reefs disappear for 10 million years. The ocean floor goes silent. It takes 5–10 million years for ecosystems to recover.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Lystrosaurus</em>, the inheritor of a dead world</div>
+        <p><strong>After the extinction, <em>Lystrosaurus</em> fossils make up 95% of all Early Triassic vertebrate specimens</strong> in parts of South Africa and Antarctica. The world didn't just survive — it became a monoculture. One barrel-shaped, pig-faced, beak-mouthed dicynodont, everywhere, for millions of years. Life's great reset had a single winner.</p>
+        <p><strong>It was found on every continent of Pangaea</strong> — Antarctica, India, South Africa, Russia, China. This was one of the earliest pieces of evidence that these landmasses were once joined. A pig-sized animal doesn't cross oceans. It walks.</p>
+        <p><strong>Its survival secret was probably its generalism.</strong> It could eat almost anything — roots, tubers, leaves, possibly carrion. In a world where 96% of species were gone and ecosystems had collapsed to bare rock and bacterial mats, being picky was fatal. <em>Lystrosaurus</em> ate whatever was left. Everything else didn't.</p>
+      </div>
       <div class="severity">
         <div class="severity-label">Species lost · ~96% — the worst ever recorded</div>
         <div class="severity-bar"><div class="severity-fill" style="width:96%"></div></div>
@@ -735,6 +785,13 @@
       <div class="card-date">66 million years ago</div>
       <div class="card-title">K-Pg Extinction — Asteroid Ends the Age of Dinosaurs</div>
       <div class="card-body">A 10-km asteroid strikes the Yucatán Peninsula at 72,000 km/h. The impact releases energy equivalent to a billion nuclear bombs. Ejecta re-entering the atmosphere ignites wildfires globally. A dust cloud blocks sunlight for years. Temperatures plummet. 76% of species — including all non-avian dinosaurs — are gone within decades. Only birds (the surviving dinosaur lineage), small mammals, and a few reptiles make it through. The Deccan Traps volcanism in India adds further poison to an already dying world.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Tyrannosaurus rex</em></div>
+        <p><strong><em>T. rex</em> existed for only about 2 million years.</strong> The gap between <em>T. rex</em> and <em>Stegosaurus</em> (83 million years) is larger than the gap between <em>T. rex</em> and you (66 million years). We are, in a real sense, closer in time to <em>T. rex</em> than <em>T. rex</em> was to most of the dinosaurs it shared a planet with.</p>
+        <p><strong>Estimates suggest 2.5 billion individual <em>T. rexes</em> lived over that span,</strong> with around 20,000 alive at any given moment — a population roughly the size of today's white rhinoceros. Every fossil ever found represents one of those 2.5 billion individuals. We have found fewer than 50 reasonably complete specimens.</p>
+        <p><strong>It grew 2 kg per day during adolescence</strong> — rocketing from a 30 kg hatchling to an 8,000 kg adult in roughly 20 years. The infamous tiny arms were not vestigial: proportionally they were more muscular than human arms, capable of lifting ~200 kg. They may have been used to grip prey pinned under the body, or to help the animal rise from the ground.</p>
+        <p><strong>Sue, the most complete T. rex ever found,</strong> showed signs of gout, a healed broken fibula, trichomonosis (a parasitic infection from eating infected prey), and bite marks from another <em>T. rex</em> on her face. She was a survivor, many times over, until she wasn't.</p>
+      </div>
       <div class="severity">
         <div class="severity-label">Species lost · ~76%</div>
         <div class="severity-bar"><div class="severity-fill" style="width:76%"></div></div>
@@ -800,6 +857,13 @@
       <div class="card-date">2.6 Ma – 11,700 years ago</div>
       <div class="card-title">Pleistocene Ice Ages &amp; Megafauna Collapse</div>
       <div class="card-body">Ice ages cycle every 100,000 years. Between the glaciations: woolly mammoths, cave bears, giant ground sloths, sabre-toothed cats, giant wombats. As the last ice age ends (~12,000 ya), these megafauna disappear continent by continent — the pattern tracks the arrival of Homo sapiens. Africa, where humans evolved alongside these animals, loses the fewest. The Americas and Australia, which had no prior contact, lose the most.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Mammuthus primigenius</em>, the woolly mammoth</div>
+        <p><strong>The last woolly mammoths were alive when the pyramids of Giza were already ancient.</strong> A dwarf population survived on Wrangel Island, in the Arctic Ocean, until approximately 4,000 years ago — around 2,000 BCE. The Great Pyramid was built in 2,560 BCE. For 560 years, mammoths and pharaohs shared the Earth.</p>
+        <p><strong>Their blood was genetically engineered for the cold.</strong> Woolly mammoth haemoglobin carried a mutation that prevented it from gripping oxygen too tightly in freezing temperatures — a problem that makes modern elephant blood essentially non-functional below 10°C. The mammoth version delivered oxygen to muscles efficiently at −40°C. No living elephant has this adaptation.</p>
+        <p><strong>We know what they ate for their last meal.</strong> Permafrost has preserved stomach contents in multiple specimens: grasses, sedges, moss, buttercups, sometimes tree bark. One juvenile nicknamed "Yuka," found in Siberia with her fur, skin, and organs intact, had partially digested food still in her digestive tract. She has been dead for 39,000 years.</p>
+        <p><strong>A company called Colossal Biosciences</strong> is actively working to resurrect the woolly mammoth by editing Asian elephant DNA with the key cold-adaptation genes. The first mammoth-elephant hybrid calves are targeted for the 2020s. Whether to release them into rewilded Siberian tundra — where they would reshape the ecosystem by trampling snow and exposing frozen permafrost — is one of the stranger policy questions of the 21st century.</p>
+      </div>
       <div class="severity">
         <div class="severity-label">Megafauna genera lost · ~70% globally</div>
         <div class="severity-bar"><div class="severity-fill" style="width:70%"></div></div>
