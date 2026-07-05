@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" fill="white">
+  <!-- Main body (barrel-shaped) -->
+  <ellipse cx="165" cy="118" rx="95" ry="65"/>
+  <!-- Head (beak-shaped, downward facing) -->
+  <path d="M 55,88 Q 30,78 18,92 Q 10,104 18,118 Q 28,130 50,132 Q 72,134 90,122 Q 102,112 100,98 Q 95,82 75,78 Q 65,76 55,88 Z"/>
+  <!-- Beak (keratinous, no teeth except tusks) -->
+  <path d="M 12,105 Q 8,112 14,120 Q 22,128 38,128 Q 30,118 28,108 Q 22,100 12,105 Z" fill="rgba(0,0,0,0.2)"/>
+  <!-- Small tusks (downward pointing) -->
+  <path d="M 38,128 Q 36,145 40,150 Q 44,148 44,130" fill="white" opacity="0.85"/>
+  <path d="M 52,130 Q 50,147 55,152 Q 59,150 58,132" fill="white" opacity="0.85"/>
+  <!-- Eye -->
+  <circle cx="45" cy="95" r="10" fill="rgba(0,0,0,0.4)"/>
+  <circle cx="45" cy="95" r="5" fill="rgba(0,0,0,0.6)"/>
+  <!-- Neck -->
+  <path d="M 82,88 Q 105,80 120,88 Q 125,100 118,112 Q 108,118 95,122 Q 80,118 72,106 Z"/>
+  <!-- Short sturdy legs (4) -->
+  <!-- Front left -->
+  <path d="M 100,170 Q 96,185 92,198 Q 100,200 108,198 Q 106,185 104,170"/>
+  <!-- Front right (slightly behind) -->
+  <path d="M 122,172 Q 118,187 114,200 Q 122,202 130,200 Q 128,187 126,172"/>
+  <!-- Back left -->
+  <path d="M 200,172 Q 196,187 192,200 Q 200,202 208,200 Q 206,187 204,172"/>
+  <!-- Back right -->
+  <path d="M 222,170 Q 218,185 214,198 Q 222,200 230,198 Q 228,185 226,170"/>
+  <!-- Feet (splayed) -->
+  <ellipse cx="100" cy="199" rx="12" ry="5" fill="white" opacity="0.8"/>
+  <ellipse cx="122" cy="201" rx="12" ry="5" fill="white" opacity="0.8"/>
+  <ellipse cx="200" cy="201" rx="12" ry="5" fill="white" opacity="0.8"/>
+  <ellipse cx="222" cy="199" rx="12" ry="5" fill="white" opacity="0.8"/>
+  <!-- Short stubby tail -->
+  <path d="M 258,130 Q 280,120 288,130 Q 278,138 258,135"/>
+  <!-- Skin texture suggestion (scutes) -->
+  <path d="M 130,68 Q 160,55 195,62" stroke="rgba(0,0,0,0.12)" stroke-width="2" fill="none"/>
+  <path d="M 120,80 Q 155,68 195,75" stroke="rgba(0,0,0,0.12)" stroke-width="2" fill="none"/>
+</svg>

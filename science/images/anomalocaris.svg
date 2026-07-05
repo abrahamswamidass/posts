@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 200" fill="white">
+  <!-- Main body (torpedo-shaped) -->
+  <ellipse cx="160" cy="100" rx="130" ry="48"/>
+  <!-- Head shield (frontal) -->
+  <ellipse cx="42" cy="100" rx="45" ry="40"/>
+  <!-- Circular mouth (radially arranged plates) -->
+  <circle cx="32" cy="100" r="24" fill="rgba(0,0,0,0.4)"/>
+  <circle cx="32" cy="100" r="16" fill="rgba(0,0,0,0.2)"/>
+  <!-- Mouth plate segments (pineapple-ring shape) -->
+  <path d="M 20,88 Q 32,82 44,88 Q 50,94 50,100 Q 50,106 44,112 Q 32,118 20,112 Q 14,106 14,100 Q 14,94 20,88" stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"/>
+  <!-- Large stalked eyes (compound) -->
+  <path d="M 55,72 Q 48,58 38,52" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="35" cy="48" r="14" fill="white"/>
+  <circle cx="35" cy="48" r="8" fill="rgba(0,0,0,0.5)"/>
+  <path d="M 55,128 Q 48,142 38,148" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="35" cy="152" r="14" fill="white"/>
+  <circle cx="35" cy="152" r="8" fill="rgba(0,0,0,0.5)"/>
+  <!-- Frontal appendages (spiny graspers) -->
+  <path d="M 50,92 Q 28,78 12,68 Q 6,64 2,70 Q 6,76 14,80 Q 28,88 48,96" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M 50,108 Q 28,122 12,132 Q 6,136 2,130 Q 6,124 14,120 Q 28,112 48,104" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Grasper spines -->
+  <line x1="18" y1="72" x2="10" y2="62" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="26" y1="78" x2="20" y2="66" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="83" x2="30" y2="70" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="18" y1="128" x2="10" y2="138" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="26" y1="122" x2="20" y2="134" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="35" y1="117" x2="30" y2="130" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Lateral lobes (swimming flaps, upper) -->
+  <path d="M 90,55 Q 102,38 115,32 Q 122,38 118,52 Q 108,58 95,62"/>
+  <path d="M 130,48 Q 142,32 155,26 Q 162,32 158,46 Q 148,52 135,56"/>
+  <path d="M 168,46 Q 180,30 193,24 Q 200,30 196,44 Q 186,50 173,54"/>
+  <path d="M 205,50 Q 217,34 230,28 Q 237,34 233,48 Q 223,54 210,58"/>
+  <path d="M 238,58 Q 250,42 263,36 Q 270,42 266,56 Q 256,62 243,66"/>
+  <!-- Lateral lobes (lower) -->
+  <path d="M 90,145 Q 102,162 115,168 Q 122,162 118,148 Q 108,142 95,138"/>
+  <path d="M 130,152 Q 142,168 155,174 Q 162,168 158,154 Q 148,148 135,144"/>
+  <path d="M 168,154 Q 180,170 193,176 Q 200,170 196,156 Q 186,150 173,146"/>
+  <path d="M 205,150 Q 217,166 230,172 Q 237,166 233,152 Q 223,146 210,142"/>
+  <path d="M 238,142 Q 250,158 263,164 Q 270,158 266,144 Q 256,138 243,134"/>
+  <!-- Tail fan -->
+  <path d="M 284,80 Q 310,68 328,72 Q 320,88 310,96"/>
+  <path d="M 284,90 Q 316,88 334,92 Q 330,104 318,106 Q 304,104 288,100"/>
+  <path d="M 284,110 Q 316,112 334,108 Q 330,120 318,122 Q 304,120 288,112"/>
+  <path d="M 284,120 Q 310,132 328,128 Q 320,112 310,104"/>
+</svg>

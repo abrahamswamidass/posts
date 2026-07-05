@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 240" fill="white">
+  <!-- Body (large, high-shouldered) -->
+  <ellipse cx="170" cy="140" rx="95" ry="68"/>
+  <!-- Shoulder hump (characteristic of mammoths) -->
+  <ellipse cx="115" cy="102" rx="55" ry="42"/>
+  <!-- Head (domed skull) -->
+  <circle cx="58" cy="95" r="46"/>
+  <!-- Forehead dome -->
+  <ellipse cx="62" cy="68" rx="32" ry="26"/>
+  <!-- Ear (large, but smaller than elephants) -->
+  <ellipse cx="90" cy="88" rx="16" ry="22" fill="rgba(0,0,0,0.18)"/>
+  <!-- Eye -->
+  <circle cx="48" cy="88" r="9" fill="rgba(0,0,0,0.45)"/>
+  <circle cx="48" cy="88" r="4.5" fill="rgba(0,0,0,0.65)"/>
+  <!-- Trunk (long, curves down then inward) -->
+  <path d="M 30,118 Q 12,140 8,168 Q 6,185 14,192 Q 22,195 26,182 Q 28,165 32,145 Q 36,130 38,120" stroke="white" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M 13,190 Q 8,200 15,208 Q 24,210 28,202 Q 22,196 18,192" fill="white"/>
+  <!-- Two long curved tusks -->
+  <path d="M 42,128 Q 22,140 8,162 Q -2,182 10,198 Q 18,205 24,195 Q 14,178 22,160 Q 32,142 48,132" stroke="white" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M 46,132 Q 26,146 14,170 Q 6,190 18,202 Q 24,198 22,186 Q 18,170 26,152 Q 36,136 50,128" stroke="rgba(0,0,0,0.15)" stroke-width="2" fill="none"/>
+  <!-- Neck fur bump -->
+  <path d="M 92,62 Q 105,48 118,50 Q 130,54 132,70" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="none"/>
+  <!-- Legs (thick and columnar) -->
+  <rect x="88" y="195" width="30" height="42" rx="10" fill="white"/>
+  <rect x="128" y="198" width="28" height="40" rx="10" fill="white"/>
+  <rect x="188" y="198" width="28" height="40" rx="10" fill="white"/>
+  <rect x="226" y="195" width="30" height="42" rx="10" fill="white"/>
+  <!-- Feet (wider at base) -->
+  <ellipse cx="103" cy="237" rx="20" ry="7"/>
+  <ellipse cx="142" cy="238" rx="19" ry="7"/>
+  <ellipse cx="202" cy="238" rx="19" ry="7"/>
+  <ellipse cx="241" cy="237" rx="20" ry="7"/>
+  <!-- Shaggy fur suggestion (line texture on body) -->
+  <path d="M 100,82 Q 118,70 140,72 Q 162,74 180,68 Q 200,62 218,68" stroke="rgba(0,0,0,0.12)" stroke-width="2.5" fill="none"/>
+  <path d="M 90,95 Q 115,84 148,86 Q 175,88 200,82 Q 222,76 240,82" stroke="rgba(0,0,0,0.12)" stroke-width="2.5" fill="none"/>
+  <path d="M 80,112 Q 110,100 150,102 Q 185,104 215,98 Q 240,94 258,100" stroke="rgba(0,0,0,0.10)" stroke-width="2" fill="none"/>
+  <!-- Small tail -->
+  <path d="M 260,160 Q 278,152 282,162 Q 274,170 260,168"/>
+</svg>

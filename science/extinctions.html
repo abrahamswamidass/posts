@@ -327,6 +327,65 @@
       font-size:11px; color:rgba(255,255,255,0.2);
     }
 
+    /* ── Species hover preview ── */
+    .card { position: relative; }
+
+    .species-preview {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      width: 220px;
+      background: rgba(8,10,20,0.97);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 200;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    .card:hover .species-preview {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .species-preview img {
+      width: 100%;
+      height: 130px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.08));
+    }
+    .species-name {
+      margin-top: 8px;
+      font-size: 11px;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+    .species-era {
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-top: 3px;
+    }
+    /* arrow pointer */
+    .species-preview::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px; height: 10px;
+      background: rgba(8,10,20,0.97);
+      border-right: 1px solid rgba(255,255,255,0.14);
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      transform: translateX(-50%) rotate(45deg);
+    }
+
     @media(max-width:680px){
       .event { grid-template-columns: 28px 1fr; }
       .event.right .card  { grid-column:2; }
@@ -420,6 +479,11 @@
     <div class="empty"></div>
     <div class="node"><div class="dot life"></div></div>
     <div class="card life-card">
+      <div class="species-preview">
+        <img src="images/stromatolites.svg" alt="Stromatolites illustration"/>
+        <div class="species-name">Stromatolites — layered microbial mats<br>built by cyanobacteria</div>
+        <div class="species-era">Archean · ~3,700 Ma</div>
+      </div>
       <div class="card-date">3,700 million years ago</div>
       <div class="card-title">First Life — Single-Celled Organisms</div>
       <div class="card-body">The oldest confirmed evidence of life: stromatolites (layered microbial mats) preserved in ancient rock. These prokaryotes — ancestors of all bacteria — have no nucleus, no organelles. Just a membrane, DNA, and an astonishing drive to replicate.</div>
@@ -502,6 +566,11 @@
     <div class="empty"></div>
     <div class="node"><div class="dot life"></div></div>
     <div class="card life-card">
+      <div class="species-preview">
+        <img src="images/anomalocaris.svg" alt="Anomalocaris illustration"/>
+        <div class="species-name"><em>Anomalocaris canadensis</em><br>Cambrian apex predator, ~1m long</div>
+        <div class="species-era">Cambrian · ~520 Ma</div>
+      </div>
       <div class="card-date">541 million years ago</div>
       <div class="card-title">Cambrian Explosion — The Body Plan Revolution</div>
       <div class="card-body">Within 25 million years, every major animal body plan that exists today appears in the fossil record. Eyes evolve for the first time. Predation begins. Hard shells and skeletons erupt across the tree of life — partly as armor against the new danger of being eaten. The arms race that defines animal evolution starts here.</div>
@@ -511,6 +580,11 @@
 
   <div class="event left">
     <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/trilobite.svg" alt="Trilobite illustration"/>
+        <div class="species-name"><em>Trilobita</em> — 520 million years<br>of evolutionary history, gone</div>
+        <div class="species-era">Ordovician · 443 Ma</div>
+      </div>
       <div class="card-date">443 million years ago</div>
       <div class="card-title">End-Ordovician Extinction — #1 of the Big Five</div>
       <div class="card-body">Gondwana drifts over the South Pole. Ice caps grow. Sea levels drop by 100 metres, draining shallow continental seas where most marine life lives. Then the ice melts rapidly, flooding warmer anoxic water back over the reefs. Two pulses of extinction: 85% of all species gone. Trilobites, brachiopods, graptolites — whole groups wiped out.</div>
@@ -537,6 +611,11 @@
 
   <div class="event left">
     <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/dunkleosteus.svg" alt="Dunkleosteus illustration"/>
+        <div class="species-name"><em>Dunkleosteus terrelli</em><br>8–9m armored fish, ~8,000 psi bite</div>
+        <div class="species-era">Late Devonian · ~375 Ma</div>
+      </div>
       <div class="card-date">375 – 359 million years ago</div>
       <div class="card-title">Late Devonian Extinction — #2 of the Big Five</div>
       <div class="card-body">A prolonged crisis rather than a single event. Land plants spread across continents, their roots breaking down rock and pumping nutrients into the ocean — causing algal blooms that strip oxygen from the water. Reef ecosystems collapse. The warm shallow seas that filled with extraordinary Devonian fish life go dark. 75% of species lost over perhaps 20 million years. Land vertebrates — fish learning to walk — survive the oceans' collapse by leaving.</div>
@@ -576,6 +655,11 @@
     <div class="empty"></div>
     <div class="node"><div class="dot ext"></div></div>
     <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/lystrosaurus.svg" alt="Lystrosaurus illustration"/>
+        <div class="species-name"><em>Lystrosaurus</em> — pig-sized dicynodont<br>that survived the Great Dying</div>
+        <div class="species-era">Permian–Triassic · 252 Ma</div>
+      </div>
       <div class="card-date">252 million years ago</div>
       <div class="card-title">End-Permian Extinction — "The Great Dying"</div>
       <div class="card-body">The worst day in the history of complex life. The Siberian Traps — a volcanic province the size of Australia — erupt for a million years, releasing enough CO₂ and SO₂ to warm the oceans by 10°C, acidify the seas, and strip the upper ocean of oxygen. 96% of all marine species vanish. 70% of land vertebrate species. Coral reefs disappear for 10 million years. The ocean floor goes silent. It takes 5–10 million years for ecosystems to recover.</div>
@@ -643,6 +727,11 @@
 
   <div class="event left">
     <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/trex.svg" alt="T-Rex illustration"/>
+        <div class="species-name"><em>Tyrannosaurus rex</em><br>Last of the non-avian dinosaurs</div>
+        <div class="species-era">Late Cretaceous · 68–66 Ma</div>
+      </div>
       <div class="card-date">66 million years ago</div>
       <div class="card-title">K-Pg Extinction — Asteroid Ends the Age of Dinosaurs</div>
       <div class="card-body">A 10-km asteroid strikes the Yucatán Peninsula at 72,000 km/h. The impact releases energy equivalent to a billion nuclear bombs. Ejecta re-entering the atmosphere ignites wildfires globally. A dust cloud blocks sunlight for years. Temperatures plummet. 76% of species — including all non-avian dinosaurs — are gone within decades. Only birds (the surviving dinosaur lineage), small mammals, and a few reptiles make it through. The Deccan Traps volcanism in India adds further poison to an already dying world.</div>
@@ -703,6 +792,11 @@
 
   <div class="event left">
     <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/mammoth.svg" alt="Woolly Mammoth illustration"/>
+        <div class="species-name"><em>Mammuthus primigenius</em><br>Woolly mammoth — last survivors<br>on Wrangel Island until 4,000 ya</div>
+        <div class="species-era">Pleistocene · 2.6 Ma – 4,000 ya</div>
+      </div>
       <div class="card-date">2.6 Ma – 11,700 years ago</div>
       <div class="card-title">Pleistocene Ice Ages &amp; Megafauna Collapse</div>
       <div class="card-body">Ice ages cycle every 100,000 years. Between the glaciations: woolly mammoths, cave bears, giant ground sloths, sabre-toothed cats, giant wombats. As the last ice age ends (~12,000 ya), these megafauna disappear continent by continent — the pattern tracks the arrival of Homo sapiens. Africa, where humans evolved alongside these animals, loses the fewest. The Americas and Australia, which had no prior contact, lose the most.</div>

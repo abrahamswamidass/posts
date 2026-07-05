@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" fill="white">
+  <!-- Body (armored head takes up half the fish) -->
+  <ellipse cx="210" cy="105" rx="95" ry="60"/>
+  <!-- Tail fin -->
+  <path d="M300,105 Q328,75 320,58 Q310,72 300,85"/>
+  <path d="M300,105 Q328,135 320,152 Q310,138 300,125"/>
+  <!-- Dorsal fin -->
+  <path d="M220,45 Q240,20 255,28 Q245,42 230,50"/>
+  <!-- Pectoral fin -->
+  <path d="M180,145 Q175,170 190,175 Q195,160 192,148"/>
+  <!-- Armored head plate (dermal armor) -->
+  <path d="M 48,60 Q 20,80 15,105 Q 20,130 48,150 Q 80,165 120,160 Q 155,155 175,140 Q 185,130 185,105 Q 185,80 175,70 Q 155,55 120,50 Q 80,45 48,60 Z"/>
+  <!-- Bone plate texture lines -->
+  <path d="M 60,70 Q 80,65 100,67" stroke="rgba(0,0,0,0.2)" stroke-width="2" fill="none"/>
+  <path d="M 55,85 Q 80,80 110,82" stroke="rgba(0,0,0,0.2)" stroke-width="2" fill="none"/>
+  <path d="M 55,100 Q 85,96 120,97" stroke="rgba(0,0,0,0.2)" stroke-width="2" fill="none"/>
+  <path d="M 58,115 Q 85,112 115,113" stroke="rgba(0,0,0,0.2)" stroke-width="2" fill="none"/>
+  <path d="M 65,130 Q 90,128 112,130" stroke="rgba(0,0,0,0.2)" stroke-width="2" fill="none"/>
+  <!-- Massive jaw (lower) -->
+  <path d="M 15,108 Q 8,125 18,145 Q 28,158 55,162 Q 80,168 110,165 Q 140,162 162,150 Q 178,140 182,128 L 175,140 Q 155,155 120,160 Q 80,165 48,150 Q 25,138 15,120 Z" fill="rgba(0,0,0,0.12)"/>
+  <!-- Sharp blade-like teeth (bone shearing plates) -->
+  <path d="M 20,130 L 28,118 L 36,130 L 44,118 L 52,130 L 60,118 L 68,130" stroke="rgba(0,0,0,0.3)" stroke-width="1.5" fill="none"/>
+  <!-- Eye socket (large) -->
+  <circle cx="72" cy="88" r="16" fill="rgba(0,0,0,0.35)"/>
+  <circle cx="72" cy="88" r="8" fill="rgba(0,0,0,0.5)"/>
+  <!-- Gill opening -->
+  <path d="M 168,72 Q 182,90 180,110 Q 178,128 168,140" stroke="rgba(0,0,0,0.2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Lateral line -->
+  <path d="M 186,105 Q 230,100 295,105" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+</svg>
