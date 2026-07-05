@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280" fill="white">
+  <!-- Tail (long, held horizontal for balance) -->
+  <path d="M 218,148 Q 252,138 278,128 Q 295,120 292,132 Q 280,140 260,148 Q 242,155 220,158"/>
+  <path d="M 218,160 Q 248,162 272,158 Q 290,155 288,167 Q 272,172 252,170 Q 236,168 220,162"/>
+  <!-- Hip and body rear -->
+  <ellipse cx="185" cy="148" rx="55" ry="50"/>
+  <!-- Torso -->
+  <ellipse cx="130" cy="135" rx="52" ry="42"/>
+  <!-- Neck -->
+  <path d="M 95,100 Q 85,85 80,70 Q 85,60 95,65 Q 105,72 108,88 Q 112,104 108,118"/>
+  <!-- Large head -->
+  <path d="M 25,52 Q 10,62 8,80 Q 10,96 25,104 Q 42,112 65,110 Q 85,108 95,98 Q 104,88 100,72 Q 95,58 80,50 Q 62,42 42,44 Q 32,46 25,52 Z"/>
+  <!-- Upper jaw (snout) -->
+  <path d="M 8,82 Q 2,90 4,100 Q 8,108 20,110 Q 32,112 48,110 L 45,102 Q 30,104 18,102 Q 10,98 8,90 Z" fill="rgba(0,0,0,0.15)"/>
+  <!-- Lower jaw -->
+  <path d="M 8,84 Q 0,95 4,108 Q 12,118 30,120 Q 50,122 70,118 Q 88,114 96,105 L 90,98 Q 75,108 55,112 Q 36,115 20,112 Q 10,108 8,100 Z" fill="rgba(0,0,0,0.2)"/>
+  <!-- Serrated teeth (upper) -->
+  <path d="M 10,96 L 14,88 L 19,96 L 24,88 L 30,96 L 36,88 L 42,96 L 48,88 L 54,96 L 60,88 L 66,96" stroke="rgba(0,0,0,0.3)" stroke-width="1" fill="none" stroke-linejoin="round"/>
+  <!-- Eye (large, forward facing) -->
+  <circle cx="52" cy="62" r="14" fill="rgba(0,0,0,0.4)"/>
+  <circle cx="52" cy="62" r="7" fill="rgba(0,0,0,0.6)"/>
+  <!-- Brow ridge -->
+  <path d="M 38,52 Q 52,46 68,52" stroke="rgba(0,0,0,0.2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Tiny arms -->
+  <path d="M 100,120 Q 88,118 80,128 Q 78,136 85,138 Q 92,136 96,128"/>
+  <path d="M 85,138 L 82,148 M 90,140 L 90,150" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <!-- Powerful thigh -->
+  <path d="M 175,192 Q 165,220 158,248 Q 152,260 142,258 Q 148,244 152,222 Q 156,202 162,192"/>
+  <!-- Lower leg (shin) -->
+  <path d="M 155,248 Q 148,262 145,278 Q 155,280 165,278 Q 162,264 160,250"/>
+  <!-- Foot (3 clawed toes) -->
+  <path d="M 140,278 Q 128,285 122,292 L 126,296 Q 134,290 144,284"/>
+  <path d="M 152,278 Q 148,288 148,296 Q 156,298 158,290 Q 156,284 155,278"/>
+  <path d="M 162,280 Q 168,290 174,296 L 178,292 Q 172,285 165,278"/>
+  <!-- Second visible leg (behind, slightly offset) -->
+  <path d="M 200,195 Q 194,222 188,248 Q 183,260 172,258 Q 178,244 182,222 Q 186,202 192,195"/>
+  <path d="M 186,248 Q 180,264 178,278 Q 188,280 196,278 Q 193,264 190,250"/>
+  <!-- Back foot toes -->
+  <path d="M 172,278 Q 162,286 156,294 L 160,298 Q 168,292 176,285"/>
+  <path d="M 185,279 Q 183,290 183,298 Q 191,299 192,290 Q 190,285 188,279"/>
+  <!-- Spine ridge (dorsal) -->
+  <path d="M 82,64 Q 90,52 102,50 Q 118,48 132,52 Q 150,54 168,50 Q 184,46 200,50 Q 218,55 228,65" stroke="rgba(0,0,0,0.15)" stroke-width="2" fill="none"/>
+</svg>

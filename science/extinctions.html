@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When the World Ended — Earth's Great Extinctions</title>
+  <style>
+    :root {
+      --bg: #060810;
+      --line: rgba(255,255,255,0.12);
+      --text: #c9d1d9;
+      --muted: rgba(255,255,255,0.35);
+      --hadean:    #3b1f5e;
+      --archean:   #1a3a5c;
+      --proterozoic: #0f4a3a;
+      --paleozoic: #1a4a1a;
+      --mesozoic:  #4a3a0a;
+      --cenozoic:  #4a1a0a;
+      --human:     #1a1a4a;
+      --ext:       #c0392b;
+      --life:      #27ae60;
+      --earth:     #2980b9;
+      --hum:       #f39c12;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Back ── */
+    .back {
+      position: fixed; top:20px; left:20px; z-index:100;
+      font-size:11px; letter-spacing:.15em; text-transform:uppercase;
+      color: var(--muted); text-decoration:none;
+      transition: color .2s;
+    }
+    .back:hover { color:#fff; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center;
+      padding: 80px 24px;
+      position: relative;
+      background: radial-gradient(ellipse at 50% 60%, rgba(192,57,43,0.08) 0%, transparent 70%);
+    }
+
+    .hero-label {
+      font-size:10px; letter-spacing:.35em; text-transform:uppercase;
+      color: var(--muted); margin-bottom:20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 88px);
+      font-weight:700; line-height:1.1;
+      letter-spacing:-1px;
+      background: linear-gradient(135deg, #fff 0%, #f8b4a0 50%, #c0392b 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:20px;
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 2.5vw, 20px);
+      color: rgba(255,255,255,0.45);
+      max-width:560px; line-height:1.7;
+    }
+
+    .hero-stats {
+      display:flex; gap:48px; margin-top:60px;
+      flex-wrap:wrap; justify-content:center;
+    }
+
+    .stat {
+      text-align:center;
+    }
+    .stat-num {
+      font-size:clamp(28px, 5vw, 48px);
+      font-weight:700; color:#fff;
+      letter-spacing:-1px;
+    }
+    .stat-label {
+      font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+      color: var(--muted); margin-top:4px;
+    }
+
+    .scroll-cue {
+      position:absolute; bottom:32px; left:50%;
+      transform:translateX(-50%);
+      font-size:10px; letter-spacing:.3em; text-transform:uppercase;
+      color: rgba(255,255,255,0.2);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.2} 50%{opacity:.7} }
+
+    /* ── Legend ── */
+    .legend {
+      display:flex; gap:24px; flex-wrap:wrap;
+      justify-content:center; padding:28px 24px;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      position: sticky; top:0; z-index:50;
+      background: rgba(6,8,16,0.92);
+      backdrop-filter:blur(8px);
+    }
+    .leg-item {
+      display:flex; align-items:center; gap:8px;
+      font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+      color: var(--muted);
+    }
+    .leg-dot {
+      width:10px; height:10px; border-radius:50%;
+      flex-shrink:0;
+    }
+
+    /* ── Timeline wrapper ── */
+    .timeline-wrap {
+      position:relative;
+      max-width:1100px;
+      margin:0 auto;
+      padding:60px 24px 100px;
+    }
+
+    /* central spine */
+    .spine {
+      position:absolute;
+      left:50%; top:0; bottom:0;
+      width:1px;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(255,255,255,0.15) 5%,
+        rgba(255,255,255,0.15) 95%,
+        transparent 100%);
+      transform:translateX(-50%);
+    }
+
+    /* era bands */
+    .era-band {
+      position:relative;
+      padding: 8px 0;
+    }
+    .era-label {
+      position:absolute;
+      left:50%; transform:translateX(-50%);
+      top:-12px;
+      font-size:9px; letter-spacing:.3em; text-transform:uppercase;
+      color: rgba(255,255,255,0.18);
+      white-space:nowrap;
+      background: var(--bg);
+      padding: 2px 10px;
+    }
+
+    /* ── Event node ── */
+    .event {
+      display:grid;
+      grid-template-columns:1fr 40px 1fr;
+      gap:0;
+      align-items:center;
+      margin-bottom:4px;
+      position:relative;
+    }
+
+    .event.right .card  { grid-column:3; grid-row:1; text-align:left; }
+    .event.right .node  { grid-column:2; grid-row:1; }
+    .event.right .empty { grid-column:1; grid-row:1; }
+
+    .event.left .card   { grid-column:1; grid-row:1; text-align:right; }
+    .event.left .node   { grid-column:2; grid-row:1; }
+    .event.left .empty  { grid-column:3; grid-row:1; }
+
+    .node {
+      display:flex; align-items:center; justify-content:center;
+      width:40px; height:40px;
+      position:relative;
+      z-index:10;
+    }
+
+    .dot {
+      border-radius:50%;
+      position:relative;
+      flex-shrink:0;
+    }
+    .dot.ext  { width:18px;height:18px; background:var(--ext); box-shadow:0 0 0 4px rgba(192,57,43,0.25), 0 0 20px rgba(192,57,43,0.4); }
+    .dot.life { width:11px;height:11px; background:var(--life); box-shadow:0 0 0 3px rgba(39,174,96,0.2); }
+    .dot.earth{ width:11px;height:11px; background:var(--earth); box-shadow:0 0 0 3px rgba(41,128,185,0.2); }
+    .dot.hum  { width:13px;height:13px; background:var(--hum); box-shadow:0 0 0 3px rgba(243,156,18,0.2); }
+
+    /* connector line */
+    .event.right .card { padding-left:20px; }
+    .event.left  .card { padding-right:20px; }
+    .event.right .node::after,
+    .event.left  .node::after {
+      content:'';
+      position:absolute;
+      top:50%; height:1px;
+      background: rgba(255,255,255,0.12);
+    }
+    .event.right .node::after { left:50%; width:20px; }
+    .event.left  .node::after { right:50%; width:20px; }
+
+    /* ── Cards ── */
+    .card {
+      padding:20px 24px;
+      border-radius:8px;
+      margin:6px 0;
+    }
+
+    .card.ext-card {
+      background:rgba(192,57,43,0.1);
+      border:1px solid rgba(192,57,43,0.25);
+    }
+    .card.life-card {
+      background:rgba(39,174,96,0.06);
+      border:1px solid rgba(39,174,96,0.15);
+    }
+    .card.earth-card {
+      background:rgba(41,128,185,0.06);
+      border:1px solid rgba(41,128,185,0.15);
+    }
+    .card.hum-card {
+      background:rgba(243,156,18,0.06);
+      border:1px solid rgba(243,156,18,0.15);
+    }
+
+    .card-date {
+      font-size:10px; letter-spacing:.25em; text-transform:uppercase;
+      color: var(--muted); margin-bottom:5px;
+    }
+
+    .card-title {
+      font-size:clamp(14px,2vw,18px);
+      font-weight:700; color:#fff;
+      margin-bottom:6px; line-height:1.3;
+    }
+
+    .card.ext-card .card-title { color:#f0a090; }
+    .card.life-card .card-title { color:#a0e8b0; }
+    .card.hum-card  .card-title { color:#f8d090; }
+    .card.earth-card .card-title { color:#90c8f0; }
+
+    .card-body {
+      font-size:13px; color:rgba(255,255,255,0.55);
+      line-height:1.65; margin-bottom:8px;
+    }
+
+    /* severity bar */
+    .severity {
+      margin-top:10px;
+    }
+    .severity-label {
+      font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+      color:rgba(255,255,255,0.3); margin-bottom:4px;
+    }
+    .severity-bar {
+      height:3px; background:rgba(255,255,255,0.08);
+      border-radius:2px; overflow:hidden;
+    }
+    .severity-fill {
+      height:100%;
+      background: linear-gradient(90deg, #c0392b, #e74c3c);
+      border-radius:2px;
+    }
+
+    .card-locations {
+      display:flex; flex-wrap:wrap; gap:5px;
+      margin-top:10px;
+    }
+    .event.left .card-locations { justify-content:flex-end; }
+
+    .loc-tag {
+      font-size:10px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:3px;
+      padding:2px 7px;
+      color:rgba(255,255,255,0.4);
+    }
+
+    /* spacer for milestone events with no card */
+    .thin-event {
+      height:32px;
+    }
+
+    /* ── Era separators ── */
+    .era-sep {
+      text-align:center;
+      padding:40px 0 30px;
+      position:relative;
+    }
+    .era-sep-line {
+      position:absolute;
+      left:0; right:0; top:50%;
+      height:1px;
+      background: var(--line);
+    }
+    .era-sep-name {
+      position:relative; display:inline-block;
+      background: var(--bg);
+      padding:6px 20px;
+      font-size:10px; letter-spacing:.4em; text-transform:uppercase;
+      color:rgba(255,255,255,0.25);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top:1px solid var(--line);
+      padding:32px 24px;
+      max-width:1100px; margin:0 auto;
+      display:flex; justify-content:space-between;
+      align-items:center; flex-wrap:wrap; gap:12px;
+    }
+    footer a {
+      font-size:12px; letter-spacing:.15em; text-transform:uppercase;
+      color: var(--muted); text-decoration:none;
+      transition:color .2s;
+    }
+    footer a:hover { color:#fff; }
+    footer .note {
+      font-size:11px; color:rgba(255,255,255,0.2);
+    }
+
+    /* ── Species spotlight (inline facts) ── */
+    .species-fact {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border-left: 2px solid rgba(255,255,255,0.12);
+      border-radius: 0 6px 6px 0;
+    }
+    .species-fact-label {
+      font-size: 9px; letter-spacing: .28em; text-transform: uppercase;
+      color: rgba(255,255,255,0.22); margin-bottom: 8px;
+    }
+    .species-fact p {
+      font-size: 12.5px; color: rgba(255,255,255,0.48);
+      margin-bottom: 6px; line-height: 1.65;
+    }
+    .species-fact p:last-child { margin-bottom: 0; }
+    .species-fact strong { color: rgba(255,255,255,0.75); font-weight: 600; }
+    .species-fact em { color: rgba(255,255,255,0.62); font-style: italic; }
+
+    /* ── Species hover preview ── */
+    .card { position: relative; }
+
+    .species-preview {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      width: 220px;
+      background: rgba(8,10,20,0.97);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      z-index: 200;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    .card:hover .species-preview {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .species-preview img {
+      width: 100%;
+      height: 130px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.08));
+    }
+    .species-name {
+      margin-top: 8px;
+      font-size: 11px;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+    .species-era {
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-top: 3px;
+    }
+    /* arrow pointer */
+    .species-preview::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px; height: 10px;
+      background: rgba(8,10,20,0.97);
+      border-right: 1px solid rgba(255,255,255,0.14);
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    @media(max-width:680px){
+      .event { grid-template-columns: 28px 1fr; }
+      .event.right .card  { grid-column:2; }
+      .event.right .node  { grid-column:1; }
+      .event.right .empty { display:none; }
+      .event.left  .card  { grid-column:2; text-align:left; padding-right:0; padding-left:16px; }
+      .event.left  .node  { grid-column:1; }
+      .event.left  .empty { display:none; }
+      .event.right .node::after, .event.left .node::after { display:none; }
+      .spine { left:14px; }
+      .era-sep-name { font-size:8px; }
+      .card-locations { justify-content:flex-start !important; }
+      .hero-stats { gap:28px; }
+      .legend { gap:14px; }
+    }
+  </style>
+</head>
+<body>
+
+<a class="back" href="../index.html">← Posts</a>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-label">Science · Deep Time</div>
+  <h1>When the World Ended</h1>
+  <p class="hero-sub">Five times in Earth's history, life was nearly erased. Each time it came back stranger, bolder, and more complex than before. This is that story.</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Mass extinctions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">96%</div>
+      <div class="stat-label">Species lost at worst</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.5B</div>
+      <div class="stat-label">Years of Earth history</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">66M</div>
+      <div class="stat-label">Years since last major event</div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">scroll through time ↓</div>
+</section>
+
+<!-- ── LEGEND ── -->
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:var(--ext)"></div>Mass Extinction</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--life)"></div>Life Milestone</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--earth)"></div>Earth Event</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--hum)"></div>Human Milestone</div>
+</div>
+
+<!-- ── TIMELINE ── -->
+<div class="timeline-wrap">
+  <div class="spine"></div>
+
+  <!-- ════════════ HADEAN / ARCHEAN ════════════ -->
+  <div class="era-sep">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-name">Hadean &amp; Archean — 4,500 to 2,500 Ma</div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot earth"></div></div>
+    <div class="card earth-card">
+      <div class="card-date">4,500 million years ago</div>
+      <div class="card-title">Earth Forms</div>
+      <div class="card-body">A disk of gas and dust around a young Sun collapses. Rocky planetesimals collide over millions of years. The surface is molten — a magma ocean. The Moon forms when a Mars-sized body (Theia) strikes and blasts debris into orbit.</div>
+      <div class="card-locations"><span class="loc-tag">Jack Hills, Australia</span><span class="loc-tag">Hadean zircons 4.4 Ga</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card earth-card">
+      <div class="card-date">4,100 – 3,800 million years ago</div>
+      <div class="card-title">Late Heavy Bombardment</div>
+      <div class="card-body">The inner solar system is pelted by asteroids and comets — possibly 20,000 impact craters on Earth. The oceans form from comet delivery and volcanic outgassing. Remarkably, microbial life may have survived in deep hydrothermal vents.</div>
+      <div class="card-locations"><span class="loc-tag">Lunar Highlands (preserved craters)</span><span class="loc-tag">Greenland (ancient sea-floor)</span></div>
+    </div>
+    <div class="node"><div class="dot earth"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="card life-card">
+      <div class="species-preview">
+        <img src="images/stromatolites.svg" alt="Stromatolites illustration"/>
+        <div class="species-name">Stromatolites — layered microbial mats<br>built by cyanobacteria</div>
+        <div class="species-era">Archean · ~3,700 Ma</div>
+      </div>
+      <div class="card-date">3,700 million years ago</div>
+      <div class="card-title">First Life — Single-Celled Organisms</div>
+      <div class="card-body">The oldest confirmed evidence of life: stromatolites (layered microbial mats) preserved in ancient rock. These prokaryotes — ancestors of all bacteria — have no nucleus, no organelles. Just a membrane, DNA, and an astonishing drive to replicate.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — Stromatolites</div>
+        <p><strong>They built the air you are breathing right now.</strong> Before cyanobacteria began photosynthesising, Earth's atmosphere was mostly nitrogen and CO₂. Every molecule of free oxygen in today's atmosphere is the product of billions of years of microbial metabolism. The sky is a waste product.</p>
+        <p><strong>They grow about 0.3 mm per year.</strong> A stromatolite column one metre tall has been building for roughly 3,300 years — older than the Roman Empire, older than most written languages.</p>
+        <p><strong>They are still alive.</strong> Living stromatolites thrive today in Shark Bay, Western Australia and the Bahamas — in hypersaline water where grazers cannot survive. These are not fossils. They are the same organism, unchanged, building the same structures it built 3.7 billion years ago.</p>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Isua Formation, Greenland</span><span class="loc-tag">Pilbara, Western Australia</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card life-card">
+      <div class="card-date">2,700 million years ago</div>
+      <div class="card-title">Cyanobacteria Invent Photosynthesis</div>
+      <div class="card-body">Cyanobacteria evolve oxygenic photosynthesis — splitting water molecules and releasing oxygen as waste. This seemingly small chemistry experiment will change everything. For the anaerobic life that dominates Earth at this moment, it is a death sentence.</div>
+      <div class="card-locations"><span class="loc-tag">Hamersley Basin, Australia</span><span class="loc-tag">Transvaal Supergroup, South Africa</span></div>
+    </div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <!-- ════════════ PROTEROZOIC ════════════ -->
+  <div class="era-sep">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-name">Proterozoic — 2,500 to 541 Ma</div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="card ext-card">
+      <div class="card-date">2,400 million years ago</div>
+      <div class="card-title">Great Oxidation Event — The First Mass Die-Off</div>
+      <div class="card-body">Oxygen accumulates in the atmosphere for the first time. For 90% of Earth's existing microbial life — all of which evolved to breathe without oxygen — free O₂ is a deadly poison. The anaerobic world collapses. Earth's first great extinction is caused not by an asteroid or volcano, but by breathing.</div>
+      <div class="severity">
+        <div class="severity-label">Estimated species loss</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:90%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Banded Iron Formations globally</span><span class="loc-tag">Huronian Supergroup, Canada</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card life-card">
+      <div class="card-date">2,100 million years ago</div>
+      <div class="card-title">Eukaryotes — The Cell With a Nucleus</div>
+      <div class="card-body">A prokaryote engulfs another and instead of digesting it, keeps it alive as a power source — the mitochondrion. This is endosymbiosis, and it produces the first complex cell with a nucleus. Every plant, animal, and fungus alive today descends from this one moment of unlikely cooperation.</div>
+      <div class="card-locations"><span class="loc-tag">Gabon Shale, Africa</span><span class="loc-tag">Michigan, USA</span></div>
+    </div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot earth"></div></div>
+    <div class="card earth-card">
+      <div class="card-date">717 – 635 million years ago</div>
+      <div class="card-title">Snowball Earth</div>
+      <div class="card-body">Ice sheets advance from the poles to the equator — possibly covering the entire ocean surface. Average temperatures drop to −50°C. Life retreats to hydrothermal vents and thin ice-free patches near volcanos. After tens of millions of years, volcanic CO₂ accumulates and melts the ice in a catastrophic greenhouse rebound.</div>
+      <div class="card-locations"><span class="loc-tag">Elatina Formation, South Australia</span><span class="loc-tag">Namibia (cap carbonates)</span><span class="loc-tag">Newfoundland, Canada</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card life-card">
+      <div class="card-date">600 million years ago</div>
+      <div class="card-title">Ediacaran Life — First Multicellular Animals</div>
+      <div class="card-body">After Snowball Earth, life explodes into new forms. The Ediacaran biota: soft-bodied organisms that look like nothing alive today. Some resemble fronds, discs, tubes. They have no mouths, no eyes, no predators. The ocean floor is a quiet garden. It will not last.</div>
+      <div class="card-locations"><span class="loc-tag">Ediacara Hills, South Australia</span><span class="loc-tag">Mistaken Point, Newfoundland</span><span class="loc-tag">White Sea, Russia</span></div>
+    </div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <!-- ════════════ PALEOZOIC ════════════ -->
+  <div class="era-sep">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-name">Paleozoic — 541 to 252 Ma</div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="card life-card">
+      <div class="species-preview">
+        <img src="images/anomalocaris.svg" alt="Anomalocaris illustration"/>
+        <div class="species-name"><em>Anomalocaris canadensis</em><br>Cambrian apex predator, ~1m long</div>
+        <div class="species-era">Cambrian · ~520 Ma</div>
+      </div>
+      <div class="card-date">541 million years ago</div>
+      <div class="card-title">Cambrian Explosion — The Body Plan Revolution</div>
+      <div class="card-body">Within 25 million years, every major animal body plan that exists today appears in the fossil record. Eyes evolve for the first time. Predation begins. Hard shells and skeletons erupt across the tree of life — partly as armor against the new danger of being eaten. The arms race that defines animal evolution starts here.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Anomalocaris canadensis</em></div>
+        <p><strong>Its name means "abnormal shrimp" — and scientists were embarrassed by it.</strong> When the fossils were first found, the circular jaw was classified as a jellyfish, the grasping appendages as a shrimp, and the body as a cucumber-like organism. Three different "species." It took decades to realise they were parts of the same animal.</p>
+        <p><strong>Its eyes had up to 16,000 lenses</strong> — more than a modern dragonfly. It could see in almost every direction simultaneously. In a world where most animals were barely centimetres long, <em>Anomalocaris</em> stretched a full metre and hunted with vision no creature had possessed before.</p>
+        <p><strong>Its circular jaw had 32 overlapping plates</strong> arranged like a pineapple ring. It couldn't fully close — which puzzled scientists who couldn't figure out how it ate hard-shelled prey. Current theory: it was a filter feeder in old age, a predator when young. The monster of the Cambrian seas wore many faces.</p>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Burgess Shale, British Columbia</span><span class="loc-tag">Chengjiang, Yunnan, China</span><span class="loc-tag">Emu Bay Shale, Australia</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/trilobite.svg" alt="Trilobite illustration"/>
+        <div class="species-name"><em>Trilobita</em> — 520 million years<br>of evolutionary history, gone</div>
+        <div class="species-era">Ordovician · 443 Ma</div>
+      </div>
+      <div class="card-date">443 million years ago</div>
+      <div class="card-title">End-Ordovician Extinction — #1 of the Big Five</div>
+      <div class="card-body">Gondwana drifts over the South Pole. Ice caps grow. Sea levels drop by 100 metres, draining shallow continental seas where most marine life lives. Then the ice melts rapidly, flooding warmer anoxic water back over the reefs. Two pulses of extinction: 85% of all species gone. Trilobites, brachiopods, graptolites — whole groups wiped out.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — Trilobita</div>
+        <p><strong>They survived for 270 million years</strong> — three times longer than dinosaurs, 1,350 times longer than modern humans. They appeared before complex animals existed and outlasted three separate mass extinctions before finally succumbing in the fourth (the Great Dying, 252 Ma).</p>
+        <p><strong>Their eyes were made of calcite crystal</strong> — the same mineral as limestone. No other animal in the history of life has evolved mineral lenses. The calcite gave them perfectly clear, distortion-free vision underwater and couldn't be compressed or deformed by pressure. It was, in a sense, a perfect optical material — and evolution found it once, in the Cambrian, and never again.</p>
+        <p><strong>Some could roll into a perfect ball,</strong> like a modern pillbug, locking their head shield to their tail plate with a precision fit. Enrolled specimens are found in mass-death assemblages, suggesting they died protecting themselves — curled up against a catastrophe they couldn't outlast.</p>
+      </div>
+      <div class="severity">
+        <div class="severity-label">Species lost · ~85%</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:85%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Sahara Desert, Morocco (ancient seafloor)</span><span class="loc-tag">Anticosti Island, Canada</span><span class="loc-tag">Southern Scotland</span><span class="loc-tag">Argentina</span></div>
+    </div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="card life-card">
+      <div class="card-date">470 million years ago</div>
+      <div class="card-title">Plants Colonise Land</div>
+      <div class="card-body">Green algae evolve to survive out of water. The first land plants — mosses and liverworts — transform bare rock into soil, pumping oxygen into the atmosphere and drawing down CO₂. Land, empty for billions of years, suddenly turns green.</div>
+      <div class="card-locations"><span class="loc-tag">Ordovician spores, Gondwana</span><span class="loc-tag">Rhynie Chert, Scotland (385 Ma)</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/dunkleosteus.svg" alt="Dunkleosteus illustration"/>
+        <div class="species-name"><em>Dunkleosteus terrelli</em><br>8–9m armored fish, ~8,000 psi bite</div>
+        <div class="species-era">Late Devonian · ~375 Ma</div>
+      </div>
+      <div class="card-date">375 – 359 million years ago</div>
+      <div class="card-title">Late Devonian Extinction — #2 of the Big Five</div>
+      <div class="card-body">A prolonged crisis rather than a single event. Land plants spread across continents, their roots breaking down rock and pumping nutrients into the ocean — causing algal blooms that strip oxygen from the water. Reef ecosystems collapse. The warm shallow seas that filled with extraordinary Devonian fish life go dark. 75% of species lost over perhaps 20 million years. Land vertebrates — fish learning to walk — survive the oceans' collapse by leaving.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Dunkleosteus terrelli</em></div>
+        <p><strong>It had no teeth.</strong> What looked like fangs were sharpened edges of its skull bone — self-sharpening plates that ground against each other every time the jaw closed, maintaining a razor edge throughout its life. No enamel, no roots, no decay. Just bone that got sharper with use.</p>
+        <p><strong>Its bite force reached an estimated 8,000 psi</strong> — stronger than a great white shark, stronger than a crocodile, among the highest of any fish ever measured. It could open its jaw fully in less than 1/50th of a second, creating a suction that pulled prey helplessly inward before they could react.</p>
+        <p><strong>We have never found its body.</strong> The rear half was cartilage, which doesn't fossilise. Every reconstruction of <em>Dunkleosteus</em> is extrapolated from the head alone — the rest is educated guesswork. The most feared predator of the Devonian seas is known only from its face.</p>
+      </div>
+      <div class="severity">
+        <div class="severity-label">Species lost · ~75%</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:75%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Coumiac Quarry, Montagne Noire, France</span><span class="loc-tag">Alamo Impact, Nevada, USA</span><span class="loc-tag">Eifel Hills, Germany</span><span class="loc-tag">Canning Basin, Australia</span></div>
+    </div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="card life-card">
+      <div class="card-date">385 million years ago</div>
+      <div class="card-title">The First Trees</div>
+      <div class="card-body">Archaeopteris, the first true tree, rises 30 metres high. Forests spread across the land. They are so efficient at pulling CO₂ from the atmosphere that global temperatures plunge — possibly contributing to the Devonian extinction itself. Trees remake the planet's chemistry before anything has adapted to them.</div>
+      <div class="card-locations"><span class="loc-tag">Gilboa, New York State, USA</span><span class="loc-tag">Svalbard, Norway</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card life-card">
+      <div class="card-date">310 million years ago</div>
+      <div class="card-title">First Reptiles — The Amniote Egg</div>
+      <div class="card-body">Vertebrates evolve the amniotic egg — a self-contained life-support system that can develop on dry land without water. Reptiles are freed from dependence on ponds and streams. They colonise the continental interior. Life conquers the land completely.</div>
+      <div class="card-locations"><span class="loc-tag">Joggins Fossil Cliffs, Nova Scotia</span><span class="loc-tag">Mazon Creek, Illinois</span></div>
+    </div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/lystrosaurus.svg" alt="Lystrosaurus illustration"/>
+        <div class="species-name"><em>Lystrosaurus</em> — pig-sized dicynodont<br>that survived the Great Dying</div>
+        <div class="species-era">Permian–Triassic · 252 Ma</div>
+      </div>
+      <div class="card-date">252 million years ago</div>
+      <div class="card-title">End-Permian Extinction — "The Great Dying"</div>
+      <div class="card-body">The worst day in the history of complex life. The Siberian Traps — a volcanic province the size of Australia — erupt for a million years, releasing enough CO₂ and SO₂ to warm the oceans by 10°C, acidify the seas, and strip the upper ocean of oxygen. 96% of all marine species vanish. 70% of land vertebrate species. Coral reefs disappear for 10 million years. The ocean floor goes silent. It takes 5–10 million years for ecosystems to recover.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Lystrosaurus</em>, the inheritor of a dead world</div>
+        <p><strong>After the extinction, <em>Lystrosaurus</em> fossils make up 95% of all Early Triassic vertebrate specimens</strong> in parts of South Africa and Antarctica. The world didn't just survive — it became a monoculture. One barrel-shaped, pig-faced, beak-mouthed dicynodont, everywhere, for millions of years. Life's great reset had a single winner.</p>
+        <p><strong>It was found on every continent of Pangaea</strong> — Antarctica, India, South Africa, Russia, China. This was one of the earliest pieces of evidence that these landmasses were once joined. A pig-sized animal doesn't cross oceans. It walks.</p>
+        <p><strong>Its survival secret was probably its generalism.</strong> It could eat almost anything — roots, tubers, leaves, possibly carrion. In a world where 96% of species were gone and ecosystems had collapsed to bare rock and bacterial mats, being picky was fatal. <em>Lystrosaurus</em> ate whatever was left. Everything else didn't.</p>
+      </div>
+      <div class="severity">
+        <div class="severity-label">Species lost · ~96% — the worst ever recorded</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:96%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Meishan, Zhejiang, China (GSSP boundary)</span><span class="loc-tag">Siberian Traps, Russia (eruption site)</span><span class="loc-tag">Karoo Basin, South Africa</span><span class="loc-tag">Greenland</span><span class="loc-tag">Dolomites, Italy</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════ MESOZOIC ════════════ -->
+  <div class="era-sep">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-name">Mesozoic — 252 to 66 Ma</div>
+  </div>
+
+  <div class="event left">
+    <div class="card life-card">
+      <div class="card-date">240 million years ago</div>
+      <div class="card-title">First Dinosaurs</div>
+      <div class="card-body">In the aftermath of the Great Dying, archosaurs rise to dominate the land. Within 10 million years, the first true dinosaurs appear — bipedal, fast, efficient breathers. Their hollow bones and air-sac respiratory system, shared with modern birds, give them a crucial metabolic edge in the low-oxygen Triassic world.</div>
+      <div class="card-locations"><span class="loc-tag">Ischigualasto Formation, Argentina</span><span class="loc-tag">Santa Maria Formation, Brazil</span></div>
+    </div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="card ext-card">
+      <div class="card-date">201 million years ago</div>
+      <div class="card-title">End-Triassic Extinction — #4 of the Big Five</div>
+      <div class="card-body">The supercontinent Pangaea begins splitting apart. The Central Atlantic Magmatic Province (CAMP) erupts — a volcanic event that covers 11 million km² with lava and floods the atmosphere with CO₂. 76% of species are lost. Crucosaurs, large amphibians, and most early archosaur lineages vanish. The survivors? Small, adaptable dinosaurs. They now inherit an empty world.</div>
+      <div class="severity">
+        <div class="severity-label">Species lost · ~76%</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:76%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Newark Basin, New Jersey, USA</span><span class="loc-tag">Fundy Basin, Nova Scotia</span><span class="loc-tag">Moroccan High Atlas Mountains</span><span class="loc-tag">Somerset, UK</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card life-card">
+      <div class="card-date">200 million years ago</div>
+      <div class="card-title">First Mammals</div>
+      <div class="card-body">Tiny, shrew-like, nocturnal. Warm-blooded. Fur. Feeding young with milk. Mammals survive the end-Triassic by being small and staying out of sight. For 135 million years they remain in the shadows of the dinosaurs, waiting.</div>
+      <div class="card-locations"><span class="loc-tag">Kayenta Formation, Arizona</span><span class="loc-tag">Welsh slate quarries, UK</span></div>
+    </div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="card life-card">
+      <div class="card-date">130 million years ago</div>
+      <div class="card-title">Flowering Plants — Angiosperms</div>
+      <div class="card-body">Flowers appear — and with them, a new evolutionary contract. Insects carry pollen between plants in exchange for nectar. Fruit-bearing trees enlist birds and mammals to disperse seeds in exchange for food. Life invents mutualism at scale. The diversity of both insects and mammals explodes in the resulting co-evolution.</div>
+      <div class="card-locations"><span class="loc-tag">Yixian Formation, Liaoning, China</span><span class="loc-tag">Cretaceous deposits, Portugal &amp; USA</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/trex.svg" alt="T-Rex illustration"/>
+        <div class="species-name"><em>Tyrannosaurus rex</em><br>Last of the non-avian dinosaurs</div>
+        <div class="species-era">Late Cretaceous · 68–66 Ma</div>
+      </div>
+      <div class="card-date">66 million years ago</div>
+      <div class="card-title">K-Pg Extinction — Asteroid Ends the Age of Dinosaurs</div>
+      <div class="card-body">A 10-km asteroid strikes the Yucatán Peninsula at 72,000 km/h. The impact releases energy equivalent to a billion nuclear bombs. Ejecta re-entering the atmosphere ignites wildfires globally. A dust cloud blocks sunlight for years. Temperatures plummet. 76% of species — including all non-avian dinosaurs — are gone within decades. Only birds (the surviving dinosaur lineage), small mammals, and a few reptiles make it through. The Deccan Traps volcanism in India adds further poison to an already dying world.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Tyrannosaurus rex</em></div>
+        <p><strong><em>T. rex</em> existed for only about 2 million years.</strong> The gap between <em>T. rex</em> and <em>Stegosaurus</em> (83 million years) is larger than the gap between <em>T. rex</em> and you (66 million years). We are, in a real sense, closer in time to <em>T. rex</em> than <em>T. rex</em> was to most of the dinosaurs it shared a planet with.</p>
+        <p><strong>Estimates suggest 2.5 billion individual <em>T. rexes</em> lived over that span,</strong> with around 20,000 alive at any given moment — a population roughly the size of today's white rhinoceros. Every fossil ever found represents one of those 2.5 billion individuals. We have found fewer than 50 reasonably complete specimens.</p>
+        <p><strong>It grew 2 kg per day during adolescence</strong> — rocketing from a 30 kg hatchling to an 8,000 kg adult in roughly 20 years. The infamous tiny arms were not vestigial: proportionally they were more muscular than human arms, capable of lifting ~200 kg. They may have been used to grip prey pinned under the body, or to help the animal rise from the ground.</p>
+        <p><strong>Sue, the most complete T. rex ever found,</strong> showed signs of gout, a healed broken fibula, trichomonosis (a parasitic infection from eating infected prey), and bite marks from another <em>T. rex</em> on her face. She was a survivor, many times over, until she wasn't.</p>
+      </div>
+      <div class="severity">
+        <div class="severity-label">Species lost · ~76%</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:76%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Chicxulub Crater, Yucatán, Mexico (impact site)</span><span class="loc-tag">Gubbio, Italy (iridium layer, 1980 discovery)</span><span class="loc-tag">El Kef, Tunisia (GSSP boundary)</span><span class="loc-tag">Hell Creek, Montana, USA</span><span class="loc-tag">Brazos River, Texas, USA</span></div>
+    </div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <!-- ════════════ CENOZOIC ════════════ -->
+  <div class="era-sep">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-name">Cenozoic — 66 Ma to Present</div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot life"></div></div>
+    <div class="card life-card">
+      <div class="card-date">55 million years ago</div>
+      <div class="card-title">Mammal Diversification — The Age of Mammals</div>
+      <div class="card-body">With the dinosaurs gone, mammals explode into every available ecological niche. Whales evolve from land mammals that return to the sea. Bats take the skies. Horses, elephants, primates, rodents — the modern mammal families all appear within 10 million years. The survivors inherit the world.</div>
+      <div class="card-locations"><span class="loc-tag">Messel Pit, Germany</span><span class="loc-tag">Fayum Depression, Egypt</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card earth-card">
+      <div class="card-date">34 million years ago</div>
+      <div class="card-title">Antarctica Freezes — Ice Ages Begin</div>
+      <div class="card-body">South America and Australia separate from Antarctica, allowing the Antarctic Circumpolar Current to form. Antarctica is isolated from warm ocean currents and begins to glaciate. CO₂ levels fall as the Himalayas rise and weather silicate rock. The planet enters a long cooling trend that will culminate in the Pleistocene ice ages.</div>
+      <div class="card-locations"><span class="loc-tag">DSDP Drill Cores, Antarctic Ocean</span><span class="loc-tag">Weddell Sea</span></div>
+    </div>
+    <div class="node"><div class="dot earth"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <!-- ════════════ HUMAN ════════════ -->
+  <div class="era-sep">
+    <div class="era-sep-line"></div>
+    <div class="era-sep-name">Human Time — Last 4 Million Years</div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot hum"></div></div>
+    <div class="card hum-card">
+      <div class="card-date">4 million years ago</div>
+      <div class="card-title">Hominids Walk Upright — Australopithecus</div>
+      <div class="card-body">In the African savannah, a lineage of apes begins walking on two legs. Bipedalism frees the hands and begins the long feedback loop: tools enable better food, better food enables larger brains, larger brains enable better tools. The African rift valley — where tectonic forces are splitting the continent and changing the climate — becomes the cradle of human evolution.</div>
+      <div class="card-locations"><span class="loc-tag">Laetoli, Tanzania (footprints)</span><span class="loc-tag">Afar Triangle, Ethiopia</span><span class="loc-tag">Sterkfontein, South Africa</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card ext-card">
+      <div class="species-preview">
+        <img src="images/mammoth.svg" alt="Woolly Mammoth illustration"/>
+        <div class="species-name"><em>Mammuthus primigenius</em><br>Woolly mammoth — last survivors<br>on Wrangel Island until 4,000 ya</div>
+        <div class="species-era">Pleistocene · 2.6 Ma – 4,000 ya</div>
+      </div>
+      <div class="card-date">2.6 Ma – 11,700 years ago</div>
+      <div class="card-title">Pleistocene Ice Ages &amp; Megafauna Collapse</div>
+      <div class="card-body">Ice ages cycle every 100,000 years. Between the glaciations: woolly mammoths, cave bears, giant ground sloths, sabre-toothed cats, giant wombats. As the last ice age ends (~12,000 ya), these megafauna disappear continent by continent — the pattern tracks the arrival of Homo sapiens. Africa, where humans evolved alongside these animals, loses the fewest. The Americas and Australia, which had no prior contact, lose the most.</div>
+      <div class="species-fact">
+        <div class="species-fact-label">Species spotlight — <em>Mammuthus primigenius</em>, the woolly mammoth</div>
+        <p><strong>The last woolly mammoths were alive when the pyramids of Giza were already ancient.</strong> A dwarf population survived on Wrangel Island, in the Arctic Ocean, until approximately 4,000 years ago — around 2,000 BCE. The Great Pyramid was built in 2,560 BCE. For 560 years, mammoths and pharaohs shared the Earth.</p>
+        <p><strong>Their blood was genetically engineered for the cold.</strong> Woolly mammoth haemoglobin carried a mutation that prevented it from gripping oxygen too tightly in freezing temperatures — a problem that makes modern elephant blood essentially non-functional below 10°C. The mammoth version delivered oxygen to muscles efficiently at −40°C. No living elephant has this adaptation.</p>
+        <p><strong>We know what they ate for their last meal.</strong> Permafrost has preserved stomach contents in multiple specimens: grasses, sedges, moss, buttercups, sometimes tree bark. One juvenile nicknamed "Yuka," found in Siberia with her fur, skin, and organs intact, had partially digested food still in her digestive tract. She has been dead for 39,000 years.</p>
+        <p><strong>A company called Colossal Biosciences</strong> is actively working to resurrect the woolly mammoth by editing Asian elephant DNA with the key cold-adaptation genes. The first mammoth-elephant hybrid calves are targeted for the 2020s. Whether to release them into rewilded Siberian tundra — where they would reshape the ecosystem by trampling snow and exposing frozen permafrost — is one of the stranger policy questions of the 21st century.</p>
+      </div>
+      <div class="severity">
+        <div class="severity-label">Megafauna genera lost · ~70% globally</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:70%"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Wrangel Island, Arctic (last mammoths, 4,000 ya)</span><span class="loc-tag">Rancho La Brea, Los Angeles</span><span class="loc-tag">Naracoorte Caves, South Australia</span><span class="loc-tag">Berelekh, Siberia</span></div>
+    </div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot hum"></div></div>
+    <div class="card hum-card">
+      <div class="card-date">300,000 years ago</div>
+      <div class="card-title">Homo sapiens — Modern Humans Appear</div>
+      <div class="card-body">Anatomically modern humans emerge in Africa. For 200,000 years we share the planet with Neanderthals, Denisovans, and perhaps other Homo species. We interbreed — today's humans carry 1–4% Neanderthal DNA. By 40,000 years ago, we are the only Homo species remaining. No one knows exactly why.</div>
+      <div class="card-locations"><span class="loc-tag">Jebel Irhoud, Morocco</span><span class="loc-tag">Omo Kibish, Ethiopia</span><span class="loc-tag">Blombos Cave, South Africa</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card hum-card">
+      <div class="card-date">70,000 years ago</div>
+      <div class="card-title">Out of Africa — Global Migration</div>
+      <div class="card-body">A small group of humans — perhaps a few thousand — crosses from Africa into the Arabian Peninsula. They follow coastlines, reach India, Southeast Asia, and Australia by 65,000 ya. Europe is settled by 45,000 ya. The Americas are reached via Beringia around 15,000 ya. Within 55,000 years, Homo sapiens inhabits every landmass except Antarctica.</div>
+      <div class="card-locations"><span class="loc-tag">Madjedbebe Rock Shelter, Australia (65,000 ya)</span><span class="loc-tag">Bacho Kiro, Bulgaria (45,000 ya)</span><span class="loc-tag">Monte Verde, Chile (15,000 ya)</span></div>
+    </div>
+    <div class="node"><div class="dot hum"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <div class="event right">
+    <div class="empty"></div>
+    <div class="node"><div class="dot hum"></div></div>
+    <div class="card hum-card">
+      <div class="card-date">3,300 – 1,200 BCE &amp; 1,200 BCE – 550 CE</div>
+      <div class="card-title">Bronze Age &amp; Iron Age</div>
+      <div class="card-body">Humans learn to smelt copper, then bronze, then iron. Metal tools transform agriculture, warfare, and trade. Cities rise along rivers — the Nile, Tigris-Euphrates, Indus, Yellow River. Writing emerges independently in Mesopotamia, Egypt, China, and Mesoamerica. Civilisations connect for the first time into trade networks spanning thousands of kilometres. The human footprint on the land grows irreversible.</div>
+      <div class="card-locations"><span class="loc-tag">Fertile Crescent, Iraq &amp; Syria</span><span class="loc-tag">Nile Valley, Egypt</span><span class="loc-tag">Anatolian Highland, Turkey</span><span class="loc-tag">Henan Province, China</span></div>
+    </div>
+  </div>
+
+  <div class="event left">
+    <div class="card ext-card">
+      <div class="card-date">1800 – Present</div>
+      <div class="card-title">The Sixth Extinction — Now</div>
+      <div class="card-body">Current species extinction rates are 100 to 1,000 times the natural background rate. The IUCN Red List tracks 44,000+ species as threatened. Amphibians are collapsing first — 41% of species threatened. Insects are declining at 2–3% per year in many regions. Vertebrate populations have fallen 73% on average since 1970. The cause is not an asteroid. It is not a volcano. It is land conversion, hunting, invasive species, climate change, and pollution — all driven by one species. The question of whether this becomes the sixth mass extinction may be decided within this century.</div>
+      <div class="severity">
+        <div class="severity-label">Current extinction rate vs background · 100–1,000×</div>
+        <div class="severity-bar"><div class="severity-fill" style="width:88%; background:linear-gradient(90deg,#e74c3c,#ff6b35)"></div></div>
+      </div>
+      <div class="card-locations"><span class="loc-tag">Tropical forests globally</span><span class="loc-tag">Coral reef systems worldwide</span><span class="loc-tag">Freshwater ecosystems</span><span class="loc-tag">Island biotas</span></div>
+    </div>
+    <div class="node"><div class="dot ext"></div></div>
+    <div class="empty"></div>
+  </div>
+
+  <!-- Present marker -->
+  <div style="text-align:center; padding:40px 0; position:relative;">
+    <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,0.15),0 0 30px rgba(255,255,255,0.3);"></div>
+    <div style="font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,0.3);padding-top:28px;">Present Day</div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="../index.html">← Posts</a>
+  <div class="note">Sources: IPCC, IUCN Red List, Geological Society of America, peer-reviewed paleontology literature</div>
+</footer>
+
+</body>
+</html>
