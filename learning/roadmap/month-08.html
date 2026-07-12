@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Month 08 · Neural Nets, Embeddings &amp; How LLMs Work</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="roadmap.css">
+</head>
+<body data-phase="ai">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../data-ai-roadmap.html">← Roadmap</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="cur"></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>08</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="phase-tag">Phase 2 · AI Engineering</span>
+    <div class="month-num">Month 08</div>
+    <h1>Neural Nets, Embeddings &amp; How LLMs Work</h1>
+    <p class="mission">Stop treating the model as magic. This month you learn — at an engineer's depth, not a researcher's — what a neural network is, what an embedding is, how attention and transformers work, and how a next-token predictor becomes Claude.</p>
+  </header>
+
+  <section>
+    <div class="sec-label">What you'll master</div>
+    <div class="chips">
+      <span class="chip">Neurons &amp; layers</span>
+      <span class="chip">Weights &amp; activations</span>
+      <span class="chip">Backpropagation</span>
+      <span class="chip">Gradient descent</span>
+      <span class="chip">Embeddings</span>
+      <span class="chip">Cosine similarity</span>
+      <span class="chip">Vector space</span>
+      <span class="chip">Tokenization</span>
+      <span class="chip">Self-attention</span>
+      <span class="chip">Query/Key/Value</span>
+      <span class="chip">Multi-head attention</span>
+      <span class="chip">Positional encoding</span>
+      <span class="chip">Transformer architecture</span>
+      <span class="chip">Context window</span>
+      <span class="chip">Pre-training</span>
+      <span class="chip">Fine-tuning</span>
+      <span class="chip">Instruction tuning</span>
+      <span class="chip">RLHF</span>
+      <span class="chip">Temperature</span>
+      <span class="chip">Logits</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Core focus</div>
+    <h2 class="sec-title">Lift the hood, name the parts</h2>
+    <div class="prose">
+      <p>You've spent seven months building the systems that <em>feed</em> models. Now you look inside one. The goal isn't to derive the math — it's to earn the right to speak about LLMs without hand-waving, so that when a stakeholder asks "how does it actually work," you answer with structure instead of vibes.</p>
+
+      <h3 class="sub">Neural networks, the honest short version</h3>
+      <p>A single <strong>neuron</strong> is embarrassingly simple: take some inputs, multiply each by a <strong>weight</strong>, add them up, add a bias, then pass the result through a non-linear <strong>activation</strong> function (ReLU, sigmoid). That's it. Stack neurons side by side into a <strong>layer</strong>, stack layers front to back, and the whole thing becomes a very flexible function that maps inputs to outputs.</p>
+      <ul>
+        <li><strong>Training</strong> is just tuning the weights so the output is less wrong. You feed in an example, measure the error (the <em>loss</em>), and nudge every weight in the direction that shrinks it.</li>
+        <li><strong>Gradient descent</strong> — the nudging rule. The gradient points uphill on the loss surface; you step the opposite way. Repeat millions of times and the loss rolls downhill toward a good-enough valley.</li>
+        <li><strong>Backpropagation</strong> — the bookkeeping that makes it tractable. It's the chain rule applied backwards through the layers to figure out how much each weight contributed to the error, so you know which way to nudge each one.</li>
+      </ul>
+      <p>Frame it this way and it stops being mystical: a neural net is a giant, flexible function, and training is curve-fitting at scale. Enough to speak fluently — not enough to write a paper, and that's the right amount for you right now.</p>
+
+      <h3 class="sub">Embeddings — the bridge concept</h3>
+      <p>This is the month's keystone. An <strong>embedding</strong> turns a token — or a word, a sentence, a document — into a <strong>vector</strong>: a list of a few hundred to a few thousand numbers. The trick is that these vectors live in a space where <em>meaning becomes geometry</em>. Things that mean similar things land close together; things that don't sit far apart.</p>
+      <ul>
+        <li><strong>Vector space</strong> — every piece of text is a point. "Invoice" and "receipt" are neighbors; "invoice" and "giraffe" are across town.</li>
+        <li><strong>Cosine similarity</strong> — how you measure "close." It's the cosine of the angle between two vectors: 1.0 means identical direction, 0 means unrelated, −1 means opposite. Direction, not distance, is what carries meaning here.</li>
+      </ul>
+      <p>Internalize this one. It is the concept that connects your entire data career to AI: an embedding is just a feature vector where the features encode semantics. It's what makes semantic search, clustering, deduplication, and — next month — <strong>retrieval-augmented generation</strong> possible. If only one idea survives this month, make it this one.</p>
+
+      <h3 class="sub">Tokenization — the model's unit of thought</h3>
+      <p>A model never sees characters or whole words. Text is first chopped into <strong>tokens</strong> — subword chunks. Common words are one token; rarer ones fracture into pieces ("tokenization" might become <code>token</code> + <code>ization</code>). This has real engineering consequences:</p>
+      <ul>
+        <li><strong>Cost and latency</strong> are billed and spent per token, not per word. A dense paragraph of code or JSON can cost far more tokens than the same length of English prose.</li>
+        <li><strong>The context window</strong> is a hard budget measured in tokens — everything the model can "see" at once, prompt plus response. Blow the budget and the oldest content falls off the edge. You'll design around this constraint for the rest of the phase.</li>
+        <li>The same word can be one token or several depending on spacing and casing — which is why token counts surprise people who count words.</li>
+      </ul>
+
+      <h3 class="sub">The transformer &amp; attention</h3>
+      <p>The transformer is the architecture under every modern LLM, and its heart is <strong>self-attention</strong>: a mechanism that lets each token look at every other token in the sequence and decide how much each one matters for interpreting it. "It" in a sentence can reach back and attend strongly to the noun it refers to.</p>
+      <ul>
+        <li><strong>Query / Key / Value</strong> — the intuition is a soft dictionary lookup. Each token emits a <em>Query</em> ("what am I looking for?"), every token offers a <em>Key</em> ("here's what I am"), and the match between query and keys decides how much of each token's <em>Value</em> gets mixed in. Not a hard hash lookup — a weighted blend.</li>
+        <li><strong>Multi-head attention</strong> — run several of these lookups in parallel, each free to focus on a different kind of relationship (syntax, coreference, topic), then concatenate. More perspectives per layer.</li>
+        <li><strong>Positional encoding</strong> — attention alone is order-blind (it's a set operation), so position information is added to each token's vector. That's how the model knows "dog bites man" differs from "man bites dog" without any recurrence.</li>
+      </ul>
+      <p>Why transformers won where RNNs stalled: RNNs process tokens one at a time, sequentially, so they're slow to train and forget distant context. Attention looks at the whole sequence at once, in parallel — which maps beautifully onto GPUs and scales. Scaling is the whole story.</p>
+
+      <h3 class="sub">From next-token predictor to Claude</h3>
+      <p>Here's the demystification in three moves. First, <strong>pre-training</strong>: the base model does exactly one thing — predict the next token — over a staggering amount of internet text. That alone teaches it grammar, facts, reasoning patterns, and style, but it's just an autocomplete; it doesn't yet know it's supposed to be helpful.</p>
+      <ul>
+        <li><strong>Fine-tuning / instruction tuning</strong> — further training on examples of instructions and good responses, so the model learns to <em>follow directions</em> rather than merely continue text.</li>
+        <li><strong>RLHF / preference training</strong> — humans (and models) rank responses; the model is trained to prefer the ones people find helpful, honest, and harmless. This alignment step is what turns a raw predictor into an assistant you'd actually trust.</li>
+        <li><strong>Inference controls</strong> — at generation time the model outputs <strong>logits</strong> (a raw score per possible next token), which a softmax turns into probabilities. <strong>Temperature</strong> flattens or sharpens that distribution (low = focused and deterministic, high = varied and creative); <strong>top-p</strong> (nucleus sampling) restricts choices to the smallest set of tokens whose probability sums to <em>p</em>.</li>
+      </ul>
+      <p>Hold both truths at once: yes, it is "just predicting the next token" — and the instruction tuning plus preference training on top of that predictor is precisely what makes it useful. Neither half is the whole story.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Hands-on challenge</div>
+    <div class="challenge">
+      <div class="tier">Build · ~7 hours</div>
+      <h3>Make embeddings real — build a tiny semantic search over your own writing</h3>
+      <p>Concepts stick when you can see them move. Take a corpus you actually care about — titles and paragraphs from your own GitHub posts — and turn abstract vectors into something you can query and plot.</p>
+      <ol>
+        <li>Embed a small corpus. Use an embeddings model (<code>sentence-transformers</code> locally, or an embeddings API) to turn each title/paragraph from your GitHub posts into a vector. Store the vectors alongside their source text.</li>
+        <li>Build the search. Compute <strong>cosine similarity</strong> between a typed query's embedding and every item, then return the nearest few. That's a semantic search engine in about fifteen lines — no keyword matching anywhere.</li>
+        <li>See the space. Reduce the vectors to 2D with <strong>t-SNE</strong> or <strong>UMAP</strong> and scatter-plot them. Watch related posts pull into visible clusters — meaning as geometry, on your screen.</li>
+        <li>Inspect tokens. Tokenize a few passages and print the token count and the actual splits. Notice where words fracture, and how code or long words inflate the count against the context budget.</li>
+        <li>Watch loss go down. Optionally, run a tiny neural net on a toy dataset (or a small MNIST notebook) and print the loss each epoch. Seeing the number fall is gradient descent made concrete.</li>
+      </ol>
+      <div class="stretch"><b>Stretch</b> — Embed two sentences that mean the same thing in different words ("The invoice is overdue" / "Payment on the bill is late") and show their high cosine similarity. Then embed an unrelated sentence and show the score collapse. That contrast <em>is</em> the intuition behind semantic search — prove it to yourself with numbers.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Learn it with Claude</div>
+    <h2 class="sec-title">Prompts that replace the textbook</h2>
+    <p>Paste these into Claude one at a time. Ask for diagrams, push on the analogies, say "make it simpler" or "now go one level deeper." Conversation beats reading — especially for the parts that feel like magic.</p>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Neural nets from first principles</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">You are an ML engineer mentoring a senior data engineer who is strong in Java, SQL, and distributed systems but has never trained a neural network. Explain — at an engineer's level, not a researcher's — what a neural network is: neurons, weights, activations, and layers. Then explain how training works via gradient descent and backpropagation, using one clear analogy (e.g. rolling downhill on a foggy hillside). Draw a Mermaid diagram of a small feed-forward network with an input layer, one hidden layer, and an output. End with 3 sentences I could say out loud to explain "how a model learns" without sounding like I'm guessing.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Embeddings &amp; cosine similarity, worked</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain embeddings and cosine similarity to me as a data engineer. Use a concrete worked example: take these three short sentences — "The invoice is overdue," "Payment on the bill is late," and "The giraffe ran across the savanna" — and describe their relative distances in embedding space and roughly what cosine similarity each pair would score, and why. Then draw an ASCII sketch of a 2D vector space with those three sentences placed as points, so I can see the two related ones cluster and the third sit far away. Finish with a one-line definition of cosine similarity I can quote.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Self-attention as a soft lookup</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain self-attention and the Query/Key/Value mechanism to me using the analogy of a soft dictionary lookup — where the query is fuzzy and you get a weighted blend of values instead of one exact hit. Make it intuitive first, then tie the analogy back to what Q, K, and V actually are. Explain why multi-head attention helps and what positional encoding is for. Then draw a Mermaid diagram of a single transformer block showing the flow through self-attention and the feed-forward layer. Keep it visual and analogy-driven, not equation-heavy.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Pre-training → instruction tuning → RLHF</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Walk me through the full path from a raw next-token predictor to a helpful assistant like Claude. Cover: (1) pre-training on internet text to get a base model, (2) instruction / fine-tuning so it follows directions, (3) RLHF / preference training so it becomes helpful, honest, and harmless. Then explain what happens at inference: how logits become probabilities, and precisely what temperature and top-p (nucleus sampling) each do to the output. When you're done, quiz me with 4 questions, one at a time, waiting for my answer before revealing yours.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Mock interview — how LLMs work</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as an interviewer screening me for an AI engineer role, focused purely on conceptual understanding of how LLMs work. Ask me 6 questions covering embeddings and cosine similarity, tokenization and the context window, self-attention and Q/K/V, the transformer vs RNNs, pre-training vs fine-tuning vs RLHF, and temperature/top-p. Ask ONE at a time and wait for my answer. After each, score it 1–5, correct anything wrong, and give me the crisper way to say it. At the end, give an overall readiness score and name the one concept I should shore up before Month 9's RAG work.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Terminology to own</div>
+    <h2 class="sec-title">Say these without hesitating</h2>
+    <div class="glossary">
+      <div class="term"><dt>Embedding</dt><dd>Text turned into a vector where semantic similarity becomes geometric closeness.</dd></div>
+      <div class="term"><dt>Cosine similarity</dt><dd>The cosine of the angle between two vectors; 1 = same meaning, 0 = unrelated.</dd></div>
+      <div class="term"><dt>Token</dt><dd>The subword unit a model actually reads; not the same as a word.</dd></div>
+      <div class="term"><dt>Context window</dt><dd>The hard budget, in tokens, of everything the model can see at once — prompt plus output.</dd></div>
+      <div class="term"><dt>Self-attention</dt><dd>Each token weighs every other token to decide what's relevant to it.</dd></div>
+      <div class="term"><dt>Query/Key/Value</dt><dd>The three projections behind attention — a soft, weighted dictionary lookup.</dd></div>
+      <div class="term"><dt>Multi-head attention</dt><dd>Several attention lookups in parallel, each capturing a different relationship.</dd></div>
+      <div class="term"><dt>Positional encoding</dt><dd>Order information added to token vectors, since attention is otherwise order-blind.</dd></div>
+      <div class="term"><dt>Pre-training</dt><dd>Learning to predict the next token over vast text; produces the base model.</dd></div>
+      <div class="term"><dt>Fine-tuning</dt><dd>Further training on curated examples so the model follows instructions.</dd></div>
+      <div class="term"><dt>RLHF</dt><dd>Preference training on ranked responses to make the model helpful, honest, harmless.</dd></div>
+      <div class="term"><dt>Temperature</dt><dd>A knob that sharpens (low) or flattens (high) the next-token probability distribution.</dd></div>
+      <div class="term"><dt>Logits</dt><dd>The model's raw per-token scores, turned into probabilities by softmax.</dd></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You built a working semantic search over your own text using embeddings and cosine similarity.</li>
+      <li>You produced a 2D plot where semantically related items visibly cluster.</li>
+      <li>You can explain self-attention and Query/Key/Value in plain words, no equations.</li>
+      <li>You can explain the difference between pre-training, fine-tuning, and RLHF.</li>
+      <li>You can define temperature and the context window precisely, on demand.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="month-07.html"><div class="dir">← Previous</div><div class="lbl">ML Engineering Foundations</div></a>
+    <a class="next" href="month-09.html"><div class="dir">Next →</div><div class="lbl">LLM Apps &amp; RAG</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../data-ai-roadmap.html">↑ Back to the full roadmap</a></div>
+
+</div>
+
+<script src="roadmap.js"></script>
+</body>
+</html>

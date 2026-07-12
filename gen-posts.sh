@@ -6,7 +6,7 @@
 cd "$(dirname "$0")"
 
 python3 - <<'EOF'
-import os, re, json
+import os, re, json, html
 from datetime import datetime, timezone
 
 SKIP_DIRS = {'.git', '.github'}
@@ -20,6 +20,8 @@ def process_file(filepath, category=None):
     title = title_match.group(1) if title_match else (
         os.path.basename(filepath).replace('.html', '').replace('-', ' ').title()
     )
+    # Decode HTML entities (e.g. &amp; -> &) so titles render correctly via textContent
+    title = html.unescape(title)
     # Use date of first git commit for the file (creation date); fall back to mtime
     import subprocess
     result = subprocess.run(
