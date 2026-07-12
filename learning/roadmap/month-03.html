@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Month 03 · Distributed Batch Processing with Spark</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="roadmap.css">
+</head>
+<body data-phase="data">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../data-ai-roadmap.html">← Roadmap</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>03</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="phase-tag">Phase 1 · Data Engineering</span>
+    <div class="month-num">Month 03</div>
+    <h1>Distributed Batch Processing with Spark</h1>
+    <p class="mission">When data outgrows a single machine, Spark is the answer the industry reaches for. This month you learn how it actually executes — and the lakehouse table formats that put ACID transactions on the data lake.</p>
+  </header>
+
+  <section>
+    <div class="sec-label">What you'll master</div>
+    <div class="chips">
+      <span class="chip">Spark architecture</span>
+      <span class="chip">Driver &amp; executors</span>
+      <span class="chip">RDD/DataFrame/Dataset</span>
+      <span class="chip">Lazy evaluation</span>
+      <span class="chip">DAG</span>
+      <span class="chip">Transformations vs actions</span>
+      <span class="chip">Narrow vs wide</span>
+      <span class="chip">Shuffle</span>
+      <span class="chip">Partitioning</span>
+      <span class="chip">Broadcast join</span>
+      <span class="chip">Sort-merge join</span>
+      <span class="chip">Data skew</span>
+      <span class="chip">Caching</span>
+      <span class="chip">Catalyst optimizer</span>
+      <span class="chip">Delta Lake</span>
+      <span class="chip">Apache Iceberg</span>
+      <span class="chip">Hudi</span>
+      <span class="chip">Time travel</span>
+      <span class="chip">Schema evolution</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Core focus</div>
+    <h2 class="sec-title">How Spark actually runs your job</h2>
+    <div class="prose">
+      <p>You've run Dataflow and BigQuery; you know what distributed compute feels like from the outside. Spark is where you learn what's happening on the inside — and the mental model transfers to almost every batch engine you'll ever touch. Get the execution model and the shuffle crisp, and Spark stops being magic.</p>
+
+      <h3 class="sub">Why distributed compute</h3>
+      <p>A single machine has a ceiling: one box's RAM, cores, and disk. <strong>Scale-up</strong> (buy a bigger machine) hits diminishing returns and a hard wall fast. <strong>Scale-out</strong> (add more commodity machines) is effectively unbounded — and that's the bet Spark makes. It's an <strong>in-memory distributed engine</strong>: it partitions your data across a cluster, keeps working sets in RAM where it can, and coordinates parallel computation over those partitions. It is not a warehouse — it doesn't own your storage or serve low-latency queries. Reach for Spark when you need programmatic transformation over huge datasets (ML feature pipelines, complex joins, semi-structured data); reach for BigQuery when you want SQL analytics over managed columnar storage.</p>
+
+      <h3 class="sub">Spark's execution model</h3>
+      <p>Three roles run every job. The <strong>driver</strong> holds your program, builds the execution plan, and schedules work. The <strong>executors</strong> are worker processes that actually run tasks on partitions and hold cached data. The <strong>cluster manager</strong> (YARN, Kubernetes, or Spark standalone) hands out the executors. The driver plans; the executors do; the manager provisions.</p>
+      <ul>
+        <li><strong>RDD → DataFrame → Dataset</strong> — RDDs were the original low-level, unstructured API. DataFrames added a schema and unlocked the query optimizer; Datasets add compile-time type safety (JVM only). <em>Use DataFrames</em> (or Spark SQL) for nearly everything — you get Catalyst's optimizations for free.</li>
+        <li><strong>Lazy evaluation and the DAG</strong> — Spark doesn't execute as you write. Each transformation appends to a <strong>DAG</strong> (directed acyclic graph) of operations. Only an <em>action</em> triggers the whole plan to run, which lets Catalyst optimize across the entire chain before a single byte moves.</li>
+        <li><strong>Transformations vs actions</strong> — transformations (<code>map</code>, <code>filter</code>, <code>join</code>, <code>groupBy</code>) are lazy and return a new DataFrame. Actions (<code>count</code>, <code>collect</code>, <code>write</code>) force execution. Nothing runs until an action — a fact that explains most "why is my code doing nothing / doing everything at once" confusion.</li>
+      </ul>
+
+      <h3 class="sub">The shuffle — where performance lives or dies</h3>
+      <p>Dependencies come in two flavors. <strong>Narrow</strong> transformations (<code>map</code>, <code>filter</code>) need only the data already in a partition — no data movement, embarrassingly parallel. <strong>Wide</strong> transformations (<code>groupBy</code>, <code>join</code>, <code>repartition</code>) need rows from <em>across</em> partitions, which forces a <strong>shuffle</strong>: Spark writes intermediate data, moves it across the network, and re-partitions by key. The shuffle is the single most expensive thing Spark does — it's disk I/O plus network plus serialization. Everything about performance tuning is really about minimizing and balancing shuffles. <strong>Partitioning</strong> and <strong>partition count</strong> govern parallelism; <code>spark.sql.shuffle.partitions</code> (default 200) sets how many partitions a shuffle produces — too few and tasks are huge, too many and you drown in scheduling overhead.</p>
+
+      <h3 class="sub">Joins and skew</h3>
+      <p>Two join strategies dominate. A <strong>broadcast join</strong> ships a small table in full to every executor so the large side never shuffles — by far the cheapest option when one side fits in memory. A <strong>sort-merge join</strong> shuffles and sorts <em>both</em> sides by the join key, then merges — the workhorse for two large tables. <strong>Data skew</strong> is the classic killer: one hot key (think a null <code>facility_id</code> or a dominant drug code) lands most rows in a single partition, so 199 tasks finish and one <strong>straggler</strong> runs for an hour.</p>
+      <ul>
+        <li><strong>Salting</strong> — append a random suffix to the hot key to spread it across partitions, join on the salted key, then aggregate back.</li>
+        <li><strong>Broadcast</strong> — if the other side is small, broadcasting sidesteps the skewed shuffle entirely.</li>
+        <li><strong>AQE (Adaptive Query Execution)</strong> — Spark 3+ re-plans mid-flight using runtime statistics: it can coalesce shuffle partitions, switch to a broadcast join, and split skewed partitions automatically. Turn it on and understand what it's doing for you.</li>
+      </ul>
+      <p><strong>Caching / persist</strong> keeps a DataFrame in memory (or memory-and-disk) so a reused intermediate isn't recomputed from the DAG on every action — worth it when you branch off the same result multiple times, wasteful when you read it once. Under the hood, the <strong>Catalyst</strong> optimizer rewrites your logical plan (predicate pushdown, join reordering, constant folding) into an efficient physical plan, and <strong>Tungsten</strong> makes execution fast with off-heap memory management, cache-aware computation, and whole-stage code generation — together they're why DataFrames beat hand-tuned RDD code.</p>
+
+      <h3 class="sub">Lakehouse table formats</h3>
+      <p>Raw Parquet files sitting in object storage give you cheap columnar scans and nothing else: no ACID, no safe concurrent updates, no consistent read while a write is in flight, no way to <code>MERGE</code> or query yesterday's version. <strong>Delta Lake</strong>, <strong>Apache Iceberg</strong>, and <strong>Apache Hudi</strong> all solve this the same way — a <strong>transaction log / metadata layer</strong> that sits on top of the Parquet files and tracks which files make up each version of the table. That layer buys you <strong>ACID transactions</strong>, <strong>time travel</strong> (query a table as of an old version or timestamp), <strong>schema evolution</strong> (add/rename columns without rewriting), <strong>upserts/MERGE</strong>, and safe <strong>concurrent reads and writes</strong>. That combination — warehouse-grade table semantics directly on cheap lake storage — is what earns the name <strong>lakehouse</strong>.</p>
+      <ul>
+        <li><strong>Delta Lake</strong> — a JSON/Parquet transaction log; deepest integration with Spark and Databricks; the easiest on-ramp.</li>
+        <li><strong>Apache Iceberg</strong> — engine-agnostic table spec with hidden partitioning and strong catalog support; the emerging open standard across Spark, Flink, Trino, and warehouses (including BigQuery).</li>
+        <li><strong>Apache Hudi</strong> — built for incremental, upsert-heavy streaming ingestion with copy-on-write and merge-on-read table types.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Hands-on challenge</div>
+    <div class="challenge">
+      <div class="tier">Build · ~8 hours</div>
+      <h3>A PySpark job end to end — skew fix, Delta table, time travel</h3>
+      <p>Use Databricks Community Edition (free) or a local Spark install. Grab a real open dataset — NYC taxi trips is ideal (big enough to shuffle, has natural join keys and skew). The point isn't the analytics; it's watching Spark execute and touching every concept above with your own hands.</p>
+      <ol>
+        <li>Read the raw data into a <strong>DataFrame</strong> and inspect the schema and partition count.</li>
+        <li>Do transformations plus an <strong>aggregation</strong> — e.g. average fare by pickup hour and zone.</li>
+        <li>Deliberately create or find a <strong>skewed join</strong> (join trips to a zone lookup on a hot key), observe the straggler task, then <strong>fix it</strong> with a broadcast or salting. Note the runtime difference before and after.</li>
+        <li>Write the output as a <strong>Delta</strong> (or Iceberg) table.</li>
+        <li><strong>MERGE</strong> to update some rows, then use <strong>time travel</strong> to query the previous version and diff it against the current one.</li>
+        <li><strong>Evolve the schema</strong> by adding a column, write again, and confirm the old data still reads cleanly.</li>
+      </ol>
+      <div class="stretch"><b>Stretch</b> — Open the <strong>Spark UI</strong> for one job. Identify the stages, find the shuffle boundary, and locate the slowest task. Write 3 sentences on what you saw — where the time went and why.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Learn it with Claude</div>
+    <h2 class="sec-title">Prompts that replace the textbook</h2>
+    <p>Paste these into Claude one at a time. Push back, ask for diagrams, ask "why not the other way." Conversation beats reading.</p>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">The execution model, visualized</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">You are a principal data engineer mentoring a senior software engineer who is strong in Java, cloud, and pipelines (Airflow, Dataflow, BigQuery) but is now formalizing Apache Spark. Explain Spark's driver / executor / cluster-manager model and how lazy evaluation builds a DAG that only runs on an action. Use an analogy (e.g. a head chef, line cooks, and a kitchen manager). Render a Mermaid diagram showing the driver planning a DAG and dispatching tasks to executors. End with 3 sentences I could say in a design review to sound fluent about how Spark executes.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">The shuffle, drawn out</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain the Spark shuffle visually. Contrast narrow transformations (map, filter) with wide transformations (groupBy, join, repartition), and show with an ASCII or Mermaid diagram how data stays put for narrow ops but moves across partitions and the network for wide ops. Explain concretely why wide operations are the expensive step (disk I/O, network, serialization, re-partitioning) and how spark.sql.shuffle.partitions and partition count affect them. Finish with a rule of thumb for minimizing shuffles.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Diagnose a skewed join</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">I have a Spark job where one join is dramatically slower than the rest of the DAG. Explain how data skew shows up as a symptom in the Spark UI (one straggler task, uneven task durations in a stage) and how I'd confirm it's skew. Then give me 3 fixes — broadcast join, salting, and AQE skew handling — with the trade-offs of each. Include a worked salting example in PySpark: show the hot key, the salt column, the salted join, and the aggregate-back step, with code.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Delta vs Iceberg vs Hudi</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Compare Delta Lake, Apache Iceberg, and Apache Hudi in a single table with rows for: ACID transactions, time travel, schema evolution, upserts/MERGE, and ecosystem/engine support. Keep each cell to a short phrase. Then give me a "when to pick which" paragraph for each — the scenario where it's clearly the right call. Assume I'm on Spark and BigQuery in a healthcare data platform and care about open standards and PII-safe updates.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Mock interview — big data engineer</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as a hiring manager screening me for a big data engineer role. Ask me 6 conceptual questions covering Spark's execution model, transformations vs actions, narrow vs wide / the shuffle, broadcast vs sort-merge joins, data skew and its fixes, and lakehouse table formats. Ask ONE at a time and wait for my answer. After each, score it 1–5, correct anything wrong, and give me the sharper phrasing. At the end, give an overall readiness score and the two topics to drill before Month 4.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Terminology to own</div>
+    <h2 class="sec-title">Say these without hesitating</h2>
+    <div class="glossary">
+      <div class="term"><dt>Shuffle</dt><dd>Redistributing data across partitions and the network for a wide op. Spark's most expensive step.</dd></div>
+      <div class="term"><dt>Narrow transformation</dt><dd>Needs only data in the current partition (map, filter). No data movement.</dd></div>
+      <div class="term"><dt>Wide transformation</dt><dd>Needs data from other partitions (groupBy, join). Forces a shuffle.</dd></div>
+      <div class="term"><dt>Broadcast join</dt><dd>Ships a small table to every executor so the large side never shuffles.</dd></div>
+      <div class="term"><dt>Sort-merge join</dt><dd>Shuffles and sorts both sides by key, then merges. The workhorse for two large tables.</dd></div>
+      <div class="term"><dt>Data skew</dt><dd>A hot key overloads one partition, creating a straggler task that stalls the stage.</dd></div>
+      <div class="term"><dt>Partition</dt><dd>A chunk of a distributed dataset processed by one task. Parallelism unit.</dd></div>
+      <div class="term"><dt>Lazy evaluation</dt><dd>Transformations only build a DAG; nothing runs until an action.</dd></div>
+      <div class="term"><dt>Predicate pushdown</dt><dd>Catalyst pushes filters down to the scan so less data is read.</dd></div>
+      <div class="term"><dt>Lakehouse</dt><dd>Warehouse-grade table semantics on cheap lake storage via a metadata layer.</dd></div>
+      <div class="term"><dt>ACID (on the lake)</dt><dd>Transactional guarantees on object storage, provided by Delta/Iceberg/Hudi.</dd></div>
+      <div class="term"><dt>Time travel</dt><dd>Querying a table as of an earlier version or timestamp.</dd></div>
+      <div class="term"><dt>Schema evolution</dt><dd>Changing a table's schema (add/rename columns) without rewriting the data.</dd></div>
+      <div class="term"><dt>Catalyst</dt><dd>Spark's query optimizer; rewrites logical plans into efficient physical ones.</dd></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You've written a PySpark job that reads → transforms → aggregates → writes.</li>
+      <li>You fixed a skewed join and can explain the shuffle behind it.</li>
+      <li>You wrote a Delta/Iceberg table, did a MERGE, and used time travel to read a prior version.</li>
+      <li>You can read a Spark UI DAG — stages, shuffle boundary, and the slowest task.</li>
+      <li>You can compare Delta, Iceberg, and Hudi on demand and say when to pick each.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="month-02.html"><div class="dir">← Previous</div><div class="lbl">The Modern Data Stack</div></a>
+    <a class="next" href="month-04.html"><div class="dir">Next →</div><div class="lbl">Streaming &amp; Real-Time Data</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../data-ai-roadmap.html">↑ Back to the full roadmap</a></div>
+
+</div>
+
+<script src="roadmap.js"></script>
+</body>
+</html>

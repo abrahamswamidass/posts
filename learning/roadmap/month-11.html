@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Month 11 · Production AI Systems &amp; LLMOps</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="roadmap.css">
+</head>
+<body data-phase="ai">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../data-ai-roadmap.html">← Roadmap</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span>
+    </div>
+    <div class="counter"><b>11</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="phase-tag">Phase 2 · AI Engineering</span>
+    <div class="month-num">Month 11</div>
+    <h1>Production AI Systems &amp; LLMOps</h1>
+    <p class="mission">Anyone can demo an LLM app. Getting it to production — <em>evaluated, observable, cost-controlled, safe</em> — is the job. This month you learn LLMOps and build Capstone II, an AI system fused with your data pipeline.</p>
+  </header>
+
+  <section>
+    <div class="sec-label">What you'll master</div>
+    <div class="chips">
+      <span class="chip">Evaluation</span>
+      <span class="chip">LLM-as-judge</span>
+      <span class="chip">Golden datasets</span>
+      <span class="chip">Regression testing</span>
+      <span class="chip">Tracing &amp; observability</span>
+      <span class="chip">Token/cost monitoring</span>
+      <span class="chip">Latency optimization</span>
+      <span class="chip">Prompt caching</span>
+      <span class="chip">Semantic caching</span>
+      <span class="chip">Fine-tuning vs RAG vs prompting</span>
+      <span class="chip">LoRA</span>
+      <span class="chip">Prompt/version management</span>
+      <span class="chip">Guardrails</span>
+      <span class="chip">Responsible AI</span>
+      <span class="chip">PII handling</span>
+      <span class="chip">Hallucination mitigation</span>
+      <span class="chip">LLMOps</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Core focus</div>
+    <h2 class="sec-title">The gap between demo and production</h2>
+    <div class="prose">
+      <p>A demo proves the model <em>can</em> do the thing once. Production proves it does the thing reliably, at a known cost, without leaking data or hallucinating — and keeps proving it as prompts, models, and data drift underneath you. Everything below is the discipline that closes that gap. You've built the data half of this for ten months; now you make the AI half operable.</p>
+
+      <h3 class="sub">Evaluation is the hard part</h3>
+      <p>You can't ship what you can't measure, and "it looked good when I tried it" is not measurement. The foundation is a <strong>golden dataset</strong>: a curated set of representative inputs paired with expected outputs (or expected properties). You run your system against it and score.</p>
+      <ul>
+        <li><strong>LLM-as-judge</strong> — use a strong model to grade your system's outputs against an explicit rubric (faithfulness, relevance, correctness) at scale. Powerful, but caveat-laden: judges are biased toward verbose answers, toward their own family of models, and toward the first option shown. Mitigate with a tight rubric, few-shot anchors, position-swapping, and spot-checking judge calls against human labels.</li>
+        <li><strong>Regression testing</strong> — freeze the golden set and re-run it on every prompt or model change, so a "small tweak" can't silently degrade quality. This is the unit test of AI engineering.</li>
+        <li><strong>Offline vs online evals</strong> — offline runs against the golden set before you ship; online (production) evals sample real traffic and score it live, catching the distribution shift your golden set never anticipated.</li>
+        <li><strong>Task-specific metrics</strong> — faithfulness (is the answer grounded in the retrieved context?), relevance (did retrieval pull the right context?), correctness (does it match ground truth?). Pick the two or three that map to <em>your</em> failure modes.</li>
+      </ul>
+
+      <h3 class="sub">Observability &amp; cost</h3>
+      <p>A production LLM system is a distributed system with a very expensive, non-deterministic hop in the middle. You instrument it accordingly.</p>
+      <ul>
+        <li><strong>Tracing</strong> — capture every LLM call: inputs, outputs, tokens in/out, latency, retrieved documents, tool calls. LangSmith / Langfuse-style tooling gives you the waterfall so you can see <em>where</em> a slow or wrong answer came from.</li>
+        <li><strong>Token &amp; latency monitoring</strong> — dashboards on spend and p50/p95 latency per endpoint, per user, per prompt version. A single unbounded prompt can quietly 10x your bill.</li>
+        <li><strong>The cost levers</strong> — <strong>prompt caching</strong> (reuse the static prefix of a prompt so you don't pay to re-process it), <strong>semantic caching</strong> (serve a cached answer when a new query is semantically near a previous one), smaller/cheaper models for easy calls, and <strong>routing</strong> (cheap model first, escalate only when needed).</li>
+        <li><strong>Token budget</strong> — treat it as a real engineering constraint, the way you'd treat a latency SLA or a memory ceiling, not an afterthought you discover on the invoice.</li>
+      </ul>
+
+      <h3 class="sub">Fine-tune vs RAG vs prompt — the decision</h3>
+      <p>The most over-reached-for lever is the one you almost never need. The framework, in order:</p>
+      <ul>
+        <li><strong>Prompt engineering first</strong> — cheapest, fastest to iterate, no infrastructure. Exhaust it before anything else.</li>
+        <li><strong>RAG for knowledge &amp; freshness</strong> — when the model needs facts it doesn't have or that change over time, retrieve them at inference. This is Months 9–10.</li>
+        <li><strong>Fine-tuning for form, style, latency, or a narrow task</strong> — when you need a consistent output shape, a specialized tone, or a smaller/faster model that behaves like a bigger one on one job. It changes <em>behavior</em>, not <em>knowledge</em>.</li>
+      </ul>
+      <p><strong>LoRA</strong> and other parameter-efficient tuning methods train a small set of adapter weights instead of the full model, cutting the cost and data requirements of fine-tuning by orders of magnitude — but you still need hundreds to thousands of clean labeled examples, a training loop, and an eval harness to prove it helped. Weigh that against RAG, which needs none of it. The honest conclusion most teams reach: prompt + RAG covers the case, and they never fine-tune at all.</p>
+
+      <h3 class="sub">Safety, guardrails &amp; responsible AI</h3>
+      <p>The moment an LLM touches a user or a record, it inherits a threat model. Your healthcare lens makes this non-negotiable.</p>
+      <ul>
+        <li><strong>Input/output guardrails</strong> — validate and filter on the way in (block prompt injection, off-topic, malformed) and on the way out (block PII leakage, unsafe content, ungrounded claims).</li>
+        <li><strong>PII detection &amp; redaction</strong> — detect and mask protected data before it reaches the model or the logs. In a healthcare context this is PHI, and it's a compliance requirement, not a nicety.</li>
+        <li><strong>Prompt injection &amp; jailbreaks</strong> — treat retrieved documents and user input as untrusted; an attacker can plant instructions in a document your RAG pulls. Separate instructions from data, and never let model output trigger privileged actions without a check.</li>
+        <li><strong>Hallucination mitigation</strong> — ground answers in retrieved context, require citations, and let your eval suite fail unfaithful outputs. Grounding plus evaluation is the durable defense; a "please don't hallucinate" instruction is not.</li>
+        <li><strong>Responsible-AI basics</strong> — transparency (tell users they're talking to an AI and where answers come from), human oversight on consequential decisions, and a clear boundary on what the system is allowed to do.</li>
+      </ul>
+
+      <h3 class="sub">LLMOps as the parallel to DataOps/MLOps</h3>
+      <p>None of this is new to you — it's your Month 5 DataOps discipline pointed at a new artifact. Prompts are code: <strong>version them</strong>. Model choices are config: <strong>pin and track them</strong>. A prompt change is a pull request, and <strong>CI runs your eval suite in the PR</strong> — merge only if the golden-set scores hold. Ship behind <strong>staged rollouts</strong> (canary a small slice of traffic), and <strong>monitor for quality drift</strong> in production with alerting, the same way you alert on a broken pipeline. LLMOps is DataOps with a stochastic component; the muscles transfer directly.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Hands-on challenge</div>
+    <div class="challenge">
+      <div class="tier">Capstone · ~15 hours</div>
+      <h3>Capstone II — a production AI system fused with a data pipeline</h3>
+      <p>This is the portfolio piece that proves you're not an AI dabbler bolted onto a data engineer, but someone who ships the whole stack. It must <strong>fuse the two halves of this roadmap</strong>: a real pipeline feeding a real, evaluated LLM system.</p>
+      <ol>
+        <li><strong>Data pipeline (Months 1–6)</strong> — ingest and prepare a knowledge source into your lakehouse / vector store on a schedule. Orchestrated, incremental, quality-checked. This is the fuel, and it must run on its own.</li>
+        <li><strong>LLM layer (Months 9–10)</strong> — serve a RAG or agent over that knowledge through an API. Clean request/response contract, versioned prompts.</li>
+        <li><strong>Eval suite</strong> — build a golden dataset (inputs + expected outputs) and an LLM-as-judge rubric, and wire it to run as a <strong>regression test</strong>. A change that drops your scores should fail the build.</li>
+        <li><strong>Observability</strong> — trace every call and log tokens, latency, and cost to a small dashboard. You should be able to answer "what did this cost and how slow was it" at a glance.</li>
+        <li><strong>Guardrails</strong> — PII redaction on inputs and logs, and grounded, <strong>cited</strong> answers on outputs. Show a refusal path when the context can't support an answer.</li>
+        <li><strong>Professional README</strong> — an architecture diagram (Mermaid), the eval results, a cost/latency table, and a written fine-tune-vs-RAG rationale explaining why you chose what you chose.</li>
+      </ol>
+      <p>Publish it as a <strong>public GitHub repo</strong> — portfolio piece #2, and the one hiring managers will actually read.</p>
+      <div class="stretch"><b>Stretch</b> — add semantic caching and show the cost/latency improvement in real numbers (before/after tokens, dollars, and p95) in the README.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Learn it with Claude</div>
+    <h2 class="sec-title">Prompts that replace the textbook</h2>
+    <p>Paste these into Claude one at a time. Push back, ask for diagrams, ask "why not the other way." Conversation beats reading.</p>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Build the eval harness</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">You are a staff AI engineer who has shipped evaluated LLM systems. Help me build an evaluation setup for my RAG/agent. Walk me through: (1) how to construct a golden dataset of inputs and expected outputs from my domain, including how many examples and how to cover edge cases; (2) design an LLM-as-judge prompt that scores faithfulness, relevance, and correctness against a rubric, with a numeric scale and few-shot anchors; (3) enumerate the failure modes of LLM-as-judge (verbosity bias, position bias, self-preference) and give me a concrete mitigation for each. Give me the judge prompt as copy-pastable text.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">The fine-tune vs RAG vs prompt decision</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Create a decision-framework document for choosing between fine-tuning, RAG, and prompt engineering for a specific use case (I'll describe mine: a healthcare knowledge assistant over changing clinical documents). For each option lay out the cost, engineering effort, data requirements, latency impact, and the failure it fixes vs the failure it doesn't. Give me a decision tree I can follow in under two minutes, and end with a one-paragraph recommendation for my case with the reasoning stated explicitly. Add a short note on where LoRA fits.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Guardrails for healthcare data</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Design a guardrails and PII/PHI redaction strategy for an LLM system that touches healthcare data. Enumerate the risks in a table — prompt injection, PHI leakage into prompts and logs, hallucinated clinical claims, unsafe content, over-broad actions — and for each give the specific control (input filter, output filter, redaction step, grounding requirement, human-in-the-loop). Then draw a Mermaid diagram of where each guardrail sits in the request/response flow. Flag anything that has HIPAA implications I should not get wrong.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Review my capstone as a skeptic</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as a staff AI engineer reviewing my Capstone II architecture and evaluation approach. Here is my design: [paste architecture + eval plan]. Be adversarial. List the 5 weakest points — where it will break under real traffic, where the eval is measuring the wrong thing, where cost or latency will surprise me, where a guardrail is missing. For each, tell me the sharper way to do it and roughly how much work the fix is. Don't be reassuring; assume this is going in front of a hiring committee.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Mock interview — production AI engineer</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as a hiring manager screening me for an LLMOps / production AI engineer role. Ask me 6 questions ONE at a time, covering evaluation, observability, cost control, safety/guardrails, and the fine-tune-vs-RAG decision. Wait for my answer to each. After each, rate it 1–5, correct anything wrong, and give me the crisper senior-level phrasing. At the end give an overall readiness score and the one topic I should drill before Month 12.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Terminology to own</div>
+    <h2 class="sec-title">Say these without hesitating</h2>
+    <div class="glossary">
+      <div class="term"><dt>Eval</dt><dd>A repeatable measurement of system quality against known inputs. The core discipline of AI engineering.</dd></div>
+      <div class="term"><dt>LLM-as-judge</dt><dd>Using a model to grade outputs against a rubric at scale. Powerful but bias-prone; anchor and spot-check it.</dd></div>
+      <div class="term"><dt>Golden dataset</dt><dd>Curated inputs paired with expected outputs/properties, used to score and regression-test a system.</dd></div>
+      <div class="term"><dt>Regression testing</dt><dd>Re-running the golden set on every change so quality can't silently degrade.</dd></div>
+      <div class="term"><dt>Tracing</dt><dd>Capturing inputs, outputs, tokens, and latency for every LLM call to debug and monitor.</dd></div>
+      <div class="term"><dt>Token budget</dt><dd>A hard cost/latency constraint on tokens per call, treated like an SLA.</dd></div>
+      <div class="term"><dt>Prompt caching</dt><dd>Reusing the processed static prefix of a prompt to avoid paying to recompute it.</dd></div>
+      <div class="term"><dt>Semantic caching</dt><dd>Serving a cached answer when a new query is semantically close to a prior one.</dd></div>
+      <div class="term"><dt>Fine-tuning</dt><dd>Training a model on examples to change form/style/latency — not to add knowledge.</dd></div>
+      <div class="term"><dt>LoRA</dt><dd>Parameter-efficient fine-tuning that trains small adapter weights instead of the full model.</dd></div>
+      <div class="term"><dt>Guardrail</dt><dd>An input/output check that blocks unsafe, off-topic, ungrounded, or PII-bearing content.</dd></div>
+      <div class="term"><dt>Prompt injection</dt><dd>Malicious instructions planted in user input or retrieved documents to hijack the model.</dd></div>
+      <div class="term"><dt>LLMOps</dt><dd>DataOps/MLOps for LLM systems: versioned prompts, evals in CI, staged rollout, drift monitoring.</dd></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You have a public Capstone II repo that fuses a data pipeline with an LLM system, both running end to end.</li>
+      <li>You built an eval suite — golden set plus an LLM-as-judge rubric — that runs as a regression test on every change.</li>
+      <li>You have tracing in place with tokens, latency, and cost logged to a dashboard.</li>
+      <li>Your system redacts PII and returns grounded, cited answers with a refusal path.</li>
+      <li>You wrote a fine-tune-vs-RAG rationale and can defend the choice out loud.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="month-10.html"><div class="dir">← Previous</div><div class="lbl">Agents &amp; MCP</div></a>
+    <a class="next" href="month-12.html"><div class="dir">Next →</div><div class="lbl">Portfolio &amp; Job Launch</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../data-ai-roadmap.html">↑ Back to the full roadmap</a></div>
+
+</div>
+
+<script src="roadmap.js"></script>
+</body>
+</html>

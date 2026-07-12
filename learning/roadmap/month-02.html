@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Month 02 · The Modern Data Stack &amp; Cloud Warehousing</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="roadmap.css">
+</head>
+<body data-phase="data">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../data-ai-roadmap.html">← Roadmap</a>
+    <div class="rail">
+      <span class="done"></span><span class="cur"></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>02</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="phase-tag">Phase 1 · Data Engineering</span>
+    <div class="month-num">Month 02</div>
+    <h1>The Modern Data Stack &amp; Cloud Warehousing</h1>
+    <p class="mission">This is the toolchain the market screens for. You already query BigQuery; this month you learn the warehouse internals and dbt — the transformation layer every modern data team assumes you know.</p>
+  </header>
+
+  <section>
+    <div class="sec-label">What you'll master</div>
+    <div class="chips">
+      <span class="chip">Separation of storage &amp; compute</span>
+      <span class="chip">Snowflake architecture</span>
+      <span class="chip">BigQuery slots &amp; pricing</span>
+      <span class="chip">Databricks lakehouse</span>
+      <span class="chip">Columnar &amp; MPP</span>
+      <span class="chip">Micro-partitions</span>
+      <span class="chip">Partitioning &amp; clustering</span>
+      <span class="chip">Pruning</span>
+      <span class="chip">dbt models &amp; sources</span>
+      <span class="chip">Materializations</span>
+      <span class="chip">Incremental models</span>
+      <span class="chip">Jinja &amp; macros</span>
+      <span class="chip">ELT in practice</span>
+      <span class="chip">Query cost optimization</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Core focus</div>
+    <h2 class="sec-title">The stack behind the SQL</h2>
+    <div class="prose">
+      <p>You've been running queries against a cloud warehouse for years. This month you go under the hood: <em>why</em> it's fast, <em>what</em> you're actually paying for, and the transformation layer — dbt — that turns ad-hoc SQL into a version-controlled, tested, documented codebase. This is the difference between someone who uses the warehouse and someone who owns it.</p>
+
+      <h3 class="sub">Separation of storage and compute</h3>
+      <p>This is the one architectural shift that defines the entire cloud-warehouse era. In the old on-prem world, storage and compute were welded together in a fixed-size cluster: to store more data you bought more machines, and those machines sat idle between queries. Cloud warehouses cut the weld.</p>
+      <ul>
+        <li><strong>One copy of the data, many engines</strong> — the data lives in cheap object storage (S3/GCS/Azure Blob), and compute is spun up independently against it. Scale compute up for a heavy load, scale it to zero when idle, without touching the data.</li>
+        <li><strong>Isolated compute clusters</strong> — Snowflake calls them <em>virtual warehouses</em>: your finance team's dashboard and your data science team's model training can run on separate compute against the same tables, with zero resource contention.</li>
+        <li><strong>Why it killed the fixed cluster</strong> — you no longer over-provision for peak and pay for it at 3am. Compute is elastic and metered; storage is nearly free. Every design decision downstream (ELT, on-demand pricing, autoscaling) flows from this split.</li>
+      </ul>
+
+      <h3 class="sub">The big three, compared</h3>
+      <p>You'll be asked which you'd pick and why. Know the architecture, not just the logo.</p>
+      <ul>
+        <li><strong>Snowflake</strong> — storage and compute fully separated. Compute is <em>virtual warehouses</em> (T-shirt-sized, per-second billing in <em>credits</em>); data is stored as immutable <em>micro-partitions</em> (~50–500MB compressed, columnar) with metadata that enables aggressive pruning. <em>Auto-clustering</em> keeps hot columns co-located. Pick it for a clean, low-ops SQL warehouse with strong multi-cloud portability.</li>
+        <li><strong>BigQuery</strong> — fully serverless: no cluster to size at all. Compute is measured in <em>slots</em> (units of parallelism); you pay either <em>on-demand</em> (per TB scanned) or <em>flat-rate / capacity</em> (reserved slots). Storage is columnar <em>Capacitor</em> format; you tune performance with <em>partitioning</em> (usually by date) and <em>clustering</em>. Pick it when you're already on GCP and want zero infrastructure — which is exactly your Cardinal Health footprint.</li>
+        <li><strong>Databricks</strong> — the <em>lakehouse</em>: warehouse semantics on top of a data lake. Data lives in open <em>Delta Lake</em> tables (Parquet + a transaction log giving ACID); <em>Photon</em> is the vectorized C++ query engine; you work in <em>notebooks</em> or <em>SQL warehouses</em>. Pick it when the same platform must serve SQL analytics <em>and</em> Spark/ML on unstructured data.</li>
+      </ul>
+
+      <h3 class="sub">How the warehouse makes queries fast</h3>
+      <p>The performance tricks are the same handful everywhere, under different names. Internalize them and query tuning stops being guesswork.</p>
+      <ul>
+        <li><strong>Columnar storage</strong> — each column is stored contiguously and compressed, so a query reads only the columns it touches. This is why <code>SELECT *</code> is a tax and selecting three columns is nearly free.</li>
+        <li><strong>MPP</strong> — Massively Parallel Processing splits the scan across many workers (slots / warehouse nodes) that work in parallel and combine results.</li>
+        <li><strong>Partition pruning</strong> — if a table is partitioned by date and you filter <code>WHERE dt = '2026-07-01'</code>, the engine skips every other partition entirely. The single biggest cost lever you control.</li>
+        <li><strong>Clustering / sort keys</strong> — within partitions, co-locating rows by a high-cardinality filter column lets the engine skip blocks (micro-partitions) that can't match your predicate.</li>
+        <li><strong>Predicate pushdown</strong> — filters get evaluated as early as possible, at the storage-read layer, so fewer bytes ever reach the compute engine.</li>
+        <li><strong>Result caching</strong> — an identical query against unchanged data returns instantly from cache and often costs nothing. Reading a <strong>query plan</strong> (the EXPLAIN output) tells you which of these actually fired: look for the bytes/partitions scanned and whether a full scan sneaked in.</li>
+      </ul>
+
+      <h3 class="sub">dbt — analytics engineering</h3>
+      <p>dbt is the <strong>T</strong> in ELT, done right: transformations written as version-controlled SQL <code>SELECT</code> statements, with tests, docs, and dependency management on top. It's the tool that turns a folder of fragile SQL scripts into software.</p>
+      <ul>
+        <li><strong>Models, sources, <code>ref()</code></strong> — a <em>model</em> is a <code>.sql</code> file that's one <code>SELECT</code>; dbt handles the DDL to materialize it. <em>Sources</em> declare your raw tables. <code>ref('other_model')</code> wires models together and auto-builds the dependency (DAG) graph and correct run order.</li>
+        <li><strong>Layered models</strong> — the medallion pattern from Month 1 in practice: <em>staging</em> (one model per source, light cleaning/renaming = silver) → <em>intermediate</em> (joins and business logic) → <em>marts</em> (fact + dimension tables the business queries = gold).</li>
+        <li><strong>Tests</strong> — declarative data assertions: <code>unique</code>, <code>not_null</code>, <code>relationships</code> (referential integrity), <code>accepted_values</code>. They fail the build when data drifts, which is how you catch a broken upstream feed before a dashboard lies.</li>
+        <li><strong>Docs &amp; lineage</strong> — <code>dbt docs</code> generates a searchable site with a column-level lineage graph rendered straight from your <code>ref()</code> calls. This is your self-documenting architecture.</li>
+        <li><strong>Materializations</strong> — how a model lands in the warehouse: <em>view</em> (no storage, recomputed on read), <em>table</em> (full rebuild each run), <em>incremental</em> (only process new/changed rows), <em>ephemeral</em> (inlined as a CTE, never materialized).</li>
+        <li><strong>Incremental models</strong> — for large fact tables you don't rebuild from scratch. You define a <code>unique_key</code> and dbt does an idempotent <code>merge</code>: new rows insert, matched rows update, so re-running the same window never duplicates.</li>
+        <li><strong>Jinja &amp; macros</strong> — dbt SQL is templated. Jinja gives you variables, loops, and conditionals; <em>macros</em> are reusable SQL functions (DRY your CASE logic once, call it everywhere).</li>
+        <li><strong>Seeds &amp; snapshots</strong> — <em>seeds</em> are small CSVs version-controlled and loaded as tables (lookup/mapping data). <em>Snapshots</em> implement <strong>SCD Type 2</strong> for you: point dbt at a mutable source and it maintains <code>valid_from</code>/<code>valid_to</code> history rows automatically.</li>
+      </ul>
+
+      <h3 class="sub">Cost is an engineering concern</h3>
+      <p>On a serverless or credit-metered warehouse, a careless query is a line item. Treating spend as a first-class design constraint is a seniority signal — and a preview of the FinOps discipline you'll meet later.</p>
+      <ul>
+        <li><strong>Know the economics</strong> — BigQuery on-demand charges per TB <em>scanned</em>, not returned; Snowflake bills per second of <em>warehouse</em> uptime by size. The optimization target differs: scan fewer bytes vs. finish faster on a smaller warehouse.</li>
+        <li><strong>Partition to cut bytes scanned</strong> — a date-partitioned table with a date filter can turn a 2TB scan into a 5GB one. Same result, 1/400th the bill.</li>
+        <li><strong>Never <code>SELECT *</code> in production</strong> — columnar storage means every extra column is bytes scanned you paid for and didn't use.</li>
+        <li><strong>Cluster for pruning</strong> — cluster on the columns you filter by most so the engine skips blocks.</li>
+        <li><strong>Choose materializations deliberately</strong> — a table that's queried 500×/day should be materialized as a <em>table</em>, not recomputed as a <em>view</em>; a huge fact table should be <em>incremental</em>, not fully rebuilt nightly.</li>
+        <li><strong>Monitor spend</strong> — <code>INFORMATION_SCHEMA</code> / query history tells you your most expensive queries. Attribute cost, set budgets, alert on runaway scans. This is FinOps in miniature.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Hands-on challenge</div>
+    <div class="challenge">
+      <div class="tier">Build · ~7 hours</div>
+      <h3>Build a tested, documented dbt project bronze → silver → gold</h3>
+      <p>Use a free tier — BigQuery sandbox, a Snowflake trial, or Databricks Community Edition. Pick a public dataset you don't mind reasoning about; a retail/orders dataset is ideal because it maps cleanly onto facts and dimensions.</p>
+      <ol>
+        <li>Load a raw public dataset (e.g. a retail/orders set) as your <strong>bronze/source</strong> and declare it in a dbt <code>sources</code> block.</li>
+        <li>Build <strong>staging models</strong> (cleaning, renaming, casting, one per source) — this is your <strong>silver</strong> layer.</li>
+        <li>Build a <strong>marts model</strong>: a star schema with a fact table plus its dimensions — your <strong>gold</strong> layer.</li>
+        <li>Add <strong>dbt tests</strong> (<code>unique</code>, <code>not_null</code>, <code>relationships</code> from fact to dims) and run <code>dbt docs generate</code> to produce the <strong>lineage graph</strong>.</li>
+        <li>Convert one model to <strong>incremental</strong> with a proper <code>unique_key</code> merge. Write two sentences explaining <em>why it's idempotent</em> — re-running the same load can't create duplicates.</li>
+        <li>Inspect the <strong>bytes scanned / cost</strong> of one query, then <strong>reduce it</strong> via partitioning or clustering. Record the before/after numbers.</li>
+      </ol>
+      <div class="stretch"><b>Stretch</b> — Add a dbt <strong>snapshot</strong> to implement SCD Type 2 on a dimension (say, customer address). Change a source row, re-run, and note exactly how dbt closes the old row (<code>valid_to</code>) and opens a new one.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Learn it with Claude</div>
+    <h2 class="sec-title">Prompts that replace the textbook</h2>
+    <p>Paste these into Claude one at a time. Push back, ask for diagrams, ask "why not the other way." Conversation beats reading.</p>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">The shift that made the cloud warehouse</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">You are a principal data platform architect mentoring a senior software engineer fluent in Java, Airflow, and BigQuery who wants to formalize cloud-warehouse internals. Explain the separation of storage and compute: what it means, why it replaced the old fixed-size cluster, and how it enables isolated compute (e.g. Snowflake virtual warehouses) over one copy of data. Draw a Mermaid diagram showing shared object storage with multiple independent compute clusters. Ground it in a healthcare example — a hospital finance dashboard and a data-science team hitting the same tables without contention. End with 3 sentences I could say in a design meeting to sound fluent.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Snowflake vs BigQuery vs Databricks</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Compare Snowflake, BigQuery, and Databricks as a decision table. Rows: architecture, storage format, unit of compute (virtual warehouse / slot / cluster), pricing model, how you tune performance (micro-partitions &amp; auto-clustering vs partitioning &amp; clustering vs Delta/Photon), and best-fit workload. Then give me a "when to pick" paragraph for each — the one scenario where it's clearly the right call and the one where it's the wrong tool. Assume I'm on GCP at work, and tell me honestly when I'd still reach for the other two.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">dbt materializations, worked</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Teach me dbt materializations: view, table, incremental, and ephemeral. For each, explain what dbt actually does in the warehouse, when to use it, and the cost trade-off. Then write a complete worked example of an <em>incremental</em> model for an orders fact table — include the config block, the <code>is_incremental()</code> filter, and a <code>unique_key</code>. Walk me through the generated merge statement line by line and explain precisely why re-running the same batch is idempotent and can't create duplicate rows. Finish by quizzing me: give me 3 models and ask which materialization I'd choose, waiting for my answer each time.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Cut this query's cost</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain how to reduce the cost of an expensive BigQuery (or Snowflake) query using partitioning, clustering, and pruning. Start with a concrete "before" query that scans a huge unpartitioned events table with a date filter and a <code>SELECT *</code>. Show the DDL to partition and cluster the table, rewrite the query, and give me realistic before/after bytes-scanned and cost numbers. Explain, mechanically, why partition pruning and predicate pushdown make the difference. Then list the 5 cost habits I should apply to every query I write from now on.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Mock interview — analytics engineer</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as a hiring manager screening me for an analytics engineer role. Ask me 6 rapid-fire questions covering separation of storage &amp; compute, Snowflake vs BigQuery vs Databricks, dbt materializations and incremental models, idempotent merges, partitioning/clustering, and query-cost reduction. Ask ONE at a time and wait for my answer. After each, rate it 1–5, correct anything wrong, and give me the sharper phrasing. At the end, give an overall readiness score and the two topics I should drill before Month 3.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Terminology to own</div>
+    <h2 class="sec-title">Say these without hesitating</h2>
+    <div class="glossary">
+      <div class="term"><dt>Separation of storage &amp; compute</dt><dd>Data in cheap object storage, compute spun up independently against it — the defining cloud-warehouse shift.</dd></div>
+      <div class="term"><dt>Virtual warehouse</dt><dd>Snowflake's isolated, resizable compute cluster; billed per second in credits.</dd></div>
+      <div class="term"><dt>Slot</dt><dd>BigQuery's unit of compute parallelism; you buy them on-demand or reserved.</dd></div>
+      <div class="term"><dt>Micro-partition</dt><dd>Snowflake's immutable ~50–500MB columnar storage unit with pruning metadata.</dd></div>
+      <div class="term"><dt>Pruning</dt><dd>Skipping partitions/blocks that can't match a query's filter — the core cost lever.</dd></div>
+      <div class="term"><dt>Clustering</dt><dd>Co-locating rows by a filter column so the engine skips non-matching blocks.</dd></div>
+      <div class="term"><dt>Materialization</dt><dd>How dbt lands a model: view, table, incremental, or ephemeral.</dd></div>
+      <div class="term"><dt>Incremental model</dt><dd>A dbt model that processes only new/changed rows instead of a full rebuild.</dd></div>
+      <div class="term"><dt>dbt ref()</dt><dd>Wires models together and auto-builds the dependency DAG and run order.</dd></div>
+      <div class="term"><dt>Idempotent merge</dt><dd>An upsert on a unique key so re-running a load never duplicates rows.</dd></div>
+      <div class="term"><dt>Result cache</dt><dd>An identical query on unchanged data returns instantly and often for free.</dd></div>
+      <div class="term"><dt>MPP</dt><dd>Massively Parallel Processing — splitting a scan across many workers at once.</dd></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You have a working dbt project running bronze → silver → gold on a real warehouse.</li>
+      <li>Your models have passing dbt tests and a generated lineage-graph doc site.</li>
+      <li>You built one incremental model and can explain why its merge is idempotent.</li>
+      <li>You reduced a query's bytes-scanned via partitioning/clustering and know exactly why it worked.</li>
+      <li>You can pick Snowflake vs BigQuery vs Databricks for a given scenario and defend the choice.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="month-01.html"><div class="dir">← Previous</div><div class="lbl">Foundations &amp; Data Architecture</div></a>
+    <a class="next" href="month-03.html"><div class="dir">Next →</div><div class="lbl">Distributed Batch with Spark</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../data-ai-roadmap.html">↑ Back to the full roadmap</a></div>
+
+</div>
+
+<script src="roadmap.js"></script>
+</body>
+</html>

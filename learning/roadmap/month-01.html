@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Month 01 · Foundations &amp; the Language of Data Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="roadmap.css">
+</head>
+<body data-phase="data">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../data-ai-roadmap.html">← Roadmap</a>
+    <div class="rail">
+      <span class="cur"></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>01</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="phase-tag">Phase 1 · Data Engineering</span>
+    <div class="month-num">Month 01</div>
+    <h1>Foundations &amp; the Language of Data Architecture</h1>
+    <p class="mission">You already build these systems. This month you learn to <em>name</em> every part of them — so that in any design meeting, the precise term is the first thing out of your mouth, not the thing you reach for after.</p>
+  </header>
+
+  <section>
+    <div class="sec-label">What you'll master</div>
+    <div class="chips">
+      <span class="chip">OLTP vs OLAP</span>
+      <span class="chip">ETL vs ELT</span>
+      <span class="chip">Normalization (1NF–3NF)</span>
+      <span class="chip">Dimensional modeling</span>
+      <span class="chip">Star &amp; snowflake schema</span>
+      <span class="chip">Fact &amp; dimension tables</span>
+      <span class="chip">Grain</span>
+      <span class="chip">Slowly Changing Dimensions</span>
+      <span class="chip">Surrogate keys</span>
+      <span class="chip">Medallion architecture</span>
+      <span class="chip">Idempotency</span>
+      <span class="chip">Warehouse vs Lake vs Lakehouse</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Core focus</div>
+    <h2 class="sec-title">The map before the territory</h2>
+    <div class="prose">
+      <p>Everything in data engineering is a reaction to one tension: the database that's great at <strong>recording</strong> transactions is terrible at <strong>analyzing</strong> them, and vice versa. Get this one distinction crisp and half the vocabulary falls into place.</p>
+
+      <h3 class="sub">Transactional vs analytical (OLTP vs OLAP)</h3>
+      <ul>
+        <li><strong>OLTP</strong> — Online Transaction Processing. Row-oriented, heavily normalized, optimized for many tiny reads/writes. Your MOMS order system. Think "insert one order, fast."</li>
+        <li><strong>OLAP</strong> — Online Analytical Processing. Column-oriented, denormalized, optimized for scanning billions of rows across a few columns. Your BigQuery marts. Think "sum revenue by region across two years."</li>
+        <li><strong>Columnar storage &amp; MPP</strong> — why warehouses are fast: they store each column together (so a query touches only the columns it needs) and spread work across many nodes (Massively Parallel Processing).</li>
+      </ul>
+
+      <h3 class="sub">ETL vs ELT — and why the L moved</h3>
+      <p>Old world: <strong>E</strong>xtract, <strong>T</strong>ransform, then <strong>L</strong>oad — transform on a separate box because storage was expensive. Modern world: <strong>E</strong>xtract, <strong>L</strong>oad, then <strong>T</strong>ransform <em>inside</em> the warehouse, because cloud storage is cheap and warehouse compute is elastic. This one reordering is the philosophical core of the modern data stack — you'll live it in Month 2 with dbt.</p>
+
+      <h3 class="sub">Dimensional modeling — the Kimball vocabulary</h3>
+      <p>This is the grammar of analytics, and interviewers lean on it hard. A <strong>fact table</strong> holds measurements (sales amount, quantity) at a defined <em>grain</em>. <strong>Dimension tables</strong> hold the descriptive context you filter and group by (customer, product, date). Arrange one fact surrounded by dimensions and you have a <strong>star schema</strong>; normalize those dimensions into sub-tables and it becomes a <strong>snowflake schema</strong>.</p>
+      <ul>
+        <li><strong>Grain</strong> — the single most important word here. It's what one row of the fact table <em>means</em> ("one line item per order"). Declare the grain first, always.</li>
+        <li><strong>Surrogate key</strong> — a meaningless integer/hash primary key for a dimension, decoupled from the source system's natural/business key.</li>
+        <li><strong>Conformed dimension</strong> — a dimension (like Date) shared identically across multiple fact tables, so metrics line up across the business.</li>
+        <li><strong>Degenerate dimension</strong> — a dimension attribute (like an order number) that lives on the fact table itself with no separate dimension table.</li>
+      </ul>
+
+      <h3 class="sub">Slowly Changing Dimensions (SCD)</h3>
+      <p>When a customer moves city, do you overwrite the old value or keep history? That choice has named types, and knowing them cold signals seniority:</p>
+      <ul>
+        <li><strong>Type 0</strong> — never changes (retain original).</li>
+        <li><strong>Type 1</strong> — overwrite; no history kept.</li>
+        <li><strong>Type 2</strong> — add a new row with validity dates / a current flag; full history. The one you'll use most.</li>
+        <li><strong>Type 3</strong> — add a column for "previous value"; limited history.</li>
+        <li><strong>Type 4 / 6</strong> — history tables / hybrid combinations.</li>
+      </ul>
+
+      <h3 class="sub">Medallion architecture &amp; idempotency</h3>
+      <p>The layering pattern you'll see everywhere: <strong>Bronze</strong> (raw, as-ingested), <strong>Silver</strong> (cleaned, conformed, deduplicated), <strong>Gold</strong> (business-level aggregates and marts). And the property that makes pipelines trustworthy: <strong>idempotency</strong> — running the same job twice produces the same result, no duplicates, no drift. Every reliable pipeline you build for the next 11 months depends on it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Hands-on challenge</div>
+    <div class="challenge">
+      <div class="tier">Build · ~6 hours</div>
+      <h3>Model a pharma supply-chain domain into a star schema</h3>
+      <p>Use a domain you know — hospital medication ordering, close to your InteLogix / MOMS work. No cluster needed; a napkin, a diagram tool, and a local Postgres or even a SQL file are enough.</p>
+      <ol>
+        <li>Pick a business process (e.g. "medication dispensed to a patient"). Write one sentence declaring the <strong>grain</strong> of your fact table.</li>
+        <li>Identify the <strong>measures</strong> (quantity, cost, days-supply) and the <strong>dimensions</strong> (drug, patient, facility, prescriber, date).</li>
+        <li>Draw the <strong>star schema</strong>: one fact table, surrounding dimensions, surrogate keys on each dimension.</li>
+        <li>Choose an <strong>SCD type</strong> for the facility dimension and justify it in one line (facilities get renamed/merged — history matters).</li>
+        <li>Write the <code>CREATE TABLE</code> statements and load 20 fake rows. Then write two analytical queries (revenue by facility by month; top 5 drugs by quantity).</li>
+        <li>Write a one-page <strong>ADR</strong> (Architecture Decision Record): the decision, the options considered, the trade-offs, the choice.</li>
+      </ol>
+      <div class="stretch"><b>Stretch</b> — Redraw the same model as a snowflake schema and write two sentences on when the extra normalization is worth it (rarely) and when it isn't (usually).</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Learn it with Claude</div>
+    <h2 class="sec-title">Prompts that replace the textbook</h2>
+    <p>Paste these into Claude one at a time. Push back, ask for diagrams, ask "why not the other way." Conversation beats reading.</p>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Build the mental map</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">You are a principal data architect mentoring a senior software engineer who is strong in Java, microservices, and cloud but wants to formalize data-warehousing fundamentals. Explain the difference between OLTP and OLAP systems. Use a concrete healthcare example. Draw a Mermaid diagram contrasting a row-oriented transactional schema with a column-oriented analytical schema, and explain in plain terms why columnar storage and MPP make analytical queries fast. End with 3 sentences I could say in a design meeting to sound fluent.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Dimensional modeling, visualized</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Teach me Kimball dimensional modeling by example. Take the business process "a medication is dispensed to a patient in a hospital." Walk me through: (1) declaring the grain, (2) identifying facts vs dimensions, (3) designing a star schema. Render the star schema as a Mermaid entity-relationship diagram with a fact table and 4–5 dimensions, showing surrogate keys. Then define — in one crisp line each — grain, conformed dimension, degenerate dimension, and surrogate key, as I'd say them to a teammate.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Master SCDs with a worked example</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain Slowly Changing Dimensions types 0 through 6. For each type, show the actual before/after table rows when a customer named "Abraham" moves from Columbus to Dublin. Use small ASCII tables so I can see exactly what changes. Then give me a decision rule: given a new dimension, how do I choose the SCD type in under 30 seconds? Quiz me with 3 scenarios at the end and wait for my answers before revealing yours.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">The medallion + idempotency lens</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain the medallion architecture (bronze/silver/gold) and how it maps onto ETL vs ELT. Then explain idempotency in data pipelines: what it means, why non-idempotent pipelines cause duplicate-data incidents, and three concrete techniques to make a load idempotent (e.g. merge/upsert on a key, delete-insert by partition, deterministic surrogate keys). Give me a Mermaid flowchart of data moving bronze → silver → gold with the transformation at each hop labeled.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Mock interview — junior-architect screen</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as a hiring manager screening me for a data engineering role. Ask me 6 rapid-fire conceptual questions covering OLTP/OLAP, ELT, star vs snowflake schema, grain, and SCD types. Ask ONE at a time and wait for my answer. After each, rate it 1–5, correct anything wrong, and tell me the sharper way to phrase it. At the end, give me an overall readiness score and the two terms I should drill before Month 2.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Terminology to own</div>
+    <h2 class="sec-title">Say these without hesitating</h2>
+    <div class="glossary">
+      <div class="term"><dt>Grain</dt><dd>What a single fact-table row represents. Declared first, before any modeling.</dd></div>
+      <div class="term"><dt>Fact table</dt><dd>Holds numeric measurements at a defined grain; center of a star schema.</dd></div>
+      <div class="term"><dt>Dimension</dt><dd>Descriptive context (who/what/where/when) you filter and group by.</dd></div>
+      <div class="term"><dt>Star schema</dt><dd>One fact table surrounded by denormalized dimensions. The default analytics model.</dd></div>
+      <div class="term"><dt>Snowflake schema</dt><dd>A star whose dimensions are further normalized into sub-tables.</dd></div>
+      <div class="term"><dt>Surrogate key</dt><dd>A synthetic integer/hash PK for a dimension, independent of source business keys.</dd></div>
+      <div class="term"><dt>Conformed dimension</dt><dd>A dimension shared identically across fact tables so metrics reconcile.</dd></div>
+      <div class="term"><dt>SCD (Type 2)</dt><dd>Slowly Changing Dimension that keeps history by adding versioned rows.</dd></div>
+      <div class="term"><dt>OLTP / OLAP</dt><dd>Transaction-optimized vs analysis-optimized systems.</dd></div>
+      <div class="term"><dt>ELT</dt><dd>Load raw first, transform inside the warehouse. The modern default.</dd></div>
+      <div class="term"><dt>Medallion</dt><dd>Bronze (raw) → Silver (clean) → Gold (business) layering pattern.</dd></div>
+      <div class="term"><dt>Idempotency</dt><dd>Re-running a job yields the same result — no duplicates, no drift.</dd></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You can declare the grain of a fact table out loud before touching a keyboard.</li>
+      <li>You've built a working star schema with surrogate keys and loaded sample data.</li>
+      <li>You can explain all six SCD types and pick the right one in under 30 seconds.</li>
+      <li>You wrote a one-page ADR justifying your modeling decisions.</li>
+      <li>You survived Claude's mock architect screen with a readiness score you're proud of.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev disabled" href="#"><div class="dir">← Previous</div><div class="lbl">—</div></a>
+    <a class="next" href="month-02.html"><div class="dir">Next →</div><div class="lbl">The Modern Data Stack</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../data-ai-roadmap.html">↑ Back to the full roadmap</a></div>
+
+</div>
+
+<script src="roadmap.js"></script>
+</body>
+</html>

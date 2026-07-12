@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Month 05 · Orchestration, DataOps &amp; Data Quality</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="roadmap.css">
+</head>
+<body data-phase="data">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../data-ai-roadmap.html">← Roadmap</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>05</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="phase-tag">Phase 1 · Data Engineering</span>
+    <div class="month-num">Month 05</div>
+    <h1>Orchestration, DataOps &amp; Data Quality</h1>
+    <p class="mission">Pipelines that run aren't the same as pipelines you can trust. This month is about the discipline that separates a script kiddie from a platform engineer — orchestration, data contracts, quality gates, lineage, and CI/CD for data.</p>
+  </header>
+
+  <section>
+    <div class="sec-label">What you'll master</div>
+    <div class="chips">
+      <span class="chip">Airflow (DAGs, operators, sensors)</span>
+      <span class="chip">XComs</span>
+      <span class="chip">Backfills</span>
+      <span class="chip">Idempotent tasks</span>
+      <span class="chip">Dynamic DAGs</span>
+      <span class="chip">Dagster assets</span>
+      <span class="chip">Prefect</span>
+      <span class="chip">Great Expectations</span>
+      <span class="chip">dbt tests</span>
+      <span class="chip">Data contracts</span>
+      <span class="chip">Schema enforcement</span>
+      <span class="chip">Anomaly detection</span>
+      <span class="chip">Data lineage</span>
+      <span class="chip">OpenLineage</span>
+      <span class="chip">Observability</span>
+      <span class="chip">Freshness SLAs</span>
+      <span class="chip">Circuit breakers</span>
+      <span class="chip">CI/CD for data</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Core focus</div>
+    <h2 class="sec-title">From "it ran" to "I trust it"</h2>
+    <div class="prose">
+      <p>You already run Airflow at Cardinal. So this month isn't about wiring a DAG — it's about the reliability engineering that sits on top of one. The gap between a data engineer and a platform engineer is entirely here: contracts, gates, lineage, and the CI/CD that lets you change a pipeline without holding your breath. Every term below is something a healthcare data platform lives or dies on.</p>
+
+      <h3 class="sub">Orchestration, past the basics</h3>
+      <p>You know how to author a DAG. The seniority signal is speaking to Airflow's <em>internals</em> and its failure modes without hand-waving:</p>
+      <ul>
+        <li><strong>Operators vs sensors</strong> — operators <em>do</em> a unit of work; sensors <em>wait</em> for a condition (a file lands, a partition appears). Know why a naïve sensor pins a worker slot and why <code>reschedule</code> mode and deferrable/async sensors exist.</li>
+        <li><strong>XComs</strong> — the cross-task message bus for small values (an id, a path, a row count). Know the trap: XComs are for pointers, not payloads — push a GCS URI, not a DataFrame.</li>
+        <li><strong>Idempotent tasks + safe retries</strong> — a task that reruns must land the same state. This is what makes automatic retries and backfills safe instead of a duplicate-data incident waiting to happen.</li>
+        <li><strong>Backfills &amp; catchup</strong> — running historical intervals on demand. Know <code>catchup=True/False</code>, why a scheduler-triggered catchup storm has taken down more than one team, and how partition-scoped writes keep a backfill from double-counting.</li>
+        <li><strong>Dynamic task mapping</strong> — fan out N tasks at runtime from a list you don't know until the DAG runs (<code>.expand()</code>), instead of hand-coding tasks or abusing the DAG-parsing loop.</li>
+        <li><strong>Dependencies &amp; SLAs</strong> — task ordering, trigger rules (<code>all_success</code>, <code>one_failed</code>), and per-task SLAs that alert when a step blows its time budget.</li>
+      </ul>
+      <p><strong>Where Airflow strains:</strong> it orchestrates <em>tasks</em>, not <em>data</em>. It has no native notion of "this table is stale" or "this asset depends on that asset." Local development is heavy, testing is awkward, and backfills bolt onto a scheduler that was really built for wall-clock schedules. Those pain points are exactly what the next tools attack.</p>
+
+      <h3 class="sub">The asset-based shift (Dagster / Prefect)</h3>
+      <p>The industry is moving from task-centric to <strong>data-centric</strong> orchestration. Airflow asks "run these tasks in this order." Dagster asks "here are the <strong>software-defined assets</strong> (tables, models, files) I want to exist, and how each is computed" — then works out the execution graph, tracks freshness, and knows what to rematerialize when an upstream asset changes.</p>
+      <ul>
+        <li><strong>Dagster</strong> — assets as first-class objects, typed IO, built-in lineage, a real local dev loop, and native awareness of freshness and partitions. The strongest fit when the pipeline <em>is</em> a graph of tables.</li>
+        <li><strong>Prefect</strong> — lighter, Pythonic, flow/task decorators with dynamic runtime graphs; shines for glue and irregular workflows more than a warehouse asset graph.</li>
+        <li><strong>When to reach for which</strong> — stay on Airflow for broad ecosystem, existing ops, and heterogeneous task orchestration; reach for Dagster when you want data-aware materialization, testability, and lineage out of the box; reach for Prefect for lightweight dynamic Python workflows. You don't have to migrate to speak this fluently — but you must be able to argue the trade-off in a design review.</li>
+      </ul>
+
+      <h3 class="sub">Data quality gates</h3>
+      <p>You test code. Untested data is the last big blind spot on most teams. The fix is to assert on data the same way you assert on functions — and to <strong>fail the pipeline</strong> when the assertion breaks, so bad rows never reach gold.</p>
+      <ul>
+        <li><strong>Great Expectations</strong> — declare <em>expectations</em> ("<code>patient_id</code> is never null", "<code>row_count</code> between 10k and 2M"), group them into a <em>suite</em>, and run a <em>checkpoint</em> as a task in the DAG. A failing checkpoint stops the run.</li>
+        <li><strong>dbt tests</strong> — the built-ins cover most of it: <code>unique</code>, <code>not_null</code>, <code>relationships</code> (referential integrity), <code>accepted_values</code>. Add <em>custom</em> singular/generic tests and <code>dbt-expectations</code> for distribution and volume checks.</li>
+        <li><strong>Quality gate / circuit breaker</strong> — the gate sits <em>between</em> silver and gold: transform, then test, then only publish on green. A red test trips the breaker and the bad batch is quarantined, not promoted.</li>
+        <li><strong>Anomaly detection</strong> — beyond hard rules, watch for drift in <em>volume</em> (row counts out of band), <em>freshness</em> (arrived late), and <em>distribution</em> (a column's mean/null-rate shifts). These catch the failures no static rule anticipated.</li>
+      </ul>
+
+      <h3 class="sub">Data contracts &amp; schema enforcement</h3>
+      <p>A <strong>data contract</strong> is an explicit, versioned agreement between the <em>producer</em> of a dataset and its <em>consumers</em>, covering schema (columns, types, nullability), semantics (what a field <em>means</em>), and SLAs (freshness, availability). Enforce it <strong>at the boundary</strong> — reject or quarantine data that violates the contract before it enters your pipeline, and treat a breaking schema change as a versioned, negotiated event, not a surprise.</p>
+      <p>This is the cure for the classic incident: an upstream team renames <code>dob</code> to <code>birth_date</code> or flips a type, and every downstream model silently breaks or, worse, produces wrong numbers. With a contract, that change fails CI on the producer's side before it ever ships. In a PII/healthcare context the contract also pins which fields are sensitive and how they may be used.</p>
+
+      <h3 class="sub">Observability, lineage &amp; CI/CD</h3>
+      <p><strong>The five pillars of data observability</strong> — the checklist for knowing your data is healthy: <em>freshness</em> (is it recent?), <em>volume</em> (is the row count right?), <em>schema</em> (did the structure change?), <em>distribution</em> (are the values in expected ranges?), and <em>lineage</em> (where did it come from, what breaks if it changes?).</p>
+      <ul>
+        <li><strong>Lineage &amp; OpenLineage</strong> — a map of how datasets derive from one another. <code>OpenLineage</code> is the open standard for emitting it, including <em>column-level</em> lineage so you can answer "if this source column dies, exactly which gold metrics go dark?"</li>
+        <li><strong>Freshness SLAs / SLOs</strong> — a stated promise ("orders_gold is never more than 2 hours stale") with monitoring and alerting when it's missed. This is your on-call contract with the business.</li>
+        <li><strong>CI/CD for data</strong> — treat pipeline and dbt changes like application code: run tests on the <em>PR</em>, build against a <em>staging</em> environment or a slim/CI dataset, review the plan, and deploy on merge. No more editing transforms straight in prod.</li>
+      </ul>
+      <p>The umbrella over all of it is <strong>DataOps</strong> — applying DevOps discipline (automation, testing, version control, monitoring, fast feedback) to the data lifecycle. Orchestration, contracts, gates, lineage, and CI/CD aren't five separate topics; they're the five limbs of one practice.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Hands-on challenge</div>
+    <div class="challenge">
+      <div class="tier">Build · ~8 hours</div>
+      <h3>Make the pipelines from Months 2–3 trustworthy</h3>
+      <p>You already have transforms. This challenge wraps them in the reliability layer — the difference between code that runs on your laptop and a platform someone can page you about.</p>
+      <ol>
+        <li><strong>Orchestrate end-to-end.</strong> Wire your dbt + Spark jobs into a single graph in Airflow (Astro CLI, local) or Dagster — extract/land, Spark transform, dbt build, in the right dependency order.</li>
+        <li><strong>Prove idempotency.</strong> Make one task idempotent (delete-insert by partition, or a merge on key) and demonstrate that running it twice leaves the row count identical — no duplicates.</li>
+        <li><strong>Add a quality gate that fails the run.</strong> Add Great Expectations (or dbt tests) asserting <code>not_null</code>, uniqueness, and a row-count range. Then <em>inject bad data</em> and watch the checkpoint stop the pipeline before gold.</li>
+        <li><strong>Wire a freshness check.</strong> Add a freshness assertion with an explicit SLA ("silver must be &lt; 1 hour old") and make a stale run alert or fail.</li>
+        <li><strong>Capture lineage.</strong> Generate a lineage graph — dbt docs graph or an OpenLineage emitter — and screenshot the DAG of tables so you can point at exactly what feeds what.</li>
+        <li><strong>Add a CI check.</strong> Set up a minimal CI workflow (GitHub Actions) that runs your dbt tests on a pull request, so a bad change fails before merge.</li>
+      </ol>
+      <div class="stretch"><b>Stretch</b> — Write a one-page <strong>data contract</strong> for one source table: schema (columns/types/nullability), semantics (what each field means), owner, freshness SLA, and a breaking-change policy. Make it the kind of doc you'd actually send to an upstream team.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Learn it with Claude</div>
+    <h2 class="sec-title">Prompts that replace the textbook</h2>
+    <p>Paste these into Claude one at a time. Push back, ask for diagrams, ask "why not the other way." Conversation beats reading.</p>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Idempotency &amp; safe backfills</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">You are a staff data platform engineer mentoring a senior software engineer who already runs Airflow in production but wants to sharpen the reliability side. Explain what makes an Airflow task idempotent and why it's the precondition for safe retries and backfills. Walk through a concrete delete-insert-by-partition example: show the SQL/logic for a task that, when rerun for the same logical date, produces identical output with no duplicates. Then explain catchup and backfill behavior, the catchup-storm failure mode, and three techniques to keep a backfill from double-counting. End with the two sentences I'd use to explain idempotency to a skeptical teammate.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Task-based vs asset-based orchestration</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Contrast task-based orchestration (Airflow) with asset-based / software-defined-asset orchestration (Dagster). Explain what changes conceptually when the unit of orchestration becomes the <em>data asset</em> instead of the <em>task</em>, and why the industry is trending this way. Render a Mermaid diagram showing the same pipeline modeled both ways — an Airflow task DAG and a Dagster asset graph — side by side. Finish with a crisp decision rule: given a new project, when do I stay on Airflow, when do I reach for Dagster, and when for Prefect?</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Design a data-quality gate</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Teach me to design a data-quality gate with Great Expectations. Explain expectations, suites, and checkpoints, and exactly where the checkpoint task sits in a DAG relative to the transform and the publish-to-gold step. Give me a worked example: a suite that asserts patient_id is never null, a uniqueness rule, and a row-count-between range. Show what happens — step by step — when I inject bad data and the checkpoint fails, and how that trips a circuit breaker so nothing reaches gold. Draw the DAG with the gate in place as a Mermaid flowchart.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Contracts &amp; the five pillars</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain data contracts (producer/consumer agreement on schema, semantics, and SLAs, enforced at the boundary) and the five pillars of data observability (freshness, volume, schema, distribution, lineage). Use a healthcare example: an upstream team renames a patient demographics column. Walk through, with and without a contract, how the incident plays out — and show how the contract catches the breaking change in CI before it ships. Then give me a one-line definition of each of the five pillars as I'd say them in a review.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Mock interview — senior platform engineer</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Act as a hiring manager screening me for a senior data / platform engineering role, focused on reliability and DataOps. Ask me 6 questions covering idempotency and backfills, task vs asset orchestration, data-quality gates / circuit breakers, data contracts, the five pillars of observability, and CI/CD for data. Ask ONE at a time and wait for my answer. After each, rate it 1–5, correct anything wrong, and give me the sharper way to phrase it. At the end, give an overall readiness score and the two areas to drill before Month 6.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Terminology to own</div>
+    <h2 class="sec-title">Say these without hesitating</h2>
+    <div class="glossary">
+      <div class="term"><dt>Idempotency</dt><dd>Re-running a task yields identical state — no duplicates, no drift. The precondition for safe retries and backfills.</dd></div>
+      <div class="term"><dt>Backfill</dt><dd>Running a pipeline over historical intervals on demand; safe only when tasks are partition-scoped and idempotent.</dd></div>
+      <div class="term"><dt>Sensor</dt><dd>An Airflow task that waits for a condition (a file, a partition) rather than doing work; use reschedule/deferrable mode to free the worker.</dd></div>
+      <div class="term"><dt>XCom</dt><dd>Airflow's cross-task message bus for small values (ids, paths). Pass pointers, not payloads.</dd></div>
+      <div class="term"><dt>Software-defined asset</dt><dd>A declared data object (table/file) and how it's computed; the unit of asset-based orchestration in Dagster.</dd></div>
+      <div class="term"><dt>Data contract</dt><dd>A versioned producer/consumer agreement on schema, semantics, and SLAs, enforced at the boundary.</dd></div>
+      <div class="term"><dt>Data lineage</dt><dd>The dependency map of how datasets derive from one another; column-level via OpenLineage.</dd></div>
+      <div class="term"><dt>Freshness SLA / SLO</dt><dd>A stated, monitored promise about how recent a dataset must be, with alerting when missed.</dd></div>
+      <div class="term"><dt>Circuit breaker</dt><dd>A gate that halts the pipeline on a failed check so bad data is quarantined, not promoted.</dd></div>
+      <div class="term"><dt>Quality gate</dt><dd>A test step between silver and gold that only publishes on green.</dd></div>
+      <div class="term"><dt>Observability (5 pillars)</dt><dd>Freshness, volume, schema, distribution, lineage — the checklist for knowing data is healthy.</dd></div>
+      <div class="term"><dt>DataOps</dt><dd>DevOps discipline applied to the data lifecycle: automation, testing, version control, monitoring, fast feedback.</dd></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You've orchestrated a dbt + Spark pipeline end-to-end in Airflow or Dagster.</li>
+      <li>You built a quality gate that stops the run when you inject bad data.</li>
+      <li>You proved one task is idempotent — a re-run leaves the row count unchanged.</li>
+      <li>You captured lineage and wired a freshness check with an explicit SLA.</li>
+      <li>You wrote a one-page data contract for a source table.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="month-04.html"><div class="dir">← Previous</div><div class="lbl">Streaming &amp; Real-Time Data</div></a>
+    <a class="next" href="month-06.html"><div class="dir">Next →</div><div class="lbl">Architecture &amp; Capstone I</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../data-ai-roadmap.html">↑ Back to the full roadmap</a></div>
+
+</div>
+
+<script src="roadmap.js"></script>
+</body>
+</html>
