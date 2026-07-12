@@ -9,7 +9,8 @@ python3 - <<'EOF'
 import os, re, json, html
 from datetime import datetime, timezone
 
-SKIP_DIRS = {'.git', '.github'}
+# 'workspace' is a personal working area (code, notes, daily logs) — never indexed as posts
+SKIP_DIRS = {'.git', '.github', 'workspace'}
 
 posts = []
 
