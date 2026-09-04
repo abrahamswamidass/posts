@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 05 · Give It Some Initiative</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>05</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 2 · Build &amp; Retro</span>
+    <div class="week-num">Week 05</div>
+    <h1>Give It Some Initiative</h1>
+    <p class="mission">Claude gets to take more than one step on its own this week — and you get in front of a camera for the first time.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Study a real failure</h2>
+    <div class="repcard arch">
+      <p>Find one published engineering postmortem or incident write-up relevant to your stack — a company engineering blog, an outage report. Read it once, then summarize it in 5 bullets in your own words, without looking back at the source.</p>
+      <div class="terms">
+        <span class="t">postmortem</span>
+        <span class="t">blast radius</span>
+        <span class="t">incident write-up</span>
+        <span class="t">root cause</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Add agentic, multi-step behavior — feature #3</h2>
+    <div class="repcard build">
+      <p>Give your app a task that takes Claude more than one round trip to finish — a small tool-use loop, or light retrieval over your own data, whichever fits.</p>
+      <ol>
+        <li>Define the multi-step task in one sentence: what starts it, what "done" looks like.</li>
+        <li>Implement the loop with a hard step limit so it can't run away.</li>
+        <li>Watch it run at least twice and note one place it did something you didn't expect.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Agent loops, and MCP if it fits</h2>
+    <div class="repcard claude">
+      <p>The reason/act/observe pattern behind agentic behavior, and where the Model Context Protocol fits if your project can use a real MCP server or tool.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Teach me the agent loop with my own task</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">I've built a loop where Claude does [describe the multi-step task from this week]. Explain the reason/act/observe pattern this maps to, why a step limit matters, and one real failure mode (infinite loop, tool misuse, runaway cost) I should guard against specifically for this task.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Should this be an MCP server?</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's what my tool loop does: [describe it]. Would wrapping this as an MCP server make sense versus keeping it as an in-app function call? Give me the honest tradeoff, not just "yes, MCP is the future."</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Record a 3-minute walkthrough, on camera</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 5 of 10</div>
+      <p>First time on camera, not just voice. Walk through the app as it stands today, 3 minutes, face visible. Save it privately — you don't have to send this one to anyone. The rep is doing it, not sharing it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>Feature #3's multi-step loop runs and is bounded by a real step limit.</li>
+      <li>You've summarized one real postmortem in your own words.</li>
+      <li>You can explain the reason/act/observe pattern and name a failure mode specific to your loop.</li>
+      <li>You've recorded a 3-minute on-camera walkthrough and kept it.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-04.html"><div class="dir">← Previous</div><div class="lbl">Make It Remember</div></a>
+    <a class="next" href="week-06.html"><div class="dir">Next →</div><div class="lbl">Halfway Retro</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 12-Week Growth Sprint</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint/sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../index.html">← Posts</a>
+    <div class="counter">12-WEEK SPRINT</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hub-hero">
+    <div class="week-num">Claude · Build · Present · Architect</div>
+    <h1>The 12-Week Growth Sprint</h1>
+    <p class="mission">The 12-month roadmap didn't survive contact with real life — a month is long enough to slide for weeks before you notice. This is the replacement: a tighter loop, four threads running <em>every single week</em> instead of taking turns, and a real thing shipped and presented at the end of the quarter.</p>
+    <div class="hub-stats">
+      <div class="hub-stat"><div class="n">12</div><div class="l">Weeks</div></div>
+      <div class="hub-stat"><div class="n">4</div><div class="l">Threads / week</div></div>
+      <div class="hub-stat"><div class="n">10</div><div class="l">Presentation reps</div></div>
+      <div class="hub-stat"><div class="n">1</div><div class="l">Shipped build</div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-label">Why weekly, why these four</div>
+    <div class="prose">
+      <p>The old plan had two failure modes: it was monthly, so a bad week was invisible until it was a bad month; and it was siloed — data engineering for six months, then AI, so nothing you cared about touched anything else. This one fixes both. Every week, in one sitting or a few short ones, you touch all four things you actually said you wanted:</p>
+      <ul>
+        <li><span class="thread-tag thread-arch">Architecture</span> — get comfortable naming and drawing systems, not just building them. A weekly rep, not a month locked in a room with a textbook.</li>
+        <li><span class="thread-tag thread-build">Build</span> — one real project, built with Claude, in territory outside your comfort zone. A slice a week, a shipped v1 by week 12.</li>
+        <li><span class="thread-tag thread-claude">Claude fluency</span> — go past "I use Claude Code daily" into how it actually works: prompting, tool use, agents, evals, guardrails.</li>
+        <li><span class="thread-tag thread-present">Presentation & inhibition</span> — a graded exposure ladder, one rung most weeks: alone → one person → a small group → the real thing, on camera, in public.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Pick the project — before Week 1</div>
+    <div class="callout">
+      <p><strong>Default candidate, if you want one ready-made:</strong> Pulse's Phase 3 — the three-column dashboard (have / changed / should-do) — has been sitting at <em>not started</em>. It's a real UI, a real audience of one (you), and it pushes you into frontend/product territory you don't already own. That's the shape this sprint is built for.</p>
+      <p>If something else is pulling at you harder, build that instead. The requirement isn't the subject — it's that the project has a UI or an output a non-technical person can react to, that Claude is a real collaborator on it (not just autocomplete), and that it's small enough to have a demoable v1 in 12 weeks.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">How to use it</div>
+    <ol class="how-list" style="margin-top:8px">
+      <li><strong>Open the week.</strong> Four repcards: Architecture, Build, Claude, Presentation. Read all four before you start any of them — they're meant to inform each other.</li>
+      <li><strong>Do the reps in whatever order fits your week.</strong> None of them need a full day. The architecture rep is often 20 minutes. The presentation rep is often five.</li>
+      <li><strong>Learn the Claude thread by prompting, not reading.</strong> Paste the prompt cards into Claude, push back, ask for a diagram when words aren't enough.</li>
+      <li><strong>Don't skip the presentation rep.</strong> It's the one that's easiest to drop and the one the whole plan exists to fix. It's designed to feel slightly too easy each week — that's the point of a graded ladder.</li>
+      <li><strong>Tick the done-when list</strong> before you move to the next week. If you're behind, compress — don't skip a thread entirely.</li>
+    </ol>
+    <p style="margin-top:8px;color:var(--text-3);font-size:14px">Budget ~4–6 focused hours a week, spread across sessions. Lighter than the old plan on purpose — a plan you can actually keep beats one that looks impressive on paper.</p>
+  </section>
+
+  <section>
+    <div class="phase-header">
+      <span class="ph-n">Weeks 1–3</span>
+      <h2>Lay the Foundation</h2>
+      <span class="ph-sub">Pick the project, name its architecture, get Claude wired in, get on camera for the first time.</span>
+    </div>
+    <div class="weeks">
+      <a class="wcard" href="sprint/week-01.html">
+        <div class="wc-n">WEEK 01</div>
+        <div class="wc-t">Kickoff &amp; Commit</div>
+        <div class="wc-d">Pick the project, sketch current-state vs target-state, and record yourself pitching it — alone, for 90 seconds.</div>
+      </a>
+      <a class="wcard" href="sprint/week-02.html">
+        <div class="wc-n">WEEK 02</div>
+        <div class="wc-t">Name the Architecture</div>
+        <div class="wc-d">Write a real ADR for your stack, scaffold the repo, wire in one live Claude call.</div>
+      </a>
+      <a class="wcard" href="sprint/week-03.html">
+        <div class="wc-n">WEEK 03</div>
+        <div class="wc-t">First Vertical Slice</div>
+        <div class="wc-d">Ship one ugly, working screen with one real Claude-powered feature, then demo it live to one person.</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="phase-header">
+      <span class="ph-n">Weeks 4–6</span>
+      <h2>Build &amp; Retro</h2>
+      <span class="ph-sub">Add memory, add initiative, then stop and look honestly at what's working.</span>
+    </div>
+    <div class="weeks">
+      <a class="wcard" href="sprint/week-04.html">
+        <div class="wc-n">WEEK 04</div>
+        <div class="wc-t">Make It Remember</div>
+        <div class="wc-d">Decide how state and persistence work, ship feature #2, demo to two people and actually take the critique.</div>
+      </a>
+      <a class="wcard" href="sprint/week-05.html">
+        <div class="wc-n">WEEK 05</div>
+        <div class="wc-t">Give It Some Initiative</div>
+        <div class="wc-d">Add agentic, multi-step behavior; record your first on-camera walkthrough, just for yourself.</div>
+      </a>
+      <a class="wcard" href="sprint/week-06.html">
+        <div class="wc-n">WEEK 06</div>
+        <div class="wc-t">Halfway Retro</div>
+        <div class="wc-d">No new feature — refactor, write your first evals, and watch weeks 1 and 5 back to back.</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="phase-header">
+      <span class="ph-n">Weeks 7–9</span>
+      <h2>Harden &amp; Stretch</h2>
+      <span class="ph-sub">Take on the feature you've avoided, present live to a group, design under a clock.</span>
+    </div>
+    <div class="weeks">
+      <a class="wcard" href="sprint/week-07.html">
+        <div class="wc-n">WEEK 07</div>
+        <div class="wc-t">Harden It</div>
+        <div class="wc-d">A PII/security pass, the hardest feature on the list, and your first live demo to a small group.</div>
+      </a>
+      <a class="wcard" href="sprint/week-08.html">
+        <div class="wc-n">WEEK 08</div>
+        <div class="wc-t">Make It Legible</div>
+        <div class="wc-d">Draw the real architecture diagram, polish the UI a stranger could use, and cede control mid-demo.</div>
+      </a>
+      <a class="wcard" href="sprint/week-09.html">
+        <div class="wc-n">WEEK 09</div>
+        <div class="wc-t">Design Under Pressure</div>
+        <div class="wc-d">A timed, no-Claude scaling exercise, an integration that makes the build feel real, first recording sent to someone.</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="phase-header">
+      <span class="ph-n">Weeks 10–12</span>
+      <h2>Ship &amp; Present</h2>
+      <span class="ph-sub">Deploy it, document it, rehearse it, then present the real thing.</span>
+    </div>
+    <div class="weeks">
+      <a class="wcard" href="sprint/week-10.html">
+        <div class="wc-n">WEEK 10</div>
+        <div class="wc-t">Ship It</div>
+        <div class="wc-d">Deploy somewhere real, write the 2am runbook, present the deployed thing to a wider audience.</div>
+      </a>
+      <a class="wcard" href="sprint/week-11.html">
+        <div class="wc-n">WEEK 11</div>
+        <div class="wc-t">Rehearse the Capstone</div>
+        <div class="wc-d">Write the full architecture doc, have Claude grill you on it out loud, run a timed dry-run of the demo.</div>
+      </a>
+      <a class="wcard" href="sprint/week-12.html">
+        <div class="wc-n">WEEK 12</div>
+        <div class="wc-t">Capstone</div>
+        <div class="wc-d">Ship v1, present live to the widest audience yet, retro the whole quarter, and set up the next one.</div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Where you land in 12 weeks</div>
+    <div class="prose">
+      <p>By week 12 you'll have one real thing shipped — built with Claude as an actual collaborator, not just an autocomplete — a one-page architecture doc you wrote and can defend out loud, and a presentation muscle that's been exercised ten times on a deliberately rising curve instead of never. That's a smaller-sounding outcome than "12 months, two capstones, a new job title" — and it's the one that's actually finishable, which makes it the one worth starting.</p>
+    </div>
+  </section>
+
+  <div class="footer-note">Start with <a href="sprint/week-01.html">Week 01 →</a></div>
+
+</div>
+
+<script src="sprint/sprint.js"></script>
+</body>
+</html>

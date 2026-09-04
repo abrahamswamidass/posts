@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 03 · First Vertical Slice</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>03</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 1 · Lay the Foundation</span>
+    <div class="week-num">Week 03</div>
+    <h1>First Vertical Slice</h1>
+    <p class="mission">The first feature, ugly and real. This is the week the project stops being a brief and starts being a thing you can point at and demo.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Draw the data flow for feature #1</h2>
+    <div class="repcard arch">
+      <p>Before writing the feature, draw the actual path data takes: source → transform → Claude call → what the user sees. One arrow per hop, one line under each arrow saying what happens there.</p>
+      <ol>
+        <li>Identify the source of truth for this feature's input.</li>
+        <li>Mark exactly where Claude enters the flow and what it's given.</li>
+        <li>Mark where the output lands, and what happens if that step fails.</li>
+      </ol>
+      <div class="terms">
+        <span class="t">data flow diagram</span>
+        <span class="t">source / sink</span>
+        <span class="t">coupling</span>
+        <span class="t">failure path</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Ship the first vertical slice</h2>
+    <div class="repcard build">
+      <p>One working screen, one real Claude-powered capability, start to finish. Styling can be ugly. Edge cases can be missing. It has to actually work once, for the happy path.</p>
+      <ol>
+        <li>Build the one screen/flow for feature #1.</li>
+        <li>Wire it to the real Claude call from Week 2, now doing real work.</li>
+        <li>Run it yourself, start to finish, without touching the code mid-run.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Tool use / function calling</h2>
+    <div class="repcard claude">
+      <p>Give Claude a real tool to call — not just text in, text out.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Teach me tool use with my real feature</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">I want Claude to be able to call a real function as part of [describe feature #1] — for example [name a plausible tool, e.g. "look up an account balance" or "query a table"]. Walk me through defining a tool schema, handling the tool-call response, and returning the result back into the conversation, in [your language/SDK]. Show a complete, minimal working example I can adapt.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Debug my mental model</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's the tool-use code I just wrote: [paste it]. Tell me, in plain terms, exactly what happens on each round trip between my code and the API when the tool gets called — I want to be able to explain this to someone else without hand-waving.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Demo it live to one trusted person</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 3 of 10</div>
+      <p>Five minutes, no slides, screen-share or in person. Show the vertical slice actually running. Ask exactly one question afterward: "What was confusing?" Write down their answer verbatim — don't argue with it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>Feature #1 works end to end on the happy path.</li>
+      <li>You can draw its data flow from memory.</li>
+      <li>You've implemented one real tool call and can explain the round trip.</li>
+      <li>You've demoed live to one person and captured their "what was confusing" answer.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-02.html"><div class="dir">← Previous</div><div class="lbl">Name the Architecture</div></a>
+    <a class="next" href="week-04.html"><div class="dir">Next →</div><div class="lbl">Make It Remember</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

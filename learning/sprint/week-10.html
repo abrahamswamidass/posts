@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 10 · Ship It</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>10</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 4 · Ship &amp; Present</span>
+    <div class="week-num">Week 10</div>
+    <h1>Ship It</h1>
+    <p class="mission">Deploy it somewhere real, write down what happens when it breaks, and present the deployed thing to a bigger audience than you've had yet.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Write the 2am runbook</h2>
+    <div class="repcard arch">
+      <p>One page: what breaks first, how you'd know, and the first three things you'd check. Write it now, while you can still think clearly, not during the actual incident.</p>
+      <div class="terms">
+        <span class="t">runbook</span>
+        <span class="t">observability</span>
+        <span class="t">deployment topology</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Deploy it for real</h2>
+    <div class="repcard build">
+      <p>A live URL, a running scheduled job, whatever "real" means for your project — get it running somewhere other than your own machine.</p>
+      <ol>
+        <li>Deploy it.</li>
+        <li>Confirm it survives you closing your laptop.</li>
+        <li>Note the one thing you'd fix first if you had another week just for ops.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Production concerns — logging &amp; tracing</h2>
+    <div class="repcard claude">
+      <p>Make sure you can see what a Claude call actually did after the fact, not just whether it returned a success code.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Help me instrument this for production</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's my deployed app's Claude call path: [describe it]. What's the minimum logging/tracing I need so that if a user reports a bad answer next week, I can reconstruct what happened without guessing?</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Present the deployed thing to a bigger audience</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 9 of 10</div>
+      <p>Same demo, but to a bigger or less-familiar group than Week 7 — more people, or people who don't already know you're working on this.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>The app is deployed and running somewhere other than your machine.</li>
+      <li>You have a written one-page runbook.</li>
+      <li>At least one Claude call path has real logging/tracing.</li>
+      <li>You've presented the deployed version to a bigger audience than Week 7.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-09.html"><div class="dir">← Previous</div><div class="lbl">Design Under Pressure</div></a>
+    <a class="next" href="week-11.html"><div class="dir">Next →</div><div class="lbl">Rehearse the Capstone</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

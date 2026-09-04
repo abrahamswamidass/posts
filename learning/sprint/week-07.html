@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 07 · Harden It</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="cur"></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>07</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 3 · Harden &amp; Stretch</span>
+    <div class="week-num">Week 07</div>
+    <h1>Harden It</h1>
+    <p class="mission">The feature you've been avoiding, a real security pass, and your first live demo to more than one or two people.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">PII and trust-boundary pass</h2>
+    <div class="repcard arch">
+      <p>This is genuinely your strength — apply it here on purpose. What sensitive data does your app touch, where does it cross a trust boundary, and how is it protected at each crossing?</p>
+      <ol>
+        <li>List every piece of data in the app you'd be uncomfortable seeing leaked.</li>
+        <li>Mark each trust boundary it crosses — client to server, server to Claude, server to storage.</li>
+        <li>Write one line per boundary: what protects it today, and what doesn't yet.</li>
+      </ol>
+      <div class="terms">
+        <span class="t">PII</span>
+        <span class="t">trust boundary</span>
+        <span class="t">threat model</span>
+        <span class="t">blast radius</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Build the feature you've been avoiding</h2>
+    <div class="repcard build">
+      <p>You know which one it is. Build it this week, even if it's the hardest thing on the list.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Guardrails, cost &amp; latency</h2>
+    <div class="repcard claude">
+      <p>Put a real budget and timeout on your Claude calls, and handle what happens when they're hit.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Put guardrails on my calls</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's how my app currently calls Claude: [paste the call site]. Show me how to add a timeout, a token/cost ceiling, and a sane fallback behavior for when either is hit — not just a generic error page.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Where's my actual PII exposure?</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's my trust-boundary list from this week: [paste it]. Playing a security reviewer, tell me the single boundary you'd fix first, and why it beats the others on your list.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Demo live to a small group</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 6 of 10</div>
+      <p>Three or more people this time — a team standup, family, a meetup. Live, no slides beyond what the app itself shows. Same rule as Week 4: take the feedback, don't defend.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You've built the feature you'd been avoiding.</li>
+      <li>Every trust boundary in the app has a written line on what protects it.</li>
+      <li>Your Claude calls have a real timeout and cost ceiling with a defined fallback.</li>
+      <li>You've demoed live to 3+ people.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-06.html"><div class="dir">← Previous</div><div class="lbl">Halfway Retro</div></a>
+    <a class="next" href="week-08.html"><div class="dir">Next →</div><div class="lbl">Make It Legible</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

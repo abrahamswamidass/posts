@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 02 · Name the Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="cur"></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>02</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 1 · Lay the Foundation</span>
+    <div class="week-num">Week 02</div>
+    <h1>Name the Architecture</h1>
+    <p class="mission">The sketch from last week becomes a real document, and Claude gets its first wire into the app. Small, deliberate scope: one ADR, one hello-world call.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Write a real ADR for your stack</h2>
+    <div class="repcard arch">
+      <p>Take the target-state sketch from Week 1 and turn the biggest open decision — framework, hosting, data store, how Claude gets called — into a one-page Architecture Decision Record.</p>
+      <ol>
+        <li>State the decision in one sentence.</li>
+        <li>List 2–3 alternatives you considered and why you rejected them.</li>
+        <li>State the consequence you're accepting — what gets harder because of this choice.</li>
+        <li>Save it as ADR-001 in the repo. This is the first of several.</li>
+      </ol>
+      <div class="terms">
+        <span class="t">ADR</span>
+        <span class="t">tradeoff</span>
+        <span class="t">alternatives-considered</span>
+        <span class="t">consequence</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Scaffold the repo, make one real Claude call</h2>
+    <div class="repcard build">
+      <p>Get the skeleton running: an empty UI shell — even a single blank page — wired to one live call to the Claude API. No feature logic yet, just proof the wire works end to end.</p>
+      <ol>
+        <li>Stand up the app shell in whatever framework ADR-001 chose.</li>
+        <li>Make one real API call to Claude from that shell and render the raw response.</li>
+        <li>Commit it. This is the ugliest, smallest possible version of "it's alive."</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Prompt engineering fundamentals</h2>
+    <div class="repcard claude">
+      <p>System prompts vs user turns, structured output, and the handful of prompting moves that matter more than any trick.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Teach me the fundamentals, with my own code as the example</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">I'm building [one-line project description]. Teach me the difference between a system prompt and a user message, and why that split matters. Then show me how to get reliable structured output (JSON matching a schema) from a Claude API call in [your language]. Use my project as the running example the whole way through.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Have Claude review your own ADR</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here is ADR-001 for my project: [paste it]. Critique it like a staff engineer doing an architecture review: is the decision actually justified by the alternatives listed, is the consequence honestly stated, and what's the one question you'd ask in a review meeting that I haven't answered?</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Re-record the pitch, standing up</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 2 of 10</div>
+      <p>Same 90-second pitch as Week 1, but stand up this time, and deliver it as if someone were actually in the room. Watch both recordings back to back. Name one concrete thing that's better, and one that isn't yet.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>ADR-001 exists in the repo and states decision, alternatives, and consequence.</li>
+      <li>The app shell runs and makes one real, working call to Claude.</li>
+      <li>You can explain system prompt vs user message without notes.</li>
+      <li>You've compared the Week 1 and Week 2 recordings and named one specific improvement.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-01.html"><div class="dir">← Previous</div><div class="lbl">Kickoff &amp; Commit</div></a>
+    <a class="next" href="week-03.html"><div class="dir">Next →</div><div class="lbl">First Vertical Slice</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

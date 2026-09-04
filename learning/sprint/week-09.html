@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 09 · Design Under Pressure</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>09</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 3 · Harden &amp; Stretch</span>
+    <div class="week-num">Week 09</div>
+    <h1>Design Under Pressure</h1>
+    <p class="mission">Design cold, under a clock, then check your work. Ship the integration that makes this feel like a real, live thing.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Timed scaling exercise, no Claude</h2>
+    <div class="repcard arch">
+      <p>Set a 20-minute timer. Paper or whiteboard only. Question: "How would you scale this to 100x users?" Write your answer before the timer runs out. Only then, check it against Claude.</p>
+      <div class="terms">
+        <span class="t">capacity planning</span>
+        <span class="t">back-of-envelope estimation</span>
+        <span class="t">bottleneck</span>
+      </div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Check my scaling answer</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">I designed this scaling approach cold, in 20 minutes, for [describe your app]: [paste your answer]. Where's the biggest hole in it, and what would you have asked me that I didn't address?</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">An integration that makes it feel real</h2>
+    <div class="repcard build">
+      <p>Connect the project to something live — a real scheduled job, a real external data source, a real deploy target — whatever makes it stop feeling like a demo and start feeling like a thing that runs without you.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">LLM-as-judge</h2>
+    <div class="repcard claude">
+      <p>Have Claude score its own past output against a rubric you write, rather than trusting your own read of "looks fine."</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Build me an LLM-as-judge rubric</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's what a good answer from feature #1 looks like: [give 2-3 examples]. Help me write a scoring rubric (1-5, with criteria) I could use to have Claude grade a batch of its own past outputs, and show me the prompt that would do the grading.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Send a recording to one person, unedited</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 8 of 10</div>
+      <p>Record a walkthrough and actually send it — unedited, no re-takes — to one person. Ask for their honest reaction, and don't preface it with "sorry, it's rough."</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You have a written, timed scaling answer and Claude's critique of it side by side.</li>
+      <li>One real integration is live — a scheduled job, external source, or deploy target.</li>
+      <li>You have a written rubric and at least one batch of self-graded outputs.</li>
+      <li>You've sent an unedited recording to someone and gotten a real reaction back.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-08.html"><div class="dir">← Previous</div><div class="lbl">Make It Legible</div></a>
+    <a class="next" href="week-10.html"><div class="dir">Next →</div><div class="lbl">Ship It</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>
