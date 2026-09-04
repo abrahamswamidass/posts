@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 06 · Halfway Retro</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>06</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 2 · Build &amp; Retro</span>
+    <div class="week-num">Week 06</div>
+    <h1>Halfway Retro</h1>
+    <p class="mission">No new feature this week. Pay down what's gotten hacky, write your first evals, and look honestly at the presentation tape.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Whiteboard rep with a skeptical reviewer</h2>
+    <div class="repcard arch">
+      <p>Explain your system's current architecture out loud, unscripted, to Claude playing a skeptical reviewer. Capture the two weakest points it pokes at, in writing.</p>
+      <div class="terms">
+        <span class="t">whiteboard review</span>
+        <span class="t">technical debt</span>
+        <span class="t">weak point</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Refactor pass — no new features</h2>
+    <div class="repcard build">
+      <p>Find the three things you did fastest and worst across features #1–3, and fix them properly. This is the week where "no new features" is the actual assignment.</p>
+      <ol>
+        <li>List the 3 worst shortcuts you know are in the code.</li>
+        <li>Fix at least 2 of them properly, with a real commit message explaining what changed and why.</li>
+        <li>Leave the third one documented as a known issue if you don't get to it.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Evals 101</h2>
+    <div class="repcard claude">
+      <p>Write down what "correct" means for one of your Claude-powered features, then test it.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Help me write my first evals</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's what feature #1 is supposed to do: [describe it]. Help me write 5 concrete test cases — input, expected behavior — that would catch it silently breaking. Then tell me which of the 5 is most likely to actually catch a real regression versus which is just busywork.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Grade my own refactor</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's the code before and after my refactor pass this week: [paste both]. Did I actually reduce risk, or did I just move it somewhere else? Be specific about what's better and what still isn't.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Watch weeks 1 and 5 back to back</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Retro — no new rung</div>
+      <p>No new recording this week. Watch the Week 1 alone-recording and the Week 5 on-camera walkthrough back to back. Write down 3 concrete differences — tone, pacing, hedging, whatever you actually notice.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You ran your 5 evals against feature #1 and know the pass/fail count.</li>
+      <li>At least 2 of your 3 worst shortcuts are fixed and committed.</li>
+      <li>You have 2 written weak points from Claude's skeptical architecture review.</li>
+      <li>You've written down 3 concrete differences between weeks 1 and 5 on tape.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-05.html"><div class="dir">← Previous</div><div class="lbl">Give It Some Initiative</div></a>
+    <a class="next" href="week-07.html"><div class="dir">Next →</div><div class="lbl">Harden It</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

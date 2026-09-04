@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 08 · Make It Legible</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="cur"></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>08</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 3 · Harden &amp; Stretch</span>
+    <div class="week-num">Week 08</div>
+    <h1>Make It Legible</h1>
+    <p class="mission">Draw the diagram you'd actually put in a design doc, polish the UI enough that you don't have to narrate it, and hand the controls to someone else mid-demo.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Draw the real architecture diagram</h2>
+    <div class="repcard arch">
+      <p>Not the Week 1 sketch — the one you'd put in front of a new hire. Components, data flow, trust boundaries, all in one picture.</p>
+      <ol>
+        <li>Include every component that's actually in production today, nothing aspirational.</li>
+        <li>Label each trust boundary from Week 7 directly on the diagram.</li>
+        <li>Get Claude to render it as a clean Mermaid or ASCII diagram from your description, then correct it until it's actually right.</li>
+      </ol>
+      <div class="terms">
+        <span class="t">component diagram</span>
+        <span class="t">trust boundary</span>
+        <span class="t">design doc</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Polish pass — a stranger could use it without you narrating</h2>
+    <div class="repcard build">
+      <p>No new features. Fix whatever a first-time user would trip over in the first 30 seconds.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Structured output with traceability</h2>
+    <div class="repcard claude">
+      <p>Make Claude show its work — what it read, why it answered the way it did — so the app's behavior is debuggable after the fact.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Add traceability to my output</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's how feature #1 currently returns Claude's answer: [paste it]. Show me how to also capture and store what informed that answer (retrieved context, tool results used) so I can debug a wrong answer after the fact without re-running everything.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Review my architecture diagram</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's my current architecture diagram description: [paste it]. Does anything look coupled that shouldn't be, or missing that a reviewer would immediately ask about?</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Cede control mid-demo</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 7 of 10</div>
+      <p>Give the live demo again, but this time either narrate while someone else drives the app, or hand them the keyboard partway through. Practice staying present and useful when you're not the one in control — a specific, common inhibition trigger.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>The architecture diagram matches what's actually running, boundaries included.</li>
+      <li>A first-time user can get through the main flow without your narration.</li>
+      <li>At least one feature stores enough trace to debug a wrong answer after the fact.</li>
+      <li>You've given a demo where someone else had the keyboard for part of it.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-07.html"><div class="dir">← Previous</div><div class="lbl">Harden It</div></a>
+    <a class="next" href="week-09.html"><div class="dir">Next →</div><div class="lbl">Design Under Pressure</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

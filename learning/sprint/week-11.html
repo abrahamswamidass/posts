@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 11 · Rehearse the Capstone</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span>
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span>
+    </div>
+    <div class="counter"><b>11</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 4 · Ship &amp; Present</span>
+    <div class="week-num">Week 11</div>
+    <h1>Rehearse the Capstone</h1>
+    <p class="mission">Write the document you'd hand a new hire, get grilled on it out loud, and run the full dry-run before the real thing.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Write the full architecture doc</h2>
+    <div class="repcard arch">
+      <p>Not a diagram alone — the doc. Purpose, components, data flow, trust boundaries, the ADRs you've collected since Week 2, known limitations.</p>
+      <ol>
+        <li>Pull together ADR-001 through however many you've written.</li>
+        <li>Add the diagram from Week 8, updated if anything's changed.</li>
+        <li>Add a "known limitations" section — the honest one, not the marketing one.</li>
+      </ol>
+      <div class="terms">
+        <span class="t">design doc</span>
+        <span class="t">RFC</span>
+        <span class="t">known limitations</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Polish only — fix the top 3 rough edges</h2>
+    <div class="repcard build">
+      <p>No new features this week. Fix the three things a first-time viewer would notice first, and stop there.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Mock Q&amp;A on your own design</h2>
+    <div class="repcard claude">
+      <p>Feed Claude your architecture doc and have it grill you, out loud, on the decisions in it.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Grill me on my own architecture doc</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's my full architecture doc: [paste it]. Act as a principal engineer doing a design review. Ask me one hard question at a time about a decision in this doc, wait for my out-loud answer, then push back once before moving to the next question. Do this for 5 questions.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Full timed dry run of the capstone demo</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Dry run — no new rung</div>
+      <p>Run the entire capstone demo you're planning for Week 12, timed, recorded, exactly as you intend to give it. Watch it back once. Make one more pass.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>The architecture doc is complete, including ADRs and known limitations.</li>
+      <li>The top 3 rough edges from Week 10's audience feedback are fixed.</li>
+      <li>You've been grilled on 5 design questions and can answer them without the doc in front of you.</li>
+      <li>You've run one full timed dry-run of the capstone demo.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-10.html"><div class="dir">← Previous</div><div class="lbl">Ship It</div></a>
+    <a class="next" href="week-12.html"><div class="dir">Next →</div><div class="lbl">Capstone</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

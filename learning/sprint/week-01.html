@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 01 · Kickoff &amp; Commit</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="cur"></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>01</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 1 · Lay the Foundation</span>
+    <div class="week-num">Week 01</div>
+    <h1>Kickoff &amp; Commit</h1>
+    <p class="mission">Before any code, decide what you're building and say so out loud. This is the smallest, cheapest week of the sprint on purpose — nothing here should be able to stop you from starting.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Draw the shape of "before" and "after"</h2>
+    <div class="repcard arch">
+      <p>On one page — paper, Excalidraw, or a Claude-generated diagram — sketch two boxes-and-arrows pictures: the system as it exists today (even if "today" is nothing), and the system as you want it in week 12. Don't reach for accuracy; reach for a decision.</p>
+      <ol>
+        <li>List the 3–5 boxes involved (UI, API/Claude, data store, external source, deploy target).</li>
+        <li>Draw one arrow per real interaction — no arrow you can't explain in one sentence.</li>
+        <li>Under the "after" sketch, write one sentence: "Done, week 12, looks like: ___."</li>
+      </ol>
+      <div class="terms">
+        <span class="t">system diagram</span>
+        <span class="t">current-state</span>
+        <span class="t">target-state</span>
+        <span class="t">ADR (preview)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Choose the project and write the brief</h2>
+    <div class="repcard build">
+      <p>Pick the project (see the sprint hub for the default candidate — Pulse's dormant Phase 3 dashboard). Create the repo or branch, and write a single paragraph: what it does, who it's for, and why it counts as outside your comfort zone.</p>
+      <ol>
+        <li>Name the one thing that makes this uncomfortable — a UI you'll have to design, an audience you'll have to show it to, a stack you haven't touched.</li>
+        <li>Create the repo/branch and a README with the one-paragraph brief.</li>
+        <li>Do not write feature code yet — that starts Week 2.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Learn how Claude Code's loop actually works</h2>
+    <div class="repcard claude">
+      <p>You already use Claude Code daily — this week, go one layer under "how" instead of "what." Understand the read-plan-edit-verify loop, how context and tools fit together, and where the model and the harness draw the line.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Build the mental model</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Explain to me, as if I've used Claude Code daily but never thought about its internals, how a single turn actually works end to end: how my prompt becomes tool calls, how tool results come back into context, and where the agentic loop decides to keep going versus stop. Use a simple sequence diagram (Mermaid) with 4-5 steps. Then give me one sentence I could use to explain "what makes it agentic" to a colleague who's only used a chat-only LLM.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Pressure-test my project brief</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here is my one-paragraph project brief for a 12-week build: [paste your brief]. Act as a skeptical but constructive reviewer. Ask me 3 questions that would expose whether this project is actually small enough to demo in 12 weeks, and tell me directly if you think the scope needs to shrink.</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Record yourself, alone, for 90 seconds</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 1 of 10</div>
+      <p>Open your phone or laptop camera. No script, no second takes. Explain your project out loud for 90 seconds: what it is, why it's uncomfortable for you, what week 12 looks like. Watch it back exactly once. Write down one filler word, hedge, or apology you want to drop by next week.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>You can point to a one-paragraph brief and a repo for your project.</li>
+      <li>You've drawn a before/after sketch and written the one-sentence definition of done.</li>
+      <li>You understand, well enough to explain it, how a Claude Code turn moves from prompt to tool call to result.</li>
+      <li>You've recorded and watched your first 90-second pitch, and named one specific thing to change.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev disabled" href="#"><div class="dir">← Previous</div><div class="lbl">—</div></a>
+    <a class="next" href="week-02.html"><div class="dir">Next →</div><div class="lbl">Name the Architecture</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>

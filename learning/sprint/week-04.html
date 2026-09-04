@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 04 · Make It Remember</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sprint.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="home" href="../growth-sprint.html">← Sprint</a>
+    <div class="rail">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="cur"></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="counter"><b>04</b> / 12</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="segment-tag">Segment 2 · Build &amp; Retro</span>
+    <div class="week-num">Week 04</div>
+    <h1>Make It Remember</h1>
+    <p class="mission">The project needs to remember something between visits — and you need to survive real feedback without deflecting it.</p>
+  </header>
+
+  <section>
+    <span class="thread-tag thread-arch">Architecture</span>
+    <h2 class="sec-title">Decide how state survives</h2>
+    <div class="repcard arch">
+      <p>Where does data live between sessions, and what happens the moment it's unavailable? Document both.</p>
+      <ol>
+        <li>Pick the persistence approach — file, local DB, cloud store — and state why in one sentence.</li>
+        <li>Write the failure mode: what does the app do if that store is empty, slow, or gone?</li>
+        <li>Add this as ADR-002.</li>
+      </ol>
+      <div class="terms">
+        <span class="t">persistence</span>
+        <span class="t">state</span>
+        <span class="t">graceful degradation</span>
+        <span class="t">failure mode</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-build">Build the project</span>
+    <h2 class="sec-title">Add persistence, ship feature #2</h2>
+    <div class="repcard build">
+      <p>Wire in the state/persistence decision from the architecture rep, and ship a second feature that depends on it — something that wouldn't make sense without memory.</p>
+      <ol>
+        <li>Implement the store and confirm data survives a restart.</li>
+        <li>Build feature #2 on top of it.</li>
+        <li>Deliberately empty the store once and confirm the app fails the way ADR-002 says it should.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-claude">Claude fluency</span>
+    <h2 class="sec-title">Context management</h2>
+    <div class="repcard claude">
+      <p>Conversation memory, context-window budgeting, and when to summarize versus replay full history.</p>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Teach me context management for my app</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">My app now needs to remember [describe what feature #2 remembers] across a session. Explain the tradeoffs between replaying full conversation history, summarizing older turns, and storing structured state outside the conversation entirely. Recommend which fits my case and why, then show a minimal code pattern for it.</div>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-head"><span class="p-title">Stress-test my persistence design</span><button class="copy-btn" data-label="Copy">Copy</button></div>
+      <div class="prompt-body">Here's ADR-002 on how my app persists state: [paste it]. What's the most likely way this quietly corrupts or loses data in production, and what's the one-line mitigation you'd insist on before shipping?</div>
+    </div>
+  </section>
+
+  <section>
+    <span class="thread-tag thread-present">Presentation &amp; inhibition</span>
+    <h2 class="sec-title">Demo to two people, ask for real critique</h2>
+    <div class="repcard present">
+      <div style="margin-bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--present)">Rung 4 of 10</div>
+      <p>Same demo format as Week 3, now to two people together. Explicitly ask: "What's the one thing you'd change?" When they answer, say only "thank you, noted" — no explaining, no defending. Write the feedback down after, unfiltered.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label">Done when</div>
+    <ul class="checklist">
+      <li>State persists across a restart and fails the way you designed it to.</li>
+      <li>Feature #2 is shipped and depends on real persisted data.</li>
+      <li>You can explain summarization vs full-history vs external state in your own words.</li>
+      <li>You received critique from two people without defending yourself in the moment.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="week-03.html"><div class="dir">← Previous</div><div class="lbl">First Vertical Slice</div></a>
+    <a class="next" href="week-05.html"><div class="dir">Next →</div><div class="lbl">Give It Some Initiative</div></a>
+  </nav>
+
+  <div class="footer-note"><a href="../growth-sprint.html">↑ Back to the sprint</a></div>
+
+</div>
+
+<script src="sprint.js"></script>
+</body>
+</html>
